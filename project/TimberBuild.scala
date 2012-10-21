@@ -13,7 +13,7 @@ object TimberBuild extends Build {
       scalacOptions ++= Seq("-unchecked","-deprecation"),
       testOptions += Tests.Argument("-oDF"),
       libraryDependencies ++= Seq(Dependencies.scalatest,Dependencies.mockito),
-      organization := "org.scalawag"
+      organization := "org.scalawag.timber"
     ) ++ jacoco.settings ++ Defaults.itSettings
 
   val timber = Project("timber",file("timber"),settings = commonSettings)
