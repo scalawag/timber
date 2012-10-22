@@ -98,10 +98,7 @@ strong {
 }
 
 ul li {
-  list-style: outside;
-}
-
-ul {
+  list-style: inside;
   padding-left: 25px;
 }
 
@@ -315,7 +312,6 @@ section {
   width:650px;
   float:right;
   padding-bottom:50px;
-  margin-top: 30px;
 }
 
 
