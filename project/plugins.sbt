@@ -12,3 +12,7 @@ libraryDependencies ++= Seq(
 
 addSbtPlugin("de.johoop" % "jacoco4sbt" % "1.2.4")
 
+resolvers += Resolver.url("sbt-plugin-releases", new URL("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/"))(Resolver.ivyStylePatterns)
+
+addSbtPlugin("com.typesafe.sbt" % "sbt-pgp" % "0.7")
+
