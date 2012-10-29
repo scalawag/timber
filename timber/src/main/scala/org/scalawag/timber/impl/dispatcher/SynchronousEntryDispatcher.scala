@@ -6,7 +6,7 @@ import org.scalawag.timber.impl.{Entry, ImmutableVertex, InternalLogging, Defaul
 import org.scalawag.timber.api.Logger
 import org.scalawag.timber.impl.receiver.EntryReceiver
 
-abstract class SynchronousEntryDispatcher[T <: Logger] (private val initialConfiguration: Configuration = DefaultConfiguration) extends EntryDispatcher with Configurable with InternalLogging {
+class SynchronousEntryDispatcher[T <: Logger] (private val initialConfiguration: Configuration = DefaultConfiguration) extends EntryDispatcher with Configurable with InternalLogging {
   configuration = initialConfiguration
 
   def dispatch(entry: Entry) {
