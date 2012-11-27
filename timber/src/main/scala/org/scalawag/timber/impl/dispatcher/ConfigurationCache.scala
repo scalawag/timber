@@ -1,7 +1,7 @@
 package org.scalawag.timber.impl.dispatcher
 
 import org.scalawag.timber.impl.Entry
-import org.scalawag.timber.impl.{InternalLogging, ImmutableVertex, PartialEntry}
+import org.scalawag.timber.impl.{InternalLogging, PartialEntry}
 
 trait ConfigurationCache extends EntryDispatcher with Configurable with InternalLogging {
   var cache = Map[PartialEntry,Configuration]()
@@ -30,6 +30,29 @@ trait ConfigurationCache extends EntryDispatcher with Configurable with Internal
     cache = Map() // TODO: This need to be thread-safe for use in the SynchronousLoggerManager, for Asynch it's OK
   }
 
+}
+
+object ConfigurationCache {
+  object Attribute extends Enumeration {
+    val Logger = Value
+    val Level = Value
+    val Thread = Value
+    val Tags = Value
+  }
+
+  def keyExtractor(attributes:Attribute.Value*) = { entry:Entry =>
+    def include[T](attribute:Attribute.Value,value:T):Option[T] =
+      if ( attributes.contains(attribute) )
+        Some(value)
+      else
+        None
+
+    import Attribute._
+    PartialEntry(logger = include(Logger,entry.logger),
+                 level = include(Level,entry.level),
+                 thread = include(Thread,entry.thread),
+                 tags = include(Tags,entry.tags))
+  }
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

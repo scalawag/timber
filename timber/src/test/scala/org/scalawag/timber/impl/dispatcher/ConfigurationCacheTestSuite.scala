@@ -6,8 +6,8 @@ import org.scalawag.timber.impl.Entry
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
 import org.mockito.Matchers._
-import org.scalawag.timber.api.Logger
-import org.scalawag.timber.impl.{PartialEntry, LoggerImpl, ImmutableVertex}
+import org.scalawag.timber.api.{Message, Tag, Logger}
+import org.scalawag.timber.impl.{PartialEntry, LoggerImpl}
 import org.scalawag.timber.impl.receiver.EntryReceiver
 
 class ConfigurationCacheTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
@@ -68,6 +68,53 @@ class ConfigurationCacheTestSuite extends FunSuite with ShouldMatchers with Mock
     verify(cfg,times(3)).constrain(any[PartialEntry],any[Boolean])
   }
 
+  trait KeyExtractorFixture {
+    val logger = "loggerA"
+    val level = 14
+    val thread = Thread.currentThread
+    object TagB extends Tag
+    val tags = Set[Tag](TagB)
+
+    val entry = new Entry(logger = logger,
+                          level = level,
+                          thread = thread,
+                          tags = tags,
+                          message = Message.stringFnToMessage("msg"),
+                          levelName = level.toString)
+  }
+
+  import ConfigurationCache._
+
+  test("keyExtractor extracts the right key - logger") {
+    new KeyExtractorFixture {
+      ConfigurationCache.keyExtractor(Attribute.Logger)(entry) should be (new PartialEntry(logger = Some(logger)))
+    }
+  }
+
+  test("keyExtractor extracts the right key - level") {
+    new KeyExtractorFixture {
+      ConfigurationCache.keyExtractor(Attribute.Level)(entry) should be (new PartialEntry(level = Some(level)))
+    }
+  }
+
+  test("keyExtractor extracts the right key - thread") {
+    new KeyExtractorFixture {
+      ConfigurationCache.keyExtractor(Attribute.Thread)(entry) should be (new PartialEntry(thread = Some(thread)))
+    }
+  }
+
+  test("keyExtractor extracts the right key - tags") {
+    new KeyExtractorFixture {
+      ConfigurationCache.keyExtractor(Attribute.Tags)(entry) should be (new PartialEntry(tags = Some(tags)))
+    }
+  }
+
+  test("keyExtractor extracts the right key - level & logger") {
+    new KeyExtractorFixture {
+      val fn = ConfigurationCache.keyExtractor(Attribute.Logger,Attribute.Level)
+      fn(entry) should be (new PartialEntry(logger = Some(logger),level = Some(level)))
+    }
+  }
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */
