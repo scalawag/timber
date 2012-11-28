@@ -87,31 +87,31 @@ class ConfigurationCacheTestSuite extends FunSuite with ShouldMatchers with Mock
 
   test("keyExtractor extracts the right key - logger") {
     new KeyExtractorFixture {
-      ConfigurationCache.keyExtractor(Attribute.Logger)(entry) should be (new PartialEntry(logger = Some(logger)))
+      ConfigurationCache.keyExtractor(entry,Attribute.Logger) should be (new PartialEntry(logger = Some(logger)))
     }
   }
 
   test("keyExtractor extracts the right key - level") {
     new KeyExtractorFixture {
-      ConfigurationCache.keyExtractor(Attribute.Level)(entry) should be (new PartialEntry(level = Some(level)))
+      ConfigurationCache.keyExtractor(entry,Attribute.Level) should be (new PartialEntry(level = Some(level)))
     }
   }
 
   test("keyExtractor extracts the right key - thread") {
     new KeyExtractorFixture {
-      ConfigurationCache.keyExtractor(Attribute.Thread)(entry) should be (new PartialEntry(thread = Some(thread)))
+      ConfigurationCache.keyExtractor(entry,Attribute.Thread) should be (new PartialEntry(thread = Some(thread)))
     }
   }
 
   test("keyExtractor extracts the right key - tags") {
     new KeyExtractorFixture {
-      ConfigurationCache.keyExtractor(Attribute.Tags)(entry) should be (new PartialEntry(tags = Some(tags)))
+      ConfigurationCache.keyExtractor(entry,Attribute.Tags) should be (new PartialEntry(tags = Some(tags)))
     }
   }
 
   test("keyExtractor extracts the right key - level & logger") {
     new KeyExtractorFixture {
-      val fn = ConfigurationCache.keyExtractor(Attribute.Logger,Attribute.Level)
+      val fn = ConfigurationCache.keyExtractor(_:Entry,Attribute.Logger,Attribute.Level)
       fn(entry) should be (new PartialEntry(logger = Some(logger),level = Some(level)))
     }
   }

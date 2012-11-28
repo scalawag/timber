@@ -40,7 +40,7 @@ object ConfigurationCache {
     val Tags = Value
   }
 
-  def keyExtractor(attributes:Attribute.Value*) = { entry:Entry =>
+  def keyExtractor(entry:Entry,attributes:Attribute.Value*) = {
     def include[T](attribute:Attribute.Value,value:T):Option[T] =
       if ( attributes.contains(attribute) )
         Some(value)
