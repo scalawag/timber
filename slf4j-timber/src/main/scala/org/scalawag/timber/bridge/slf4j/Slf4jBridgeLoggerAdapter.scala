@@ -1,4 +1,4 @@
-package org.scalawag.timber.slf4j
+package org.scalawag.timber.bridge.slf4j
 
 import org.scalawag.timber.api.Tag
 import org.slf4j.Marker
@@ -8,16 +8,20 @@ import org.scalawag.timber.api.Message
 
 class MarkerTag(val marker:Marker) extends Tag
 
-class Slf4jLoggerAdapter(private val logger:org.scalawag.timber.api.slf4j.Logger) extends org.slf4j.Logger {
+object Slf4jBridgeLoggerAdapter {
   private def fmt(format:String,args:Array[Object]) = MessageFormatter.arrayFormat(format,args).getMessage
   private def fmt(format:String,args:Object*) = MessageFormatter.arrayFormat(format,args.toArray).getMessage
 
-  implicit def markerToTag(m:Marker):Tag = new MarkerTag(m)
+  implicit private def markerToTag(m:Marker):Tag = new MarkerTag(m)
 
   implicit private def stringAndThrowableToMessage(msg:(String,Throwable)):Message = Message.messageGatherer { pw:PrintWriter =>
     pw.println(msg._1)
     msg._2.printStackTrace(pw)
   }
+}
+
+class Slf4jBridgeLoggerAdapter(private val logger:org.scalawag.timber.api.slf4j.Logger) extends org.slf4j.Logger {
+  import Slf4jBridgeLoggerAdapter._
 
   def getName() = logger.name
 

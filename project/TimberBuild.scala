@@ -29,6 +29,10 @@ object TimberBuild extends Build {
                                  libraryDependencies ++= Seq(Dependencies.logback)
                                )) dependsOn (timber)
 
+  val examples = Project("timber-examples",file("examples"),
+                         settings = commonSettings
+                        ) dependsOn (timber,slf4jTimber)
+
   val aggregator = Project("aggregate",file("."),
                            settings = commonSettings ++ Seq(
 //                             Keys.`package` := { null },

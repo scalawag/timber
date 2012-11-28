@@ -2,7 +2,7 @@ package org.slf4j.impl;
 
 import org.slf4j.ILoggerFactory;
 import org.slf4j.spi.LoggerFactoryBinder;
-import org.scalawag.timber.slf4j.*;
+import org.scalawag.timber.bridge.slf4j.*;
 
 public class StaticLoggerBinder implements LoggerFactoryBinder {
     private static final StaticLoggerBinder singleton = new StaticLoggerBinder();
@@ -13,7 +13,7 @@ public class StaticLoggerBinder implements LoggerFactoryBinder {
 
     @Override
     public ILoggerFactory getLoggerFactory() {
-        return Slf4jLoggerFactory$.MODULE$;
+        return Slf4jBridgeLoggerFactory$.MODULE$;
     }
 
     @Override
