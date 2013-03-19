@@ -1,7 +1,7 @@
 package org.scalawag.timber.api
 
 import org.scalawag.timber.api
-import org.scalawag.timber.impl.dispatcher.{Management, AsynchronousEntryDispatcher}
+import org.scalawag.timber.impl.dispatcher.{Management, SynchronousEntryDispatcher}
 import org.scalawag.timber.impl.LoggerImpl
 
 package object slf4j {
@@ -97,7 +97,7 @@ package object slf4j {
   // (the same Logger type) without using the same configuration.  In most cases, clients will just use the singleton
   // below.
 
-  class LoggerManager extends AsynchronousEntryDispatcher[Logger] with LoggerFactory[Logger] with Management {
+  class LoggerManager extends SynchronousEntryDispatcher[Logger] with LoggerFactory[Logger] with Management {
     override def getLogger(name:String):Logger =
       // Here's where any functional mixins should be included.  Note that it can return differently functional
       // Loggers (through mixins or different base classes) depending on the name (or anything else).  As far as the

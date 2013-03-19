@@ -23,7 +23,7 @@ object InternalLogging {
     // It's important that the building of this configuration not attempt to use any logging.  That's why I'm using
     // the classes directly instead of the configuration DSL here.
 
-    private val configuration = {
+    configuration = {
       val threshold =
         if ( Option(System.getProperty("timber.debug")).exists( _.length > 0 ) )
           slf4j.Logging.Level.DEBUG
@@ -39,9 +39,6 @@ object InternalLogging {
 
     override def dispatch(entry:Entry) =
       getReceivers(entry).foreach(_.receive(entry))
-
-    protected override def getReceivers(entry: Entry): Set[EntryReceiver] =
-      Configuration(configuration).findReceivers(entry)
   }
 }
 

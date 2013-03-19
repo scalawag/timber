@@ -1,9 +1,11 @@
 package org.scalawag.timber.api
 
-import scala.concurrent.ops.spawn
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.scalatest.matchers.ShouldMatchers
 import java.util.concurrent.CyclicBarrier
+import scala.concurrent._
+import scala.concurrent.duration._
+import scala.concurrent.Await._
 import collection.immutable.Stack
 
 class LoggingContextTestSuite extends FunSuite with ShouldMatchers with BeforeAndAfter {
@@ -61,23 +63,26 @@ class LoggingContextTestSuite extends FunSuite with ShouldMatchers with BeforeAn
 
 
   test("separate contexts for separate threads") {
+    import scala.concurrent.ExecutionContext.Implicits.global
 
     val barrier = new CyclicBarrier(2)
 
-    spawn {
+    val f1 = future {
       LoggingContext.push("ip","127.0.0.1")
       barrier.await
       LoggingContext.get.get("ip").head should be ("127.0.0.1")
       barrier.await
     }
 
-    spawn {
+    val f2 = future {
       LoggingContext.push("ip","127.0.0.2")
       barrier.await
       LoggingContext.get.get("ip").head should be ("127.0.0.2")
       barrier.await
     }
 
+    ready(f1,Duration.Inf)
+    ready(f2,Duration.Inf)
   }
 
   test("pop") {

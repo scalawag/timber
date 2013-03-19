@@ -7,7 +7,7 @@ import org.scalawag.timber.api.LoggingContext
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import org.scalatest.mock.MockitoSugar
-import org.scalawag.timber.impl.dispatcher.{Configuration, SynchronousEntryDispatcher, AsynchronousEntryDispatcher, Management}
+import org.scalawag.timber.impl.dispatcher.{SynchronousEntryDispatcher, Management}
 import org.scalawag.timber.impl._
 import dispatcher.Configuration
 import formatter.DefaultEntryFormatter
@@ -414,7 +414,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
   }
 
   ignore("filter naming") {
-    object MyLoggerManager extends AsynchronousEntryDispatcher[Logger] with LoggerFactory[Logger] with Management {
+    object MyLoggerManager extends SynchronousEntryDispatcher[Logger] with LoggerFactory[Logger] with Management {
       def getLogger(name:String) = new LoggerImpl(name,this)
 
       configure { IN =>

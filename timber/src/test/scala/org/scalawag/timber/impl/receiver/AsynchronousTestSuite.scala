@@ -1,5 +1,7 @@
 package org.scalawag.timber.impl.receiver
 
+import language.reflectiveCalls
+
 import org.scalatest.{OneInstancePerTest, FunSuite}
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar

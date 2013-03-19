@@ -68,8 +68,6 @@ object ConfigTester {
     def dispatch(event: Entry) {
       // noop
     }
-
-    protected def getReceivers(entry: Entry): Set[EntryReceiver] = null
   }
 
   val l = new LoggerImpl("dummy",Dispatcher) with slf4j.Trace with slf4j.Debug with slf4j.Error with slf4j.Warn with slf4j.Fatal with slf4j.Info

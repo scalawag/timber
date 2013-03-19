@@ -11,7 +11,7 @@ package org.scalawag.timber.api
 trait LoggerFactory[+T <: Logger] {
   def getLogger(name:String):T
   final def getLogger(c:Class[_]):T = getLogger(c.getName)
-  final def getLogger[C:Manifest]:T = getLogger(manifest.erasure)
+  final def getLogger[C:Manifest]:T = getLogger(manifest.runtimeClass)
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

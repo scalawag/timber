@@ -2,16 +2,18 @@ package org.scalawag.timber.impl.dispatcher
 
 import org.scalawag.timber.impl.Entry
 import org.scalawag.timber.impl.{InternalLogging, PartialEntry}
+import java.util.concurrent.atomic.AtomicReference
 
 trait ConfigurationCache extends EntryDispatcher with Configurable with InternalLogging {
-  var cache = Map[PartialEntry,Configuration]()
+  private val cache = new AtomicReference(Map[PartialEntry,Configuration]())
 
   def extractKey(entry:Entry):PartialEntry
 
   abstract override def getReceivers(entry:Entry) = {
     val k = extractKey(entry)
     log.debug("using key: " + k)
-    val cfg = cache.get(k) match {
+    val currentCache = cache.get
+    val cfg = currentCache.get(k) match {
       case Some(v) =>
         log.debug("got a configuration hit: " + k + " -> " + v)
         v
@@ -19,7 +21,10 @@ trait ConfigurationCache extends EntryDispatcher with Configurable with Internal
         log.debug("cache miss, constraining configuration now for: " + k)
         val v = configuration.constrain(k)
         log.debug("constrained configuration is: " + v)
-        cache += (k -> v)
+
+        // If we can cache this new configuration (because no one else has updated the cache), then do.  If not,
+        // don't worry about it.  It will get recalculated and possibly cached next time it's used.
+        cache.compareAndSet(currentCache,currentCache + (k -> v))
         v
     }
     cfg.findReceivers(entry)
@@ -27,9 +32,8 @@ trait ConfigurationCache extends EntryDispatcher with Configurable with Internal
 
   abstract override def onConfigurationChange() {
     super.onConfigurationChange()
-    cache = Map() // TODO: This need to be thread-safe for use in the SynchronousLoggerManager, for Asynch it's OK
+    cache.set(Map())
   }
-
 }
 
 object ConfigurationCache {

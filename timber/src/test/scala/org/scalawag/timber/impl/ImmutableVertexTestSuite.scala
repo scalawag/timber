@@ -245,10 +245,10 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
   }
 
   private def narrow[T:Manifest,A](obj:Any)(fn:T => A) = {
-    if ( manifest.erasure.isAssignableFrom(obj.getClass) ) {
+    if ( manifest.runtimeClass.isAssignableFrom(obj.getClass) ) {
       fn(obj.asInstanceOf[T])
     } else {
-      fail("object " + obj + " is not of the expected type (" + manifest.erasure + ")")
+      fail("object " + obj + " is not of the expected type (" + manifest.runtimeClass + ")")
     }
   }
 }

@@ -44,7 +44,7 @@ object DefaultEntryFormatter {
 
 import DefaultEntryFormatter._
 
-class DefaultEntryFormatter(timestampFormatterFactory:DefaultEntryFormatter.TimestampFormatterFactory = defaultTimestampFormatterFactory,
+class DefaultEntryFormatter(timestampFormatterFactory:DefaultEntryFormatter.TimestampFormatterFactory = DefaultEntryFormatter.defaultTimestampFormatterFactory,
                             delimiter:String = "|",
                             headerOnEachLine:Boolean = false,
                             useLevelName:Boolean = true)

@@ -4,19 +4,25 @@ import de.johoop.jacoco4sbt._
 import JacocoPlugin._
 
 object TimberBuild extends Build {
-  val VERSION = "0.1-SNAPSHOT"
+  val VERSION = "0.2-SNAPSHOT"
 
   val commonSettings =
     Defaults.defaultSettings ++ Seq(
       version := VERSION,
       crossPaths := false,
-      scalacOptions ++= Seq("-unchecked","-deprecation"),
+      scalacOptions ++= Seq("-unchecked","-deprecation","-feature","-language:implicitConversions"),
+      javaOptions ++= Seq("-Xmx256m","-XX:MaxPermSize=256m"),
+      scalaVersion := "2.10.0",
       testOptions += Tests.Argument("-oDF"),
       libraryDependencies ++= Seq(Dependencies.scalatest,Dependencies.mockito),
       organization := "org.scalawag.timber"
     ) ++ jacoco.settings ++ Defaults.itSettings
 
-  val timber = Project("timber",file("timber"),settings = commonSettings)
+  val timber = Project("timber",file("timber"),
+                       settings = commonSettings ++ Seq(
+                         libraryDependencies ++= Seq(Dependencies.actor)
+                       )
+                      )
 
   val slf4jTimber = Project("slf4j-timber",file("slf4j-timber"),
                             settings = commonSettings ++ Seq(
@@ -49,8 +55,9 @@ object TimberBuild extends Build {
 
   object Dependencies {
     lazy val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
+    lazy val actor = "com.typesafe.akka" %% "akka-actor" % "2.1.0"
     lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.7"
-    lazy val scalatest = "org.scalatest" %% "scalatest" % "1.6.1" % "test"
+    lazy val scalatest = "org.scalatest" %% "scalatest" % "1.9" % "test"
     lazy val mockito = "org.mockito" % "mockito-all" % "1.9.0" % "test"
   }
 }

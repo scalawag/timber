@@ -1,5 +1,7 @@
 package org.scalawag.timber.impl.dispatcher
 
+import language.reflectiveCalls
+
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
 import org.scalawag.timber.impl.Entry
@@ -16,7 +18,8 @@ class ConfigurationCacheTestSuite extends FunSuite with ShouldMatchers with Mock
     val cfg = mock[Configuration]
     when(cfg.findReceivers(any())).thenReturn(Set[EntryReceiver]())
 
-    val lm = new SynchronousEntryDispatcher[Logger](cfg) {
+    val lm = new SynchronousEntryDispatcher[Logger] {
+      configuration = cfg
       def getLogger(name: String): Logger = new LoggerImpl(name,this)
     }
 
@@ -39,7 +42,8 @@ class ConfigurationCacheTestSuite extends FunSuite with ShouldMatchers with Mock
     when(cfg.constrain(any[PartialEntry],any[Boolean])).thenReturn(constrained)
     when(constrained.findReceivers(any())).thenReturn(Set[EntryReceiver]())
 
-    val lm = new SynchronousEntryDispatcher[Logger](cfg) with ConfigurationCache {
+    val lm = new SynchronousEntryDispatcher[Logger] with ConfigurationCache {
+      configuration = cfg
       def getLogger(name: String): Logger = new LoggerImpl(name,this)
 
       def extractKey(entry: Entry): PartialEntry = PartialEntry(logger = Some(entry.logger),

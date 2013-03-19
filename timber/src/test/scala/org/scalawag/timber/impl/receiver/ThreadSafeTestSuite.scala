@@ -3,17 +3,12 @@ package org.scalawag.timber.impl.receiver
 import org.scalatest.{OneInstancePerTest, FunSuite}
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
-import java.io.Writer
-import org.scalawag.timber.impl.formatter.DefaultEntryFormatter
 import org.scalawag.timber.impl.Entry
-import org.mockito.Mockito._
-import org.mockito.Matchers._
-import org.mockito.stubbing.Answer
-import org.mockito.invocation.InvocationOnMock
-import scala.concurrent.ops.par
-import java.util.concurrent.atomic.AtomicReference
+import scala.concurrent._
+import scala.concurrent.Future._
+import scala.concurrent.Await._
 import annotation.tailrec
-import java.util.concurrent.{TimeoutException, TimeUnit, CyclicBarrier}
+import java.util.concurrent.{BrokenBarrierException, TimeoutException, TimeUnit, CyclicBarrier}
 
 class ThreadSafeTestSuite extends FunSuite with ShouldMatchers with MockitoSugar with OneInstancePerTest {
 
@@ -68,10 +63,15 @@ class ThreadSafeTestSuite extends FunSuite with ShouldMatchers with MockitoSugar
 
   private val entry = new Entry("blah","logger",0,"DEBUG")
 
+  import scala.concurrent.ExecutionContext.Implicits.global
+  import scala.concurrent.duration._
+
   test("receive without ThreadSafe (control case)") {
     val r = new TestReceiver
 
-    par(r.receive(entry),r.receive(entry))
+    val result1 = future(r.receive(entry))
+    val result2 = future(r.receive(entry))
+    ready(sequence(Seq(result1,result2)),Duration.Inf)
 
     r.callTimes.size should be (2)
     r.hasOverlappingCalls should be (true)
@@ -80,11 +80,20 @@ class ThreadSafeTestSuite extends FunSuite with ShouldMatchers with MockitoSugar
   test("receive with ThreadSafe (test case)") {
     val r = new TestReceiver with ThreadSafe
 
-    evaluating {
-      par(r.receive(entry),r.receive(entry))
-    } should produce [TimeoutException]
-  }
+    val result1 = future(r.receive(entry))
+    val result2 = future(r.receive(entry))
 
+    evaluating {
+      result(result1,Duration.Inf)
+    } should produce [TimeoutException]
+
+    evaluating {
+      result(result2,Duration.Inf)
+    } should produce [BrokenBarrierException]
+
+    r.callTimes.size should be (0)
+    r.hasOverlappingCalls should be (false)
+  }
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

@@ -19,20 +19,20 @@ trait Management extends Configurable with DynamicMBean with InternalLogging {
   }
 
   private def jmxValueToParameterValue[T:Manifest](value:AnyRef):T =
-    if ( manifest.erasure == classOf[Int] ) {
+    if ( manifest.runtimeClass == classOf[Int] ) {
       value match {
         case n:java.lang.Integer => n.asInstanceOf[T]
-        case x => throw new IllegalArgumentException("can't turn " + x + " into a " + manifest.erasure)
+        case x => throw new IllegalArgumentException("can't turn " + x + " into a " + manifest.runtimeClass)
       }
-    } else if ( manifest.erasure  == classOf[Boolean] ) {
+    } else if ( manifest.runtimeClass  == classOf[Boolean] ) {
       value match {
         case b:java.lang.Boolean => b.asInstanceOf[T]
-        case x => throw new IllegalArgumentException("can't turn " + x + " into a " + manifest.erasure)
+        case x => throw new IllegalArgumentException("can't turn " + x + " into a " + manifest.runtimeClass)
       }
-    } else if ( manifest.erasure.isAssignableFrom(value.getClass) ) {
+    } else if ( manifest.runtimeClass.isAssignableFrom(value.getClass) ) {
       value.asInstanceOf[T]
     } else {
-      throw new IllegalArgumentException("can't turn " + value + " into a " + manifest.erasure)
+      throw new IllegalArgumentException("can't turn " + value + " into a " + manifest.runtimeClass)
     }
 
   override def getAttribute(attrName: String): AnyRef = configuration.namedVertices.get(attrName) match {
