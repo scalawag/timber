@@ -1,4 +1,6 @@
-package org.scalawag.slf4s
+package org.scalawag.timber.slf4s
+
+// need an example of how to add a new level and then use it in the configuration
 
 object Level {
   val FINEST  = Level(1000,"FINEST")
@@ -17,7 +19,8 @@ object Level {
   }
 }
 
-case class Level(severity:Int,name:Option[String] = None) {
+case class Level(level:Int,name:Option[String] = None) {
   def as(alias:String) = copy(name = Some(alias))
-  def +(increment:Int) = copy(severity = severity + increment)
+  def +(increment:Int) = copy(level = level + increment)
+  override lazy val toString = name.getOrElse(level.toString)
 }

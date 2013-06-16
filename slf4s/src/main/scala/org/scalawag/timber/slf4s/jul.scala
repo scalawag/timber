@@ -1,6 +1,6 @@
-package org.scalawag.slf4s
+package org.scalawag.timber.slf4s
 
-import org.scalawag.slf4s
+import org.scalawag.timber.slf4s
 
 package object jul {
 
@@ -11,7 +11,7 @@ package object jul {
 
   object Logging {
     object Level {
-      import org.scalawag.slf4s.{Level => std}
+      import slf4s.{Level => std}
       val FINEST  = std.FINEST
       val FINER   = std.FINER
       val FINE    = std.FINE

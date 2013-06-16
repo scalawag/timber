@@ -1,6 +1,6 @@
-package org.scalawag.slf4s
+package org.scalawag.timber.slf4s
 
-import org.scalawag.slf4s
+import org.scalawag.timber.slf4s
 
 package object syslog {
 
@@ -11,7 +11,7 @@ package object syslog {
 
   object Logging {
     object Level {
-      import org.scalawag.slf4s.{Level => std}
+      import slf4s.{Level => std}
       val DEBUG     = std.DEBUG
       val INFO      = std.INFO
       val NOTICE    = std.INFO + 100  as "NOTICE"

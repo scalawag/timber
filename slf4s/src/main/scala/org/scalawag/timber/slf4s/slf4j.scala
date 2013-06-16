@@ -1,6 +1,6 @@
-package org.scalawag.slf4s
+package org.scalawag.timber.slf4s
 
-import org.scalawag.slf4s
+import org.scalawag.timber.slf4s
 
 package object slf4j {
 
@@ -11,7 +11,7 @@ package object slf4j {
 
   object Logging {
     object Level {
-      import org.scalawag.slf4s.{Level => std}
+      import slf4s.{Level => std}
       val TRACE = std.FINE as "TRACE"
       val DEBUG = std.DEBUG
       val INFO  = std.INFO
@@ -73,6 +73,17 @@ package object slf4j {
   // Functional mixins don't need to be included here.
 
   type Logger = slf4s.Logger with Trace with Debug with Info with Warn with Error
+
+  trait LoggerFactory extends api.LoggerFactory[Logger] {
+    protected val dispatcher:EntryDispatcher
+
+    def getLogger(name:String):Logger =
+      new api.Logger(name,dispatcher) with Trace with Debug with Info with Warn with Error with Fatal
+  }
+
+  object LoggerFactory extends LoggerFactory {
+    override protected val dispatcher:EntryDispatcher = DefaultEntryDispatcherLoader.dispatcher
+  }
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

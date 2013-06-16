@@ -1,4 +1,4 @@
-package org.scalawag.slf4s
+package org.scalawag.timber.slf4s
 
 /** This class gives you a way to create Logger classes.  Using the old patterns established by log4j, you can either
   * give each Logger a name or use the convention of naming your Loggers based on the class doing the logging.  If you
