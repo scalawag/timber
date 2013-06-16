@@ -11,21 +11,20 @@ package object syslog {
 
   object Logging {
     object Level {
-      val DEBUG     = 10
-      val INFO      = 20
-      val NOTICE    = 30
-      val WARNING   = 40
-      val ERROR     = 50
-      val CRITICAL  = 60
-      val ALERT     = 70
-      val EMERGENCY = 80
+      import org.scalawag.slf4s.{Level => std}
+      val DEBUG     = std.DEBUG
+      val INFO      = std.INFO
+      val NOTICE    = std.INFO + 100  as "NOTICE"
+      val WARNING   = std.WARNING
+      val ERROR     = std.ERROR
+      val CRITICAL  = std.ERROR + 100 as "CRITICAL"
+      val ALERT     = std.ERROR + 200 as "ALERT"
+      val EMERGENCY = std.FATAL as "EMERGENCY"
     }
   }
 
   trait Debug extends slf4s.Logger {
     import Logging.Level.DEBUG
-
-    abstract override protected def getLevelName = ({ case DEBUG => "DEBUG" }:LevelNamer) orElse super.getLevelName
 
     def debug(message:Message):Unit = log(DEBUG,message,Set.empty[Tag])
     def debug(message:Message,tag:Tag*):Unit = log(DEBUG,message,tag.toSet)
@@ -35,8 +34,6 @@ package object syslog {
   trait Info extends slf4s.Logger {
     import Logging.Level.INFO
 
-    abstract override protected def getLevelName = ({ case INFO => "INFO" }:LevelNamer) orElse super.getLevelName
-
     def info(message:Message):Unit = log(INFO,message,Set.empty[Tag])
     def info(message:Message,tag:Tag*):Unit = log(INFO,message,tag.toSet)
     def info(tag:Tag*)(message:Message):Unit = log(INFO,message,tag.toSet)
@@ -44,8 +41,6 @@ package object syslog {
 
   trait Notice extends slf4s.Logger {
     import Logging.Level.NOTICE
-
-    abstract override protected def getLevelName = ({ case NOTICE => "NOTICE" }:LevelNamer) orElse super.getLevelName
 
     def notice(message:Message):Unit = log(NOTICE,message,Set.empty[Tag])
     def notice(message:Message,tag:Tag*):Unit = log(NOTICE,message,tag.toSet)
@@ -55,8 +50,6 @@ package object syslog {
   trait Warning extends slf4s.Logger {
     import Logging.Level.WARNING
 
-    abstract override protected def getLevelName = ({ case WARNING => "WARNING" }:LevelNamer) orElse super.getLevelName
-
     def warning(message:Message):Unit = log(WARNING,message,Set.empty[Tag])
     def warning(message:Message,tag:Tag*):Unit = log(WARNING,message,tag.toSet)
     def warning(tag:Tag*)(message:Message):Unit = log(WARNING,message,tag.toSet)
@@ -64,8 +57,6 @@ package object syslog {
 
   trait Error extends slf4s.Logger {
     import Logging.Level.ERROR
-
-    abstract override protected def getLevelName = ({ case ERROR => "ERROR" }:LevelNamer) orElse super.getLevelName
 
     def error(message:Message):Unit = log(ERROR,message,Set.empty[Tag])
     def error(message:Message,tag:Tag*):Unit = log(ERROR,message,tag.toSet)
@@ -75,8 +66,6 @@ package object syslog {
   trait Critical extends slf4s.Logger {
     import Logging.Level.CRITICAL
 
-    abstract override protected def getLevelName = ({ case CRITICAL => "CRITICAL" }:LevelNamer) orElse super.getLevelName
-
     def critical(message:Message):Unit = log(CRITICAL,message,Set.empty[Tag])
     def critical(message:Message,tag:Tag*):Unit = log(CRITICAL,message,tag.toSet)
     def critical(tag:Tag*)(message:Message):Unit = log(CRITICAL,message,tag.toSet)
@@ -85,8 +74,6 @@ package object syslog {
   trait Alert extends slf4s.Logger {
     import Logging.Level.ALERT
 
-    abstract override protected def getLevelName = ({ case ALERT => "ALERT" }:LevelNamer) orElse super.getLevelName
-
     def alert(message:Message):Unit = log(ALERT,message,Set.empty[Tag])
     def alert(message:Message,tag:Tag*):Unit = log(ALERT,message,tag.toSet)
     def alert(tag:Tag*)(message:Message):Unit = log(ALERT,message,tag.toSet)
@@ -94,8 +81,6 @@ package object syslog {
 
   trait Emergency extends slf4s.Logger {
     import Logging.Level.EMERGENCY
-
-    abstract override protected def getLevelName = ({ case EMERGENCY => "EMERGENCY" }:LevelNamer) orElse super.getLevelName
 
     def emergency(message:Message):Unit = log(EMERGENCY,message,Set.empty[Tag])
     def emergency(message:Message,tag:Tag*):Unit = log(EMERGENCY,message,tag.toSet)

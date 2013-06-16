@@ -11,19 +11,18 @@ package object slf4j {
 
   object Logging {
     object Level {
-      val TRACE = 10
-      val DEBUG = 20
-      val INFO  = 30
-      val WARN  = 40
-      val ERROR = 50
-      val FATAL = 60
+      import org.scalawag.slf4s.{Level => std}
+      val TRACE = std.FINE as "TRACE"
+      val DEBUG = std.DEBUG
+      val INFO  = std.INFO
+      val WARN  = std.WARNING as "WARN"
+      val ERROR = std.ERROR
+      val FATAL = std.FATAL
     }
   }
 
   trait Trace extends slf4s.Logger {
-    val TRACE = Logging.Level.TRACE
-
-    abstract override protected def getLevelName = ({ case TRACE => "TRACE" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.TRACE
 
     def trace(message:slf4s.Message):Unit = log(TRACE,message,Set.empty[slf4s.Tag])
     def trace(message:slf4s.Message,tag:slf4s.Tag*):Unit = log(TRACE,message,tag.toSet)
@@ -31,9 +30,7 @@ package object slf4j {
   }
 
   trait Debug extends slf4s.Logger {
-    val DEBUG = Logging.Level.DEBUG
-
-    abstract override protected def getLevelName = ({ case DEBUG => "DEBUG" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.DEBUG
 
     def debug(message:slf4s.Message):Unit = log(DEBUG,message,Set.empty[slf4s.Tag])
     def debug(message:slf4s.Message,tag:slf4s.Tag*):Unit = log(DEBUG,message,tag.toSet)
@@ -41,9 +38,7 @@ package object slf4j {
   }
 
   trait Info extends slf4s.Logger {
-    val INFO = Logging.Level.INFO
-
-    abstract override protected def getLevelName = ({ case INFO => "INFO" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.INFO
 
     def info(message:slf4s.Message):Unit = log(INFO,message,Set.empty[slf4s.Tag])
     def info(message:slf4s.Message,tag:slf4s.Tag*):Unit = log(INFO,message,tag.toSet)
@@ -51,9 +46,7 @@ package object slf4j {
   }
 
   trait Warn extends slf4s.Logger {
-    val WARN = Logging.Level.WARN
-
-    abstract override protected def getLevelName = ({ case WARN => "WARN" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.WARN
 
     def warn(message:slf4s.Message):Unit = log(WARN,message,Set.empty[slf4s.Tag])
     def warn(message:slf4s.Message,tag:slf4s.Tag*):Unit = log(WARN,message,tag.toSet)
@@ -61,9 +54,7 @@ package object slf4j {
   }
 
   trait Error extends slf4s.Logger {
-    val ERROR = Logging.Level.ERROR
-
-    abstract override protected def getLevelName = ({ case ERROR => "ERROR" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.ERROR
 
     def error(message:slf4s.Message):Unit = log(ERROR,message,Set.empty[slf4s.Tag])
     def error(message:slf4s.Message,tag:slf4s.Tag*):Unit = log(ERROR,message,tag.toSet)
@@ -71,9 +62,7 @@ package object slf4j {
   }
 
   trait Fatal extends slf4s.Logger {
-    val FATAL = Logging.Level.FATAL
-
-    abstract override protected def getLevelName = ({ case FATAL => "FATAL" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.FATAL
 
     def fatal(message:slf4s.Message):Unit = log(FATAL,message,Set.empty[slf4s.Tag])
     def fatal(message:slf4s.Message,tag:slf4s.Tag*):Unit = log(FATAL,message,tag.toSet)

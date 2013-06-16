@@ -11,20 +11,19 @@ package object jul {
 
   object Logging {
     object Level {
-      val FINEST  = 10
-      val FINER   = 20
-      val FINE    = 30
-      val CONFIG  = 40
-      val INFO    = 50
-      val WARNING = 60
-      val SEVERE  = 70
+      import org.scalawag.slf4s.{Level => std}
+      val FINEST  = std.FINEST
+      val FINER   = std.FINER
+      val FINE    = std.FINE
+      val CONFIG  = std.INFO as "CONFIG"
+      val INFO    = std.INFO + 100
+      val WARNING = std.WARNING
+      val SEVERE  = std.ERROR as "SEVERE"
     }
   }
 
   trait Finest extends slf4s.Logger {
-    val FINEST = Logging.Level.FINEST
-
-    abstract override protected def getLevelName = ({ case FINEST => "FINEST" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.FINEST
 
     def finest(message:Message):Unit = log(FINEST,message,Set.empty[Tag])
     def finest(message:Message,tag:Tag*):Unit = log(FINEST,message,tag.toSet)
@@ -32,9 +31,7 @@ package object jul {
   }
 
   trait Finer extends slf4s.Logger {
-    val FINER = Logging.Level.FINER
-
-    abstract override protected def getLevelName = ({ case FINER => "FINER" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.FINER
 
     def finer(message:Message):Unit = log(FINER,message,Set.empty[Tag])
     def finer(message:Message,tag:Tag*):Unit = log(FINER,message,tag.toSet)
@@ -42,9 +39,7 @@ package object jul {
   }
 
   trait Fine extends slf4s.Logger {
-    val FINE = Logging.Level.FINE
-
-    abstract override protected def getLevelName = ({ case FINE => "FINE" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.FINE
 
     def fine(message:Message):Unit = log(FINE,message,Set.empty[Tag])
     def fine(message:Message,tag:Tag*):Unit = log(FINE,message,tag.toSet)
@@ -52,9 +47,7 @@ package object jul {
   }
 
   trait Config extends slf4s.Logger {
-    val CONFIG = Logging.Level.CONFIG
-
-    abstract override protected def getLevelName = ({ case CONFIG => "CONFIG" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.CONFIG
 
     def config(message:Message):Unit = log(CONFIG,message,Set.empty[Tag])
     def config(message:Message,tag:Tag*):Unit = log(CONFIG,message,tag.toSet)
@@ -62,9 +55,7 @@ package object jul {
   }
 
   trait Info extends slf4s.Logger {
-    val INFO = Logging.Level.INFO
-
-    abstract override protected def getLevelName = ({ case INFO => "INFO" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.INFO
 
     def info(message:Message):Unit = log(INFO,message,Set.empty[Tag])
     def info(message:Message,tag:Tag*):Unit = log(INFO,message,tag.toSet)
@@ -72,9 +63,7 @@ package object jul {
   }
 
   trait Warning extends slf4s.Logger {
-    val WARNING = Logging.Level.WARNING
-
-    abstract override protected def getLevelName = ({ case WARNING => "WARNING" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.WARNING
 
     def warning(message:Message):Unit = log(WARNING,message,Set.empty[Tag])
     def warning(message:Message,tag:Tag*):Unit = log(WARNING,message,tag.toSet)
@@ -82,9 +71,7 @@ package object jul {
   }
 
   trait Severe extends slf4s.Logger {
-    val SEVERE = Logging.Level.SEVERE
-
-    abstract override protected def getLevelName = ({ case SEVERE => "SEVERE" }:LevelNamer) orElse super.getLevelName
+    import Logging.Level.SEVERE
 
     def severe(message:Message):Unit = log(SEVERE,message,Set.empty[Tag])
     def severe(message:Message,tag:Tag*):Unit = log(SEVERE,message,tag.toSet)
