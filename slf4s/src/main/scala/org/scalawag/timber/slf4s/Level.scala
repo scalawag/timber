@@ -15,7 +15,8 @@ object Level {
   def apply(severity:Int,name:String):Level = apply(severity,Some(name))
 
   object Implicits {
-    implicit def intToLevel(severity:Int) = apply(severity)
+    implicit def intToLevel(level:Int) = apply(level)
+    implicit def levelToInt(level:Level) = level.level
   }
 }
 
