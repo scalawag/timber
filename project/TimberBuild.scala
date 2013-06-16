@@ -34,12 +34,10 @@ object TimberBuild extends Build {
                                settings = commonSettings ++ Seq(
                                  libraryDependencies ++= Seq(Dependencies.logback)
                                )) dependsOn (timber)
-  val slf4s =
-    Project("slf4s",file("slf4s"),
-      settings = commonSettings ++ Seq(
-//        libraryDependencies ++= Seq(Dependencies.slf4j)
-      )
-    )// dependsOn (timber)
+  val api =
+    Project("timber-api",file("api"),
+      settings = commonSettings
+  )
 
   val examples = Project("timber-examples",file("examples"),
                          settings = commonSettings
@@ -53,7 +51,7 @@ object TimberBuild extends Build {
 //                             jacoco.report := {},
 //                             test := {},
                              publish := {}
-                           )) aggregate (timber,slf4jTimber,logbackSupport)
+                           )) aggregate (timber,slf4jTimber,logbackSupport,api)
 
   val myResolvers = Seq("Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/")
 

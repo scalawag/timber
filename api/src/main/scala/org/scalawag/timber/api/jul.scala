@@ -1,7 +1,7 @@
-package org.scalawag.timber.slf4s
+package org.scalawag.timber.api
 
-import org.scalawag.timber.slf4s
-import org.scalawag.timber.slf4s.impl.EntryDispatcher
+import org.scalawag.timber.api
+import org.scalawag.timber.api.impl.EntryDispatcher
 
 package object jul {
 
@@ -12,7 +12,7 @@ package object jul {
 
   object Logging {
     object Level {
-      import slf4s.{Level => std}
+      import api.{Level => std}
       val FINEST  = std.FINEST
       val FINER   = std.FINER
       val FINE    = std.FINE
@@ -23,7 +23,7 @@ package object jul {
     }
   }
 
-  trait Finest extends slf4s.Logger {
+  trait Finest extends api.Logger {
     import Logging.Level.FINEST
 
     def finest(message:Message):Unit = log(FINEST,message,Set.empty[Tag])
@@ -31,7 +31,7 @@ package object jul {
     def finest(tag:Tag*)(message:Message):Unit = log(FINEST,message,tag.toSet)
   }
 
-  trait Finer extends slf4s.Logger {
+  trait Finer extends api.Logger {
     import Logging.Level.FINER
 
     def finer(message:Message):Unit = log(FINER,message,Set.empty[Tag])
@@ -39,7 +39,7 @@ package object jul {
     def finer(tag:Tag*)(message:Message):Unit = log(FINER,message,tag.toSet)
   }
 
-  trait Fine extends slf4s.Logger {
+  trait Fine extends api.Logger {
     import Logging.Level.FINE
 
     def fine(message:Message):Unit = log(FINE,message,Set.empty[Tag])
@@ -47,7 +47,7 @@ package object jul {
     def fine(tag:Tag*)(message:Message):Unit = log(FINE,message,tag.toSet)
   }
 
-  trait Config extends slf4s.Logger {
+  trait Config extends api.Logger {
     import Logging.Level.CONFIG
 
     def config(message:Message):Unit = log(CONFIG,message,Set.empty[Tag])
@@ -55,7 +55,7 @@ package object jul {
     def config(tag:Tag*)(message:Message):Unit = log(CONFIG,message,tag.toSet)
   }
 
-  trait Info extends slf4s.Logger {
+  trait Info extends api.Logger {
     import Logging.Level.INFO
 
     def info(message:Message):Unit = log(INFO,message,Set.empty[Tag])
@@ -63,7 +63,7 @@ package object jul {
     def info(tag:Tag*)(message:Message):Unit = log(INFO,message,tag.toSet)
   }
 
-  trait Warning extends slf4s.Logger {
+  trait Warning extends api.Logger {
     import Logging.Level.WARNING
 
     def warning(message:Message):Unit = log(WARNING,message,Set.empty[Tag])
@@ -71,7 +71,7 @@ package object jul {
     def warning(tag:Tag*)(message:Message):Unit = log(WARNING,message,tag.toSet)
   }
 
-  trait Severe extends slf4s.Logger {
+  trait Severe extends api.Logger {
     import Logging.Level.SEVERE
 
     def severe(message:Message):Unit = log(SEVERE,message,Set.empty[Tag])
@@ -82,13 +82,13 @@ package object jul {
   // This type includes all of the interface mixins that we want our Logging clients to have available to them.
   // Functional mixins don't need to be included here.
 
-  type Logger = slf4s.Logger with Finest with Finer with Fine with Config with Info with Warning with Severe
+  type Logger = api.Logger with Finest with Finer with Fine with Config with Info with Warning with Severe
 
-  trait LoggerFactory extends slf4s.LoggerFactory[Logger] {
+  trait LoggerFactory extends api.LoggerFactory[Logger] {
     protected val dispatcher:EntryDispatcher
 
     def getLogger(name:String):Logger =
-      new slf4s.Logger(name,dispatcher) with Finest with Finer with Fine with Config with Info with Warning with Severe
+      new api.Logger(name,dispatcher) with Finest with Finer with Fine with Config with Info with Warning with Severe
   }
 }
 

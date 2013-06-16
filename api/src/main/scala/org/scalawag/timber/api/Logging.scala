@@ -1,4 +1,4 @@
-package org.scalawag.timber.slf4s
+package org.scalawag.timber.api
 
 /** This is a convenient way to expose a log member to classes that need to log and pull in the implicits that are
   * needed for normal logging patterns.  Note that implementing this trait directly necessitates implementing the

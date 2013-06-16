@@ -1,6 +1,6 @@
-package org.scalawag.timber.slf4s
+package org.scalawag.timber.api
 
-import org.scalawag.timber.slf4s.impl.{EntryDispatcher, Entry}
+import org.scalawag.timber.api.impl.{EntryDispatcher, Entry}
 
 /** The main application interface into timber.
   *

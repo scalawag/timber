@@ -1,7 +1,7 @@
-package org.scalawag.timber.slf4s
+package org.scalawag.timber.api
 
-import org.scalawag.timber.slf4s
-import org.scalawag.timber.slf4s.impl.EntryDispatcher
+import org.scalawag.timber.api
+import org.scalawag.timber.api.impl.EntryDispatcher
 
 package object syslog {
 
@@ -12,7 +12,7 @@ package object syslog {
 
   object Logging {
     object Level {
-      import slf4s.{Level => std}
+      import api.{Level => std}
       val DEBUG     = std.DEBUG
       val INFO      = std.INFO
       val NOTICE    = std.INFO + 100  as "NOTICE"
@@ -24,7 +24,7 @@ package object syslog {
     }
   }
 
-  trait Debug extends slf4s.Logger {
+  trait Debug extends api.Logger {
     import Logging.Level.DEBUG
 
     def debug(message:Message):Unit = log(DEBUG,message,Set.empty[Tag])
@@ -32,7 +32,7 @@ package object syslog {
     def debug(tag:Tag*)(message:Message):Unit = log(DEBUG,message,tag.toSet)
   }
 
-  trait Info extends slf4s.Logger {
+  trait Info extends api.Logger {
     import Logging.Level.INFO
 
     def info(message:Message):Unit = log(INFO,message,Set.empty[Tag])
@@ -40,7 +40,7 @@ package object syslog {
     def info(tag:Tag*)(message:Message):Unit = log(INFO,message,tag.toSet)
   }
 
-  trait Notice extends slf4s.Logger {
+  trait Notice extends api.Logger {
     import Logging.Level.NOTICE
 
     def notice(message:Message):Unit = log(NOTICE,message,Set.empty[Tag])
@@ -48,7 +48,7 @@ package object syslog {
     def notice(tag:Tag*)(message:Message):Unit = log(NOTICE,message,tag.toSet)
   }
 
-  trait Warning extends slf4s.Logger {
+  trait Warning extends api.Logger {
     import Logging.Level.WARNING
 
     def warning(message:Message):Unit = log(WARNING,message,Set.empty[Tag])
@@ -56,7 +56,7 @@ package object syslog {
     def warning(tag:Tag*)(message:Message):Unit = log(WARNING,message,tag.toSet)
   }
 
-  trait Error extends slf4s.Logger {
+  trait Error extends api.Logger {
     import Logging.Level.ERROR
 
     def error(message:Message):Unit = log(ERROR,message,Set.empty[Tag])
@@ -64,7 +64,7 @@ package object syslog {
     def error(tag:Tag*)(message:Message):Unit = log(ERROR,message,tag.toSet)
   }
 
-  trait Critical extends slf4s.Logger {
+  trait Critical extends api.Logger {
     import Logging.Level.CRITICAL
 
     def critical(message:Message):Unit = log(CRITICAL,message,Set.empty[Tag])
@@ -72,7 +72,7 @@ package object syslog {
     def critical(tag:Tag*)(message:Message):Unit = log(CRITICAL,message,tag.toSet)
   }
 
-  trait Alert extends slf4s.Logger {
+  trait Alert extends api.Logger {
     import Logging.Level.ALERT
 
     def alert(message:Message):Unit = log(ALERT,message,Set.empty[Tag])
@@ -80,7 +80,7 @@ package object syslog {
     def alert(tag:Tag*)(message:Message):Unit = log(ALERT,message,tag.toSet)
   }
 
-  trait Emergency extends slf4s.Logger {
+  trait Emergency extends api.Logger {
     import Logging.Level.EMERGENCY
 
     def emergency(message:Message):Unit = log(EMERGENCY,message,Set.empty[Tag])
@@ -91,13 +91,13 @@ package object syslog {
   // This type includes all of the interface mixins that we want our Logging clients to have available to them.
   // Functional mixins don't need to be included here.
 
-  type Logger = slf4s.Logger with Emergency with Alert with Critical with Error with Warning with Notice with Info with Debug
+  type Logger = api.Logger with Emergency with Alert with Critical with Error with Warning with Notice with Info with Debug
 
-  trait LoggerFactory extends slf4s.LoggerFactory[Logger] {
+  trait LoggerFactory extends api.LoggerFactory[Logger] {
     protected val dispatcher:EntryDispatcher
 
     def getLogger(name:String):Logger =
-      new slf4s.Logger(name,dispatcher) with Debug with Info with Notice with Warning with Error with Critical with Alert with Emergency
+      new api.Logger(name,dispatcher) with Debug with Info with Notice with Warning with Error with Critical with Alert with Emergency
   }
 }
 

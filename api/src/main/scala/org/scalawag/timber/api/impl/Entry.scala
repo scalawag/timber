@@ -1,7 +1,7 @@
-package org.scalawag.timber.slf4s.impl
+package org.scalawag.timber.api.impl
 
 import scala.collection.immutable.Stack
-import org.scalawag.timber.slf4s.{Tag, Level, Message}
+import org.scalawag.timber.api.{Tag, Level, Message}
 
 object Entry {
   case class Location(filename:String,lineNumber:Int) {

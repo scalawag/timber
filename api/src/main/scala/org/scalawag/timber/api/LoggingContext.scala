@@ -1,4 +1,4 @@
-package org.scalawag.timber.slf4s
+package org.scalawag.timber.api
 
 import collection.immutable.Stack
 
@@ -65,7 +65,7 @@ object LoggingContext {
     this.contextThreadLocal.set(newContext)
   }
 
-  private[slf4s] def clear = this.contextThreadLocal.remove()
+  private[api] def clear = this.contextThreadLocal.remove()
 
   def in[A](key:String,value:String)(fn: =>A):A = in(Map(key -> value))(fn)
 

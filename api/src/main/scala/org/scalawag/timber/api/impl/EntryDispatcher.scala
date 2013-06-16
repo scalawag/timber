@@ -1,4 +1,4 @@
-package org.scalawag.timber.slf4s.impl
+package org.scalawag.timber.api.impl
 
 trait EntryDispatcher {
   def dispatch(entry:Entry)

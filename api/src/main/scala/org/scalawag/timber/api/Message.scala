@@ -1,4 +1,4 @@
-package org.scalawag.timber.slf4s
+package org.scalawag.timber.api
 
 import java.io.{StringReader, BufferedReader, StringWriter, PrintWriter}
 

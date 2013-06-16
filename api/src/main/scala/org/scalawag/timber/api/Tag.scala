@@ -1,4 +1,4 @@
-package org.scalawag.timber.slf4s
+package org.scalawag.timber.api
 
 /** This trait has no significance other than marking classes that can be used as tags in timber.
   * While you could technically use anything as a tag, this makes it so that the Logger API is a little nicer

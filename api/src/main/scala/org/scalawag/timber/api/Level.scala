@@ -1,4 +1,4 @@
-package org.scalawag.timber.slf4s
+package org.scalawag.timber.api
 
 // need an example of how to add a new level and then use it in the configuration
 
