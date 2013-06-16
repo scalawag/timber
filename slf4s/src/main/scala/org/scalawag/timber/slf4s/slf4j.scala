@@ -1,6 +1,7 @@
 package org.scalawag.timber.slf4s
 
 import org.scalawag.timber.slf4s
+import org.scalawag.timber.slf4s.impl.EntryDispatcher
 
 package object slf4j {
 
@@ -74,16 +75,13 @@ package object slf4j {
 
   type Logger = slf4s.Logger with Trace with Debug with Info with Warn with Error
 
-  trait LoggerFactory extends api.LoggerFactory[Logger] {
+  trait LoggerFactory extends slf4s.LoggerFactory[Logger] {
     protected val dispatcher:EntryDispatcher
 
     def getLogger(name:String):Logger =
-      new api.Logger(name,dispatcher) with Trace with Debug with Info with Warn with Error with Fatal
+      new slf4s.Logger(name,dispatcher) with Trace with Debug with Info with Warn with Error with Fatal
   }
 
-  object LoggerFactory extends LoggerFactory {
-    override protected val dispatcher:EntryDispatcher = DefaultEntryDispatcherLoader.dispatcher
-  }
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

@@ -1,6 +1,7 @@
 package org.scalawag.timber.slf4s
 
 import org.scalawag.timber.slf4s
+import org.scalawag.timber.slf4s.impl.EntryDispatcher
 
 package object jul {
 
@@ -82,6 +83,13 @@ package object jul {
   // Functional mixins don't need to be included here.
 
   type Logger = slf4s.Logger with Finest with Finer with Fine with Config with Info with Warning with Severe
+
+  trait LoggerFactory extends slf4s.LoggerFactory[Logger] {
+    protected val dispatcher:EntryDispatcher
+
+    def getLogger(name:String):Logger =
+      new slf4s.Logger(name,dispatcher) with Finest with Finer with Fine with Config with Info with Warning with Severe
+  }
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

@@ -1,6 +1,7 @@
 package org.scalawag.timber.slf4s
 
 import org.scalawag.timber.slf4s
+import org.scalawag.timber.slf4s.impl.EntryDispatcher
 
 package object syslog {
 
@@ -91,6 +92,13 @@ package object syslog {
   // Functional mixins don't need to be included here.
 
   type Logger = slf4s.Logger with Emergency with Alert with Critical with Error with Warning with Notice with Info with Debug
+
+  trait LoggerFactory extends slf4s.LoggerFactory[Logger] {
+    protected val dispatcher:EntryDispatcher
+
+    def getLogger(name:String):Logger =
+      new slf4s.Logger(name,dispatcher) with Debug with Info with Notice with Warning with Error with Critical with Alert with Emergency
+  }
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */
