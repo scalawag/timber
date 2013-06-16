@@ -1,8 +1,7 @@
-package org.scalawag.timber.api
+package org.scalawag.timber.slf4s
 
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
-import Message._
 import java.io.PrintWriter
 
 class MessageTestSuite extends FunSuite with ShouldMatchers {
