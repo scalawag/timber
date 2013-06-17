@@ -1,26 +1,27 @@
 package org.scalawag.timber.impl.dispatcher
 
-import language.reflectiveCalls
+//import language.reflectiveCalls
 
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
-import org.scalawag.timber.impl.Entry
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
 import org.mockito.Matchers._
-import org.scalawag.timber.api.{Message, Tag, Logger}
-import org.scalawag.timber.impl.{PartialEntry, LoggerImpl}
+import org.scalawag.timber.api._
+import org.scalawag.timber.impl.{PartialEntry}
 import org.scalawag.timber.impl.receiver.EntryReceiver
+import org.scalawag.timber.api.impl.Entry
 
 class ConfigurationCacheTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
+  import Level.Implicits._
 
   test("without cache, each getReceivers call should create a new config") {
     val cfg = mock[Configuration]
     when(cfg.findReceivers(any())).thenReturn(Set[EntryReceiver]())
 
-    val lm = new SynchronousEntryDispatcher[Logger] {
+    val lm = new SynchronousEntryDispatcher {
       configuration = cfg
-      def getLogger(name: String): Logger = new LoggerImpl(name,this)
+      def getLogger(name: String): Logger = new Logger(name,this)
     }
 
     val l1 = lm.getLogger("foo")
@@ -42,9 +43,9 @@ class ConfigurationCacheTestSuite extends FunSuite with ShouldMatchers with Mock
     when(cfg.constrain(any[PartialEntry],any[Boolean])).thenReturn(constrained)
     when(constrained.findReceivers(any())).thenReturn(Set[EntryReceiver]())
 
-    val lm = new SynchronousEntryDispatcher[Logger] with ConfigurationCache {
+    val lm = new SynchronousEntryDispatcher with ConfigurationCache {
       configuration = cfg
-      def getLogger(name: String): Logger = new LoggerImpl(name,this)
+      def getLogger(name: String): Logger = new Logger(name,this)
 
       def extractKey(entry: Entry): PartialEntry = PartialEntry(logger = Some(entry.logger),
                                                                 level = Some(entry.level))
@@ -83,8 +84,7 @@ class ConfigurationCacheTestSuite extends FunSuite with ShouldMatchers with Mock
                           level = level,
                           thread = thread,
                           tags = tags,
-                          message = Message.stringFnToMessage("msg"),
-                          levelName = level.toString)
+                          message = Message.stringFnToMessage("msg"))
   }
 
   import ConfigurationCache._

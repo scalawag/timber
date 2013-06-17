@@ -3,13 +3,16 @@ package org.scalawag.timber.dsl
 import debug.DotDumper
 import java.io.{FileWriter, PrintWriter}
 import org.scalawag.timber.impl._
-import dispatcher.{Configuration, EntryDispatcher}
+import org.scalawag.timber.impl.dispatcher.{SynchronousEntryDispatcher, Configuration, EntryDispatcher}
 import formatter.DefaultEntryFormatter
 import org.scalawag.timber.api._
-import receiver.{Asynchronous, EntryReceiver, StderrReceiver, StdoutReceiver}
+import receiver.{Asynchronous, StderrReceiver, StdoutReceiver}
 import util.Random
+import org.scalawag.timber.api.impl.Entry
 
 object ConfigTester {
+  import Level.Implicits._
+
   implicit val formatter = new DefaultEntryFormatter
   val IN = valve
   val stdout = Asynchronous(new StdoutReceiver(formatter))
@@ -34,7 +37,10 @@ object ConfigTester {
     IN :: ( level >= n ) :: file("log." + n)
   }
 
-  slf4j.LoggerManager.configuration = IN
+  val lm = new SynchronousEntryDispatcher with slf4j.LoggerFactory {
+    override protected val dispatcher = this
+    configuration = IN
+  }
 
   def dump(vertex:ImmutableVertex) {
     val p = new PrintWriter(System.out)
@@ -49,8 +55,8 @@ object ConfigTester {
   }
 
   def dumping {
-    dump(slf4j.LoggerManager.configuration,"blah.dot")
-    val c = slf4j.LoggerManager.configuration.constrain()
+    dump(lm.configuration,"blah.dot")
+    val c = lm.configuration.constrain()
     dump(c,"blah2.dot")
   }
 
@@ -64,13 +70,13 @@ object ConfigTester {
   import org.scalawag.timber.impl._
   import org.scalawag.timber.api._
 
-  object Dispatcher extends EntryDispatcher {
+  object Dispatcher extends impl.EntryDispatcher {
     def dispatch(event: Entry) {
       // noop
     }
   }
 
-  val l = new LoggerImpl("dummy",Dispatcher) with slf4j.Trace with slf4j.Debug with slf4j.Error with slf4j.Warn with slf4j.Fatal with slf4j.Info
+  val l = new Logger("dummy",Dispatcher) with slf4j.Trace with slf4j.Debug with slf4j.Error with slf4j.Warn with slf4j.Fatal with slf4j.Info
 
   def speed(l:Logger) = {
     val random = new Random

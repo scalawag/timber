@@ -6,7 +6,8 @@ import org.scalawag.timber.api.slf4j.Logger
 import java.util.concurrent.atomic.AtomicReference
 
 object Slf4jBridgeLoggerFactory extends ILoggerFactory {
-  private var factoryReference = new AtomicReference[LoggerFactory[Logger]](org.scalawag.timber.api.slf4j.LoggerManager)
+  // TODO: Need a default LoggerFactory here (instead of null)
+  private var factoryReference = new AtomicReference[LoggerFactory[Logger]](null)
 
   def factory = factoryReference.get
   def factory_=(factory:LoggerFactory[Logger]):Unit = factoryReference.set(factory)

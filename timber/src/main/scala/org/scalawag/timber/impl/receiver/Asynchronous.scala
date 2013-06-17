@@ -1,10 +1,11 @@
 package org.scalawag.timber.impl.receiver
 
-import org.scalawag.timber.impl.{NamedThreadFactory, LoggerImpl, InternalLogging, Entry}
+import org.scalawag.timber.impl.NamedThreadFactory
 import java.util.concurrent._
-import org.scalawag.timber.api.{Logger, LoggerFactory}
+import org.scalawag.timber.api.{Level, Logger, LoggerFactory}
 import org.scalawag.timber.impl.dispatcher.SynchronousEntryDispatcher
 import java.util.concurrent.TimeUnit
+import org.scalawag.timber.api.impl.Entry
 
 class Asynchronous(private val receiver:EntryReceiver) extends EntryReceiver { self =>
   private val executor = new ThreadPoolExecutor(0,1,500L,TimeUnit.MILLISECONDS,
@@ -36,8 +37,8 @@ object Asynchronous {
     }
     val a = new Asynchronous(r)
 
-    val lm = new SynchronousEntryDispatcher[Logger] with LoggerFactory[Logger] {
-      override def getLogger(name:String):Logger = new LoggerImpl(name,this)
+    val lm = new SynchronousEntryDispatcher with LoggerFactory[Logger] {
+      override def getLogger(name:String):Logger = new Logger(name,this)
 
       configure { IN =>
         import org.scalawag.timber.dsl._
@@ -48,7 +49,7 @@ object Asynchronous {
     val l = lm.getLogger("category")
 
     (1 to 10).foreach { n =>
-      l.log(8,"msg " + n)
+      l.log(Level(8),"msg " + n)
     }
   }
 }

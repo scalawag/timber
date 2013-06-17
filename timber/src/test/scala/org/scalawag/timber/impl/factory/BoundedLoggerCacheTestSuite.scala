@@ -4,7 +4,6 @@ import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
 import org.scalawag.timber.api.{LoggerFactory, Logger}
-import org.scalawag.timber.impl.LoggerImpl
 
 class BoundedLoggerCacheTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
@@ -12,7 +11,7 @@ class BoundedLoggerCacheTestSuite extends FunSuite with ShouldMatchers with Mock
     var calls = 0
     def getLogger(name:String):Logger = {
       calls += 1
-      new LoggerImpl(name,null) // dispatch won't matter if we never actually log (and we don't)
+      new Logger(name,null) // dispatch won't matter if we never actually log (and we don't)
     }
   }
 

@@ -1,11 +1,12 @@
 package org.scalawag.timber.impl
 
-import org.scalawag.timber.api.{Tag, Message}
+import org.scalawag.timber.api._
 import collection.immutable.Stack
+import org.scalawag.timber.api.impl.Entry
 
 case class PartialEntry(message: Option[Message] = None,
                         logger: Option[String] = None,
-                        level: Option[Int] = None,
+                        level: Option[Level] = None,
                         timestamp: Option[Long] = None,
                         thread: Option[Thread] = None,
                         tags: Option[Set[Tag]] = None,

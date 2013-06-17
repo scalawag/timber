@@ -7,6 +7,7 @@ import org.scalawag.timber.impl.ImmutableReceiver
 import receiver.EntryReceiver
 import scala.Some
 import org.scalawag.timber.dsl.{Vertex, ParameterizedCondition, Condition}
+import org.scalawag.timber.api.impl.Entry
 
 case class Configuration(roots:Set[ImmutableVertex]) extends InternalLogging {
 

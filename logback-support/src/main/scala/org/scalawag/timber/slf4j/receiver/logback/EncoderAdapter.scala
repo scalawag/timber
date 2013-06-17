@@ -1,10 +1,10 @@
 package org.scalawag.timber.slf4j.receiver.logback
 
 import ch.qos.logback.core.encoder.EncoderBase
-import org.scalawag.timber.impl.Entry
 import org.scalawag.timber.impl.formatter.EntryFormatter
 import org.scalawag.timber.impl.receiver.OutputStreamReceiver
 import java.io.{Writer, OutputStream}
+import org.scalawag.timber.api.impl.Entry
 
 class EncoderAdapter(private val formatter:EntryFormatter,charset: Option[String] = None) extends EncoderBase[Entry] {
   private var writer:Writer = null

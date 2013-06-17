@@ -1,8 +1,8 @@
 package org.scalawag.timber.impl.formatter
 
-import org.scalawag.timber.impl.Entry
 import java.text.{SimpleDateFormat, DateFormat}
 import java.util.Date
+import org.scalawag.timber.api.impl.Entry
 
 object DefaultEntryFormatter {
 
@@ -54,7 +54,7 @@ class DefaultEntryFormatter(timestampFormatterFactory:DefaultEntryFormatter.Time
   def format(entry: Entry): String = {
     val header = Traversable(
       timestampFormatterFactory().format(entry.timestamp),
-      if ( useLevelName ) entry.levelName else entry.level.toString,
+      if ( useLevelName ) entry.toString else entry.level.level,
       entry.logger,
       entry.thread.getName,
       entry.location.map(_.toString).getOrElse(""),

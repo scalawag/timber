@@ -1,11 +1,12 @@
 package org.scalawag.timber.impl
 
 import formatter.DefaultEntryFormatter
-import dispatcher.{Configuration, EntryDispatcher}
+import dispatcher.EntryDispatcher
 import org.scalawag.timber.api._
 import org.scalawag.timber.impl.receiver._
 import org.scalawag.timber.dsl.LowestLevelCondition
 import org.scalawag.timber.api.slf4j
+import org.scalawag.timber.api.impl.Entry
 
 object InternalLogging {
 
@@ -26,16 +27,16 @@ object InternalLogging {
     configuration = {
       val threshold =
         if ( Option(System.getProperty("timber.debug")).exists( _.length > 0 ) )
-          slf4j.Logging.Level.DEBUG
+          slf4j.Logging.Level.DEBUG.level
         else
-          slf4j.Logging.Level.WARN
+          slf4j.Logging.Level.WARN.level
       val endpoint = new OutputStreamReceiver(new DefaultEntryFormatter, System.err) with AutoFlush with ThreadSafe
       val condition = new LowestLevelCondition(threshold)
       new ImmutableFilter(condition,Set(new ImmutableReceiver(endpoint)))
     }
 
     override def getLogger(name: String):InternalLogger =
-      new LoggerImpl(name,this) with slf4j.Debug with slf4j.Warn with slf4j.Error
+      new Logger(name,this) with slf4j.Debug with slf4j.Warn with slf4j.Error
 
     override def dispatch(entry:Entry) =
       getReceivers(entry).foreach(_.receive(entry))

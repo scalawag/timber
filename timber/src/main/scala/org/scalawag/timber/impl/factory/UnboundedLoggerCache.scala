@@ -1,7 +1,7 @@
 package org.scalawag.timber.impl.factory
 
 import org.scalawag.timber._
-import api.{Logger, LoggerFactory}
+import org.scalawag.timber.api.{Logger, LoggerFactory}
 import impl.InternalLogging
 
 trait UnboundedLoggerCache[T <: Logger] extends LoggerFactory[T] with InternalLogging {

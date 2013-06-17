@@ -4,14 +4,15 @@ import org.scalatest.{OneInstancePerTest, FunSuite}
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
 import java.io.PrintWriter
-import org.scalawag.timber.impl.Entry
 import org.mockito.Mockito._
 import org.scalawag.timber.impl.formatter.DefaultEntryFormatter
+import org.scalawag.timber.api.Level
+import org.scalawag.timber.api.impl.Entry
 
 class AutoFlushTestSuite extends FunSuite with ShouldMatchers with MockitoSugar with OneInstancePerTest {
   private val pw = mock[PrintWriter]
-  private val oneLineEntry = new Entry("foo","logger",0,"DEBUG")
-  private val twoLineEntry = new Entry("foo\nbar","logger",0,"DEBUG")
+  private val oneLineEntry = new Entry("foo","logger",Level(0))
+  private val twoLineEntry = new Entry("foo\nbar","logger",Level(0))
 
   test("receive without AutoFlush") {
     val receiver = new WriterReceiver(pw,new DefaultEntryFormatter)

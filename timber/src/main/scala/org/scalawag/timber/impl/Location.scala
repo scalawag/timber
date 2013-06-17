@@ -1,7 +1,8 @@
 package org.scalawag.timber.impl
 
-import org.scalawag.timber.api.{Logger, Message, Tag}
+import org.scalawag.timber.api._
 import java.util.concurrent.atomic.AtomicReference
+import org.scalawag.timber.api.impl.Entry
 
 object Location {
   private var loggerClasses = new AtomicReference[Map[String, Boolean]](Map())
@@ -32,8 +33,8 @@ object Location {
 // When a LoggerImpl mixes in this trait, it causes the Logger to insert Location information into the Entries
 // produced.  Normally, this is not included because it requires a bit of extra processing, slowing things down.
 
-trait Location extends LoggerImpl {
-  abstract override def buildEntry(level:Int,message:Message,tags:Set[Tag]) =
+trait Location extends Logger {
+  abstract override def buildEntry(level:Level,message:Message,tags:Set[Tag]) =
     super.buildEntry(level,message,tags).copy(location = Location.fromStack)
 }
 
@@ -45,10 +46,10 @@ object Locationable {
 // the WithLocation tag.  All other entries will not include Location information.  This is done for performance
 // reasons, when only certain entries need to include Location information.
 
-trait Locationable extends LoggerImpl {
+trait Locationable extends Logger {
   import org.scalawag.timber.impl.Locationable._
 
-  abstract override def buildEntry(level:Int,message:Message,tags:Set[Tag]) =
+  abstract override def buildEntry(level:Level,message:Message,tags:Set[Tag]) =
     if ( tags.contains(WithLocation) )
       super.buildEntry(level,message,tags).copy(location = Location.fromStack)
     else

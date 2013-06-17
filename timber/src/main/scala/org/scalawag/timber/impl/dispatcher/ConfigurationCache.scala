@@ -1,8 +1,8 @@
 package org.scalawag.timber.impl.dispatcher
 
-import org.scalawag.timber.impl.Entry
 import org.scalawag.timber.impl.{InternalLogging, PartialEntry}
 import java.util.concurrent.atomic.AtomicReference
+import org.scalawag.timber.api.impl.Entry
 
 trait ConfigurationCache extends EntryDispatcher with Configurable with InternalLogging {
   private val cache = new AtomicReference(Map[PartialEntry,Configuration]())

@@ -4,14 +4,15 @@ import org.scalatest.{OneInstancePerTest, FunSuite}
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
 import java.io.Writer
-import org.scalawag.timber.impl.Entry
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import org.scalawag.timber.impl.formatter.EntryFormatter
 import org.mockito.ArgumentCaptor
+import org.scalawag.timber.api.Level
+import org.scalawag.timber.api.impl.Entry
 
 class FormattingReceiverTestSuite extends FunSuite with ShouldMatchers with MockitoSugar with OneInstancePerTest {
-  private val entry = new Entry("foo","logger",0,"DEBUG")
+  private val entry = new Entry("foo","logger",Level(0))
 
   private val w = mock[Writer]
   private val f = mock[EntryFormatter]

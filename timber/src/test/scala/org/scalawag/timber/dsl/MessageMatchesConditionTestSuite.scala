@@ -2,9 +2,11 @@ package org.scalawag.timber.dsl
 
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
-import org.scalawag.timber.api.Message._
+import org.scalawag.timber.api.Message
 import java.util.regex.Pattern
 import org.scalawag.timber.impl.PartialEntry
+
+import Message._
 
 class MessageMatchesConditionTestSuite extends FunSuite with ShouldMatchers {
 

@@ -25,3 +25,5 @@ case class Level(level:Int,name:Option[String] = None) {
   def +(increment:Int) = copy(level = level + increment)
   override lazy val toString = name.getOrElse(level.toString)
 }
+
+/* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

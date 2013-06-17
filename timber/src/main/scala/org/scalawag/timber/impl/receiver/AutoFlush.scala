@@ -1,6 +1,6 @@
 package org.scalawag.timber.impl.receiver
 
-import org.scalawag.timber.impl.Entry
+import org.scalawag.timber.api.impl.Entry
 
 trait AutoFlush extends WriterReceiver {
   abstract override def receive(entry: Entry) {

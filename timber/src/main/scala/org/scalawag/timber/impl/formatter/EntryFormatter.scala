@@ -1,6 +1,6 @@
 package org.scalawag.timber.impl.formatter
 
-import org.scalawag.timber.impl.Entry
+import org.scalawag.timber.api.impl.Entry
 
 trait EntryFormatter {
   def format(entry: Entry): String

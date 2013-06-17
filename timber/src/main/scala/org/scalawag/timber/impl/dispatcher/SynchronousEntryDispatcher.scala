@@ -1,9 +1,9 @@
 package org.scalawag.timber.impl.dispatcher
 
-import org.scalawag.timber.impl.{Entry, InternalLogging, DefaultConfiguration}
 import org.scalawag.timber.api.Logger
+import org.scalawag.timber.api.impl.Entry
 
-class SynchronousEntryDispatcher[T <: Logger] extends EntryDispatcher {
+class SynchronousEntryDispatcher extends EntryDispatcher {
   def dispatch(entry: Entry) {
     getReceivers(entry).foreach(_.receive(entry))
   }

@@ -37,14 +37,14 @@ trait LevelCondition extends ParameterizedCondition[Int] {
 }
 
 case class LowestLevelCondition(val threshold:Int) extends LevelCondition {
-  override def allows(entry:PartialEntry):Option[Boolean] = entry.level.map( _ >= threshold )
+  override def allows(entry:PartialEntry):Option[Boolean] = entry.level.map( _.level >= threshold )
   override val parameterValue:Int = threshold
   override def reconfigure(parameter:Int): LowestLevelCondition = new LowestLevelCondition(parameter)
   override val toString = "level >= " + threshold
 }
 
 case class HighestLevelCondition(val threshold:Int) extends LevelCondition {
-  override def allows(entry:PartialEntry):Option[Boolean] = entry.level.map( _ <= threshold )
+  override def allows(entry:PartialEntry):Option[Boolean] = entry.level.map( _.level <= threshold )
   override val parameterValue:Int = threshold
   override def reconfigure(parameter:Int):HighestLevelCondition = new HighestLevelCondition(parameter)
   override val toString = "level <= " + threshold

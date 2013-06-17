@@ -1,7 +1,7 @@
 package org.scalawag.timber.impl.receiver
 
-import org.scalawag.timber.impl.Entry
 import java.util.concurrent.locks.{Lock, ReentrantLock}
+import org.scalawag.timber.api.impl.Entry
 
 trait ThreadSafe extends EntryReceiver {
   private val lock:Lock = new ReentrantLock

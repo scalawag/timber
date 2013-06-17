@@ -2,8 +2,8 @@ package org.scalawag.timber.slf4j.receiver
 
 import org.scalawag.timber.impl.formatter.EntryFormatter
 import ch.qos.logback.core.{FileAppender, Context}
-import org.scalawag.timber.impl.Entry
 import ch.qos.logback.core.rolling._
+import org.scalawag.timber.api.impl.Entry
 
 package object logback {
 

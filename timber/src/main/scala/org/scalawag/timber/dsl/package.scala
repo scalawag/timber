@@ -1,6 +1,6 @@
 package org.scalawag.timber
 
-import api.Tag
+import org.scalawag.timber.api.Tag
 import impl.formatter.EntryFormatter
 import impl.receiver._
 import java.io.File

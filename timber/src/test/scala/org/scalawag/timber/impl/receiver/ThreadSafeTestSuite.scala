@@ -3,12 +3,13 @@ package org.scalawag.timber.impl.receiver
 import org.scalatest.{OneInstancePerTest, FunSuite}
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
-import org.scalawag.timber.impl.Entry
 import scala.concurrent._
 import scala.concurrent.Future._
 import scala.concurrent.Await._
 import annotation.tailrec
 import java.util.concurrent.{BrokenBarrierException, TimeoutException, TimeUnit, CyclicBarrier}
+import org.scalawag.timber.api.Level
+import org.scalawag.timber.api.impl.Entry
 
 class ThreadSafeTestSuite extends FunSuite with ShouldMatchers with MockitoSugar with OneInstancePerTest {
 
@@ -61,7 +62,7 @@ class ThreadSafeTestSuite extends FunSuite with ShouldMatchers with MockitoSugar
     }
   }
 
-  private val entry = new Entry("blah","logger",0,"DEBUG")
+  private val entry = new Entry("blah","logger",Level(0))
 
   import scala.concurrent.ExecutionContext.Implicits.global
   import scala.concurrent.duration._

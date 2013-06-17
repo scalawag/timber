@@ -1,15 +1,16 @@
 package org.scalawag.timber.impl.receiver
 
-import language.reflectiveCalls
+//import language.reflectiveCalls
 
 import org.scalatest.{OneInstancePerTest, FunSuite}
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
-import org.scalawag.timber.impl.Entry
+import org.scalawag.timber.api.Level
+import org.scalawag.timber.api.impl.Entry
 
 class AsynchronousTestSuite extends FunSuite with ShouldMatchers with MockitoSugar with OneInstancePerTest {
   private val delay = 500L
-  private val entry = new Entry("foo","logger",0,"DEBUG")
+  private val entry = new Entry("foo","logger",Level(0))
 
   private val r = new EntryReceiver {
     var calls = 0

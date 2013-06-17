@@ -2,8 +2,7 @@ package org.scalawag.timber.dsl
 
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
-import org.scalawag.timber.api.{slf4j, LoggerFactory, Logger, Tag}
-import org.scalawag.timber.api.LoggingContext
+import org.scalawag.timber.api._
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import org.scalatest.mock.MockitoSugar
@@ -11,11 +10,12 @@ import org.scalawag.timber.impl.dispatcher.{SynchronousEntryDispatcher, Manageme
 import org.scalawag.timber.impl._
 import dispatcher.Configuration
 import formatter.DefaultEntryFormatter
-import org.scalawag.timber.impl.Entry
 import java.io.PrintWriter
 import receiver.EntryReceiver
+import org.scalawag.timber.api.impl.Entry
 
 class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
+  import Level.Implicits._
 
   test("unnamed, open valve") {
     val e:Vertex = valve
@@ -249,10 +249,11 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
     }
 
     import ConfigTester.dump
+    import Level.Implicits._
 
-    val m1 = Entry("test","org.scalawag",0,"level0")
-    val m2 = Entry("test","com.blah",2,"level2")
-    val m3 = Entry("test","org.scalawag",1,"level1")
+    val m1 = Entry("test","org.scalawag",0)
+    val m2 = Entry("test","com.blah",2)
+    val m3 = Entry("test","org.scalawag",1)
 
     var c = Configuration(ImmutableVertex(IN))
 
@@ -280,7 +281,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
     // now it should have taken effect
     c.findReceivers(m1) should be (Set[EntryReceiver](so,grok,grok2))
 
-    val lm = new slf4j.LoggerManager {
+    val lm = new SynchronousEntryDispatcher with slf4j.LoggerFactory {
+      override protected val dispatcher = this
       configuration = IN
     }
     val l = lm.getLogger("blah")
@@ -291,7 +293,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
     val cause = new Throwable("cause")
     l.error(new Throwable("blah",cause))
 
-    import org.scalawag.timber.api.Message._
+    import Message._
 
     l.error { pw:PrintWriter =>
       pw.println("This is the message to print")
@@ -317,8 +319,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
     val r1 = mock[EntryReceiver]
     val r2 = mock[EntryReceiver]
 
-    object MyLoggerManager extends SynchronousEntryDispatcher[Logger] {
-      def getLogger(name:String):Logger = new LoggerImpl(name,this)
+    object MyLoggerManager extends SynchronousEntryDispatcher {
+      def getLogger(name:String):Logger = new Logger(name,this)
 
       configure { IN =>
         IN :: ( context("client") is "nobody" ) :: r1
@@ -353,8 +355,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     object AlertTag extends Tag
 
-    object MyLoggerManager extends SynchronousEntryDispatcher[Logger] {
-      def getLogger(name:String):Logger = new LoggerImpl(name,this)
+    object MyLoggerManager extends SynchronousEntryDispatcher {
+      def getLogger(name:String):Logger = new Logger(name,this)
 
       configure { IN =>
         IN :: tagged(AlertTag) :: r
@@ -375,8 +377,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     object AlertTag extends Tag
 
-    object MyLoggerManager extends SynchronousEntryDispatcher[Logger] {
-      def getLogger(name:String):Logger = new LoggerImpl(name,this)
+    object MyLoggerManager extends SynchronousEntryDispatcher {
+      def getLogger(name:String):Logger = new Logger(name,this)
 
       configure { IN =>
         IN :: !tagged(AlertTag) :: r
@@ -397,8 +399,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     object AlertTag extends Tag
 
-    object MyLoggerManager extends SynchronousEntryDispatcher[Logger] with LoggerFactory[Logger] {
-      def getLogger(name:String):Logger = new LoggerImpl(name,this)
+    object MyLoggerManager extends SynchronousEntryDispatcher with LoggerFactory[Logger] {
+      def getLogger(name:String):Logger = new Logger(name,this)
 
       configure { IN =>
         IN :: tagged(AlertTag) :: r
@@ -414,8 +416,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
   }
 
   ignore("filter naming") {
-    object MyLoggerManager extends SynchronousEntryDispatcher[Logger] with LoggerFactory[Logger] with Management {
-      def getLogger(name:String) = new LoggerImpl(name,this)
+    object MyLoggerManager extends SynchronousEntryDispatcher with LoggerFactory[Logger] with Management {
+      def getLogger(name:String) = new Logger(name,this)
 
       configure { IN =>
         IN :: ( level >= 8 ).as("something")

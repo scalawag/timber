@@ -3,6 +3,7 @@ package org.scalawag.timber.dsl
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
 import org.scalawag.timber.impl.PartialEntry
+import org.scalawag.timber.api.Level
 
 class LowestLevelConditionTestSuite extends FunSuite with ShouldMatchers {
   private val level = 4
@@ -35,7 +36,7 @@ class LowestLevelConditionTestSuite extends FunSuite with ShouldMatchers {
     c.allows(PartialEntry()) should be (None)
   }
 
-  private def entry(level:Int) = new PartialEntry(level = Some(level))
+  private def entry(level:Int) = new PartialEntry(level = Some(Level(level)))
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

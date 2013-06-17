@@ -1,6 +1,6 @@
 package org.scalawag.timber.impl.formatter
 
-import org.scalawag.timber.impl.Entry
+import org.scalawag.timber.api.impl.Entry
 
 /** This custom formatter prefixes every line in the log with the header information. It prefixes
   * each new log with a plus sign (+) in the first column so that you can see where new entries begin.
@@ -12,7 +12,7 @@ class IndentingEntryFormatter extends EntryFormatter {
   def format(entry: Entry): String = {
     val header = Traversable(
       DefaultEntryFormatter.defaultTimestampFormatterFactory().format(entry.timestamp),
-      entry.levelName,
+      entry.level.toString,
       entry.logger,
       entry.thread.getName,
       entry.location.map(_.toString).getOrElse(""),
