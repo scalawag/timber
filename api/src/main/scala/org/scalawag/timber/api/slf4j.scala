@@ -1,7 +1,7 @@
 package org.scalawag.timber.api
 
 import org.scalawag.timber.api
-import org.scalawag.timber.api.impl.EntryDispatcher
+import org.scalawag.timber.api.impl.{DefaultEntryDispatcherLoader, EntryDispatcher}
 
 package object slf4j {
 
@@ -82,6 +82,9 @@ package object slf4j {
       new api.Logger(name,dispatcher) with Trace with Debug with Info with Warn with Error with Fatal
   }
 
+  object LoggerFactory extends LoggerFactory {
+    override protected val dispatcher:EntryDispatcher = DefaultEntryDispatcherLoader.dispatcher
+  }
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

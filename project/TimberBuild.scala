@@ -10,6 +10,7 @@ object TimberBuild extends Build {
     Defaults.defaultSettings ++ Seq(
       version := VERSION,
       crossPaths := false,
+      exportJars := true,
       scalacOptions ++= Seq("-unchecked","-deprecation","-feature","-language:implicitConversions"),
       javaOptions ++= Seq("-Xmx256m","-XX:MaxPermSize=256m"),
       scalaVersion := "2.10.0",
@@ -20,7 +21,9 @@ object TimberBuild extends Build {
 
   val api =
     Project("timber-api",file("api"),
-      settings = commonSettings
+      settings = commonSettings ++ Seq(
+        libraryDependencies ++= Seq(Dependencies.reflect)
+      )
     )
 
   val timber =
@@ -71,6 +74,7 @@ object TimberBuild extends Build {
   override val settings = super.settings ++ Seq(resolvers ++= myResolvers)
 
   object Dependencies {
+    lazy val reflect = "org.scala-lang" % "scala-reflect" % "2.10.0"
     lazy val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
     lazy val actor = "com.typesafe.akka" %% "akka-actor" % "2.1.0"
     lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.7"

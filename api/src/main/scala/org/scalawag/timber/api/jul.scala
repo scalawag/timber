@@ -1,7 +1,7 @@
 package org.scalawag.timber.api
 
 import org.scalawag.timber.api
-import org.scalawag.timber.api.impl.EntryDispatcher
+import org.scalawag.timber.api.impl.{DefaultEntryDispatcherLoader, EntryDispatcher}
 
 package object jul {
 
@@ -89,6 +89,10 @@ package object jul {
 
     def getLogger(name:String):Logger =
       new api.Logger(name,dispatcher) with Finest with Finer with Fine with Config with Info with Warning with Severe
+  }
+
+  object LoggerFactory extends LoggerFactory {
+    override protected val dispatcher:EntryDispatcher = DefaultEntryDispatcherLoader.dispatcher
   }
 }
 

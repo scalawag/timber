@@ -1,7 +1,7 @@
 package org.scalawag.timber.api
 
 import org.scalawag.timber.api
-import org.scalawag.timber.api.impl.EntryDispatcher
+import org.scalawag.timber.api.impl.{DefaultEntryDispatcherLoader, EntryDispatcher}
 
 package object syslog {
 
@@ -98,6 +98,10 @@ package object syslog {
 
     def getLogger(name:String):Logger =
       new api.Logger(name,dispatcher) with Debug with Info with Notice with Warning with Error with Critical with Alert with Emergency
+  }
+
+  object LoggerFactory extends LoggerFactory {
+    override protected val dispatcher:EntryDispatcher = DefaultEntryDispatcherLoader.dispatcher
   }
 }
 

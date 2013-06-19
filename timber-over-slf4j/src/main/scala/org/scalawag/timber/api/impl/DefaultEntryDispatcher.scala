@@ -1,14 +1,12 @@
-package org.scalawag.timber.api.backend.slf4j
+package org.scalawag.timber.api.impl
 
-import org.scalawag.timber.impl.dispatcher.EntryDispatcher
 import org.slf4j.{MarkerFactory, LoggerFactory}
-import org.scalawag.timber.api.impl.Entry
 
-class Slf4jEntryDispatcher extends EntryDispatcher {
+object DefaultEntryDispatcher extends EntryDispatcher {
   import org.scalawag.timber.api.slf4j.Logging.Level._
   import org.scalawag.timber.api.Level.Implicits._
 
-  def dispatch(entry:Entry) {
+  override def dispatch(entry:Entry) {
     val logger = LoggerFactory.getLogger(entry.logger)
     val message = entry.message
     val level = entry.level.level
