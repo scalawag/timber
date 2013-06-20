@@ -1,6 +1,6 @@
 package org.scalawag.timber.impl.dispatcher
 
-//import language.reflectiveCalls
+import language.reflectiveCalls
 
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
