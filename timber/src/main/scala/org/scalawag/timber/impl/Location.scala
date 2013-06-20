@@ -5,21 +5,16 @@ import java.util.concurrent.atomic.AtomicReference
 import org.scalawag.timber.api.impl.Entry
 
 object Location {
-  private var loggerClasses = new AtomicReference[Map[String, Boolean]](Map())
 
-  private def isLogger(className:String):Boolean = loggerClasses.get.get(className) match {
-    case Some(b) =>
-      b
-    case None =>
-      val b = try {
-        val cls = Thread.currentThread.getContextClassLoader.loadClass(className)
-        classOf[Logger].isAssignableFrom(cls)
-      } catch {
-        case _:ClassNotFoundException => false
-      }
-      loggerClasses.set(loggerClasses.get + (className -> b))
-      b
-  }
+  private def isLoggerImpl(className:String):Boolean =
+    try {
+      val cls = Thread.currentThread.getContextClassLoader.loadClass(className)
+      classOf[Logger].isAssignableFrom(cls)
+    } catch {
+      case _:ClassNotFoundException => false
+    }
+
+  private val isLogger = Memoizer.memoize(isLoggerImpl _)
 
   private def isNotLogger(ste:StackTraceElement):Boolean = !isLogger(ste.getClassName)
 
