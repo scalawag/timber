@@ -9,6 +9,8 @@ public class JavaMain {
         Logging.configurate();
         Logger log = LoggerFactory.getLogger("ABC");
         log.debug("Hello, world!");
+        log.debug("Goodbye, world!",new IllegalArgumentException("psyche"));
+        log.debug("{}, {}!","Hello again","world");
     }
 }
 
