@@ -10,12 +10,44 @@ object TimberBuild extends Build {
     Defaults.defaultSettings ++ Seq(
       version := VERSION,
       crossPaths := false,
+      exportJars := true,
       scalacOptions ++= Seq("-unchecked","-deprecation","-feature","-language:implicitConversions"),
       javaOptions ++= Seq("-Xmx256m","-XX:MaxPermSize=256m"),
       scalaVersion := "2.10.0",
       testOptions += Tests.Argument("-oDF"),
       libraryDependencies ++= Seq(Dependencies.scalatest,Dependencies.mockito),
-      organization := "org.scalawag.timber"
+      organization := "org.scalawag.timber",
+      publishMavenStyle := true,
+      publishArtifact in Test := false,
+      publishTo <<= version { (v: String) =>
+        val nexus = "https://oss.sonatype.org/"
+        if (v.trim.endsWith("SNAPSHOT"))
+          Some("snapshots" at nexus + "content/repositories/snapshots")
+        else
+          Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+      },
+      pomIncludeRepository := { _ => false },
+      pomExtra :=
+        <url>http://scalwag.org/timber</url>
+        <licenses>
+          <license>
+            <name>BSD-style</name>
+            <url>http://www.opensource.org/licenses/bsd-license.php</url>
+            <distribution>repo</distribution>
+          </license>
+        </licenses>
+        <scm>
+          <url>http://github.com/scalawag/timber</url>
+          <connection>scm:git:git://github.com/scalawag/timber.git</connection>
+        </scm>
+        <developers>
+          <developer>
+            <id>justinp</id>
+            <name>Justin Patterson</name>
+            <email>justin@scalawag.org</email>
+            <url>https://github.com/justinp</url>
+          </developer>
+        </developers>
     ) ++ jacoco.settings ++ Defaults.itSettings
 
   val timber = Project("timber",file("timber"),
