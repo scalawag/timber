@@ -54,7 +54,7 @@ class DefaultEntryFormatter(timestampFormatterFactory:DefaultEntryFormatter.Time
   def format(entry: Entry): String = {
     val header = Traversable(
       timestampFormatterFactory().format(entry.timestamp),
-      if ( useLevelName ) entry.toString else entry.level.level,
+      if ( useLevelName ) entry.level.toString else entry.level.level,
       entry.logger,
       entry.thread.getName,
       entry.location.map(_.toString).getOrElse(""),
