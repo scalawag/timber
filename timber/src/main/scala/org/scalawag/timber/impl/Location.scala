@@ -39,7 +39,9 @@ trait Location extends Logger {
 }
 
 object Locationable {
-  object WithLocation extends Tag
+  object WithLocation extends Tag {
+    override val toString = "WithLocation"
+  }
 }
 
 // When this trait is mixed in, the Logger will insert the Location information for any logging call that includes
