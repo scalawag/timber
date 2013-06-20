@@ -10,50 +10,34 @@ object DefaultEntryFormatter {
     def format(timestamp:Long):String
   }
 
-  type TimestampFormatterFactory = Function0[TimestampFormatter]
+  type TimestampFormatterFactory = () => TimestampFormatter
 
   class DateFormatTimestampFormatter(val dateFormat:DateFormat) extends TimestampFormatter {
     def format(timestamp: Long):String = dateFormat.format(new Date(timestamp))
   }
 
-  def memoizeThreadLocal[A](fn:Function0[A]):Function0[A] = new ThreadLocalMemoizer[A](fn)
-
-  class ThreadLocalMemoizer[A](fn:Function0[A]) extends Function0[A] {
-    private val cache = new ThreadLocal[A]
-
-    def apply(): A = cache.get match {
-      case null =>
-        val v = fn()
-        cache.set(v)
-        v
-      case v =>
-        v
-    }
-  }
-
-  val defaultTimestampFormatterFactory = memoizeThreadLocal[TimestampFormatter]({ () =>
+  val defaultTimestampFormatterFactory = { () =>
     new DateFormatTimestampFormatter(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"))
-  })
-/*
-  private val formatters = ThreadLocal[DateFormatter]
-
-  private[DefaultEntryFormatter] getFormatter(factory:DateFormatFactory) = {
   }
-*/
+
+  private val newline = System.getProperty("line.separator")
 }
 
 import DefaultEntryFormatter._
 
-class DefaultEntryFormatter(timestampFormatterFactory:DefaultEntryFormatter.TimestampFormatterFactory = DefaultEntryFormatter.defaultTimestampFormatterFactory,
-                            delimiter:String = "|",
-                            headerOnEachLine:Boolean = false,
-                            useLevelName:Boolean = true)
+class DefaultEntryFormatter(val timestampFormatterFactory:DefaultEntryFormatter.TimestampFormatterFactory = DefaultEntryFormatter.defaultTimestampFormatterFactory,
+                            val delimiter:String = "|",
+                            val headerOnEachLine:Boolean = false,
+                            val useLevelName:Boolean = true)
   extends EntryFormatter
 {
-  private val newline = System.getProperty("line.separator")
-  def format(entry: Entry): String = {
+  private val formatters = new ThreadLocal[TimestampFormatter] {
+    override def initialValue = timestampFormatterFactory()
+  }
+
+  def format(entry:Entry): String = {
     val header = Traversable(
-      timestampFormatterFactory().format(entry.timestamp),
+      formatters.get.format(entry.timestamp),
       if ( useLevelName ) entry.level.toString else entry.level.level,
       entry.logger,
       entry.thread.getName,
