@@ -1,6 +1,6 @@
 package org.scalawag.timber
 
-import org.scalawag.timber.api.Tag
+import org.scalawag.timber.api.{Level, Tag}
 import impl.formatter.EntryFormatter
 import impl.receiver._
 import java.io.File
@@ -78,6 +78,8 @@ package object dsl {
   object level {
     def <=(level:Int) = new NameableFilter(new HighestLevelCondition(level))
     def >=(level:Int) = new NameableFilter(new LowestLevelCondition(level))
+    def <=(level:Level) = new NameableFilter(new HighestLevelCondition(level.level))
+    def >=(level:Level) = new NameableFilter(new LowestLevelCondition(level.level))
   }
 
   object context {
