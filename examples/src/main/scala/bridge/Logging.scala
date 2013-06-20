@@ -1,26 +1,25 @@
 package bridge
 
 import org.scalawag.timber.api
-import org.scalawag.timber.api.{slf4j}
-import org.scalawag.timber.api.slf4j._
+import org.scalawag.timber.api.style.slf4j
+import org.scalawag.timber.api.style.slf4j._
 import org.scalawag.timber.impl.dispatcher.SynchronousEntryDispatcher
 import org.scalawag.timber.bridge.slf4j.Slf4jBridgeLoggerFactory
 
 object Logging {
 
-  class LoggerManager extends SynchronousEntryDispatcher with slf4j.LoggerFactory {
-    override protected val dispatcher = this
-    /* I'm just reversing the name here to make is easy to tell that we're using the correct factory. */
-    override def getLogger(name:String) =
-      new api.Logger(name.reverse,this) with Trace with Debug with Info with Warn with Error
+  object EntryDispatcher extends SynchronousEntryDispatcher
+
+  object LoggerFactory extends slf4j.LoggerFactory(EntryDispatcher) {
+    override def getLogger(name:String) = super.getLogger(name.reverse)
   }
 
   /* This tells the slf4j bridge to use our factory here instead of the default one.  It must be called by the
-   * application prior to any slf4j loggers being created (for homogeneous Loggers).  It's
+   * application prior to any slf4j loggers being created (for homogeneous Loggers).
    */
 
   def configurate {
-    Slf4jBridgeLoggerFactory.factory = new LoggerManager
+    Slf4jBridgeLoggerFactory.factory = LoggerFactory
   }
 
 }

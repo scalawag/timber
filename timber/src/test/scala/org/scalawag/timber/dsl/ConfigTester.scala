@@ -9,6 +9,7 @@ import org.scalawag.timber.api._
 import receiver.{Asynchronous, StderrReceiver, StdoutReceiver}
 import util.Random
 import org.scalawag.timber.api.impl.Entry
+import org.scalawag.timber.api.style.slf4j
 
 object ConfigTester {
   import Level.Implicits._
@@ -37,10 +38,10 @@ object ConfigTester {
     IN :: ( level >= n ) :: file("log." + n)
   }
 
-  val lm = new SynchronousEntryDispatcher with slf4j.LoggerFactory {
-    override protected val dispatcher = this
-    configuration = IN
-  }
+  val ed = new SynchronousEntryDispatcher
+  ed.configuration = IN
+
+  val lf = new slf4j.LoggerFactory(ed)
 
   def dump(vertex:ImmutableVertex) {
     val p = new PrintWriter(System.out)
@@ -55,8 +56,8 @@ object ConfigTester {
   }
 
   def dumping {
-    dump(lm.configuration,"blah.dot")
-    val c = lm.configuration.constrain()
+    dump(ed.configuration,"blah.dot")
+    val c = ed.configuration.constrain()
     dump(c,"blah2.dot")
   }
 
@@ -76,7 +77,7 @@ object ConfigTester {
     }
   }
 
-  val l = new Logger("dummy",Dispatcher) with slf4j.Trace with slf4j.Debug with slf4j.Error with slf4j.Warn with slf4j.Fatal with slf4j.Info
+  val l = new slf4j.Logger("dummy",Dispatcher)
 
   def speed(l:Logger) = {
     val random = new Random

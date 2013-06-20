@@ -4,7 +4,7 @@ import de.johoop.jacoco4sbt._
 import JacocoPlugin._
 
 object TimberBuild extends Build {
-  val VERSION = "0.2-SNAPSHOT"
+  val VERSION = "0.3-SNAPSHOT"
 
   val commonSettings =
     Defaults.defaultSettings ++ Seq(
@@ -13,7 +13,7 @@ object TimberBuild extends Build {
       exportJars := true,
       scalacOptions ++= Seq("-unchecked","-deprecation","-feature","-language:implicitConversions"),
       javaOptions ++= Seq("-Xmx256m","-XX:MaxPermSize=256m"),
-      scalaVersion := "2.10.0",
+      scalaVersion := "2.10.2",
       testOptions += Tests.Argument("-oDF"),
       libraryDependencies ++= Seq(Dependencies.scalatest,Dependencies.mockito),
       organization := "org.scalawag.timber"
@@ -67,7 +67,7 @@ object TimberBuild extends Build {
 //                             jacoco.report := {},
 //                             test := {},
                              publish := {}
-                           )) aggregate (api,timber,slf4jOverTimber,timberOverSlf4j,logbackSupport)
+                           )) aggregate (api,timber,slf4jOverTimber,timberOverSlf4j,logbackSupport,examples)
 
   val myResolvers = Seq("Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/")
 

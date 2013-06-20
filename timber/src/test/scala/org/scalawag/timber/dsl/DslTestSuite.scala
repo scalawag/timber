@@ -13,6 +13,7 @@ import formatter.DefaultEntryFormatter
 import java.io.PrintWriter
 import receiver.EntryReceiver
 import org.scalawag.timber.api.impl.Entry
+import org.scalawag.timber.api.style.slf4j
 
 class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
   import Level.Implicits._
@@ -281,10 +282,11 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
     // now it should have taken effect
     c.findReceivers(m1) should be (Set[EntryReceiver](so,grok,grok2))
 
-    val lm = new SynchronousEntryDispatcher with slf4j.LoggerFactory {
-      override protected val dispatcher = this
-      configuration = IN
-    }
+    val ed = new SynchronousEntryDispatcher
+    ed.configuration = IN
+
+    val lm = new slf4j.LoggerFactory(ed)
+
     val l = lm.getLogger("blah")
     l.error("This should print!!!")
 //    grok.close

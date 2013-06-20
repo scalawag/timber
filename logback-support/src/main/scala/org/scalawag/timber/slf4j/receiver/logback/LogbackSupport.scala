@@ -3,9 +3,9 @@ package org.scalawag.timber.slf4j.receiver.logback
 import org.scalawag.timber.impl.InternalLogging
 import ch.qos.logback.core.{BasicStatusManager, ContextBase}
 import ch.qos.logback.core.status.{StatusManager, Status}
-import org.scalawag.timber.api.slf4j
 import java.io.PrintWriter
 import ch.qos.logback.core.spi.LifeCycle
+import org.scalawag.timber.api.style.slf4j
 
 object LogbackSupport extends InternalLogging {
   import scala.collection.JavaConversions._
@@ -42,9 +42,9 @@ class LogbackContext extends ContextBase {
 class LogbackStatusManager extends BasicStatusManager with InternalLogging {
 
   private val levelMap = Map(
-    Status.INFO  -> slf4j.Logging.Level.DEBUG,
-    Status.WARN  -> slf4j.Logging.Level.WARN,
-    Status.ERROR -> slf4j.Logging.Level.ERROR
+    Status.INFO  -> slf4j.Level.DEBUG,
+    Status.WARN  -> slf4j.Level.WARN,
+    Status.ERROR -> slf4j.Level.ERROR
   )
 
   override def add(status: Status) {
