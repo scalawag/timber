@@ -1,8 +1,6 @@
 package bridge
 
-import org.scalawag.timber.api
 import org.scalawag.timber.api.style.slf4j
-import org.scalawag.timber.api.style.slf4j._
 import org.scalawag.timber.impl.dispatcher.SynchronousEntryDispatcher
 import org.scalawag.timber.bridge.slf4j.Slf4jBridgeLoggerFactory
 
