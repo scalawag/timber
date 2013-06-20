@@ -64,7 +64,7 @@ package object syslog {
   object LoggerFactory extends LoggerFactory(DefaultEntryDispatcherLoader.dispatcher)
 
   trait Logging extends api.Logging[Logger] {
-    protected[this] val loggerFactory = LoggerFactory
+    @transient override protected[this] val loggerFactory:api.LoggerFactory[Logger] = LoggerFactory
   }
 
 }
