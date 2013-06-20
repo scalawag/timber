@@ -11,13 +11,13 @@ package org.scalawag.timber.api
   * you'll probably have to import the Logging implicits explicitly.
   */
 
-trait Logging[T <: Logger] {
-  protected[this] implicit val stringFnToMessage = Message.stringFnToMessage _
-  protected[this] implicit val throwableToMessage = Message.throwableToMessage _
-  protected[this] implicit val messageGatherer = Message.messageGatherer _
+trait Logging[+T <: Logger] {
+  @transient protected[this] implicit val stringFnToMessage = Message.stringFnToMessage _
+  @transient protected[this] implicit val throwableToMessage = Message.throwableToMessage _
+  @transient protected[this] implicit val messageGatherer = Message.messageGatherer _
 
-  protected[this] val loggerFactory:LoggerFactory[T]
-  protected[this] lazy val log:T = loggerFactory.getLogger(getClass)
+  @transient protected[this] val loggerFactory:LoggerFactory[T]
+  @transient protected[this] lazy val log:T = loggerFactory.getLogger(getClass)
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */
