@@ -93,7 +93,7 @@ package object dsl {
   def tagged(t:Tag) = new Filter(new TaggedCondition(t))
 
   def stdout(implicit formatter:EntryFormatter) = Asynchronous(new StdoutReceiver(formatter))
-  def stderr(implicit formatter:EntryFormatter) = Asynchronous(new StderrReceiver(formatter))
+  def stderr(implicit formatter:EntryFormatter) = Asynchronous(new StderrReceiver(formatter) with AutoFlush)
 
   def file(filename:String,append:Boolean = true,charset:Option[String] = None)(implicit formatter:EntryFormatter) =
     Asynchronous(new FileAppender(new File(filename),formatter,append,charset))
