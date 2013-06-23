@@ -28,7 +28,10 @@ import DefaultEntryFormatter._
 class DefaultEntryFormatter(val timestampFormatterFactory:DefaultEntryFormatter.TimestampFormatterFactory = DefaultEntryFormatter.defaultTimestampFormatterFactory,
                             val delimiter:String = "|",
                             val headerOnEachLine:Boolean = false,
-                            val useLevelName:Boolean = true)
+                            val indentToMatchHeaders:Boolean = false,
+                            val useLevelName:Boolean = true,
+                            val firstLinePrefix:String = "+",
+                            val otherLinePrefix:String = " ")
   extends EntryFormatter
 {
   private val formatters = new ThreadLocal[TimestampFormatter] {
@@ -46,12 +49,18 @@ class DefaultEntryFormatter(val timestampFormatterFactory:DefaultEntryFormatter.
       entry.context.map{ case (k,v) => "%s=%s".format(k,v.head) }.mkString(",")
     ).mkString("",delimiter,delimiter)
 
-    def prepend = "%s%s".format(header,_:String)
+    val firstLineHeader = firstLinePrefix + header
+    val otherLineHeader = newline + otherLinePrefix +
+      (
+        if ( headerOnEachLine )
+          header
+        else if ( indentToMatchHeaders )
+          " " * header.length
+        else
+          ""
+      )
 
-    if ( headerOnEachLine )
-      entry.message.lines.map(prepend).mkString(newline) + newline
-    else
-      prepend(entry.message.text) + newline
+    entry.message.lines.mkString(firstLineHeader,otherLineHeader,newline)
   }
 }
 
