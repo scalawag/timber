@@ -1,12 +1,25 @@
 package org.scalawag.timber.api.impl
 
 import scala.reflect.runtime.universe
-import org.scalawag.timber.impl.dispatcher.SynchronousEntryDispatcher
+import org.scalawag.timber.impl.dispatcher.{Configuration, SynchronousEntryDispatcher}
 import org.scalawag.timber.impl.InternalLogging
 import scala.reflect.internal.MissingRequirementError
+import org.scalawag.timber.impl.formatter.{EntryFormatter, DefaultEntryFormatter}
+import org.scalawag.timber.impl.receiver.{EntryReceiver, AutoFlush, StderrReceiver}
 
 trait TimberConfiguration {
-  val dispatcher:EntryDispatcher
+  import org.scalawag.timber.dsl._
+
+  protected[this] def formatter:EntryFormatter = new DefaultEntryFormatter
+  protected[this] def receiver:EntryReceiver = new StderrReceiver(formatter) with AutoFlush
+  protected[this] def configuration:Configuration = Configuration(receiver)
+  protected[this] def unconfiguredDispatcher:org.scalawag.timber.impl.dispatcher.EntryDispatcher = new SynchronousEntryDispatcher
+
+  def dispatcher = {
+    val disp = unconfiguredDispatcher
+    disp.configuration = configuration
+    disp
+  }
 }
 
 object DefaultEntryDispatcher extends EntryDispatcher with InternalLogging {
