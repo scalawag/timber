@@ -96,7 +96,7 @@ package object dsl {
   def stderr(implicit formatter:EntryFormatter) = Asynchronous(new StderrReceiver(formatter) with AutoFlush)
 
   def file(filename:String,append:Boolean = true,charset:Option[String] = None)(implicit formatter:EntryFormatter) =
-    Asynchronous(new FileAppender(new File(filename),formatter,append,charset))
+    new FileAppender(new File(filename),formatter,append,charset)
 
   def valve = new NameableValve(true)
 
