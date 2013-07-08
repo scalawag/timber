@@ -10,12 +10,12 @@ import org.scalawag.timber.impl.receiver.{EntryReceiver, AutoFlush, StderrReceiv
 trait TimberConfiguration {
   import org.scalawag.timber.dsl._
 
-  protected[this] def formatter:EntryFormatter = new DefaultEntryFormatter
-  protected[this] def receiver:EntryReceiver = new StderrReceiver(formatter) with AutoFlush
-  protected[this] def configuration:Configuration = Configuration(receiver)
-  protected[this] def unconfiguredDispatcher:org.scalawag.timber.impl.dispatcher.EntryDispatcher = new SynchronousEntryDispatcher
+  protected[this] lazy val formatter:EntryFormatter = new DefaultEntryFormatter
+  protected[this] lazy val receiver:EntryReceiver = new StderrReceiver(formatter) with AutoFlush
+  protected[this] lazy val configuration:Configuration = Configuration(receiver)
+  protected[this] lazy val unconfiguredDispatcher:org.scalawag.timber.impl.dispatcher.EntryDispatcher = new SynchronousEntryDispatcher
 
-  def dispatcher = {
+  lazy val dispatcher = {
     val disp = unconfiguredDispatcher
     disp.configuration = configuration
     disp
