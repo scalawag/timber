@@ -65,7 +65,7 @@ object LoggingContext {
     this.contextThreadLocal.set(newContext)
   }
 
-  private[api] def clear = this.contextThreadLocal.remove()
+  def clear = this.contextThreadLocal.remove()
 
   def in[A](key:String,value:String)(fn: =>A):A = in(Map(key -> value))(fn)
 
