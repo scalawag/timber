@@ -1,7 +1,7 @@
 package org.scalawag.timber.impl
 
 import formatter.DefaultEntryFormatter
-import org.scalawag.timber.impl.dispatcher.{SynchronousEntryDispatcher, EntryDispatcher}
+import org.scalawag.timber.impl.dispatcher.EntryDispatcher
 import org.scalawag.timber.impl.receiver._
 import org.scalawag.timber.dsl.LowestLevelCondition
 import org.scalawag.timber.api
@@ -25,7 +25,7 @@ object InternalLoggerManager extends EntryDispatcher with api.LoggerFactory[Inte
   // It's important that the building of this configuration not attempt to use any logging.  That's why I'm using
   // the classes directly instead of the configuration DSL here.
 
-  configuration = {
+  activeConfiguration.set {
     val threshold =
       if ( Option(System.getProperty("timber.debug")).exists( _.length > 0 ) )
         api.Level.DEBUG.level
