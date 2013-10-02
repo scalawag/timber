@@ -2,12 +2,14 @@ import sbt._
 import Keys._
 import de.johoop.jacoco4sbt._
 import JacocoPlugin._
+import com.typesafe.sbt.osgi.SbtOsgi._
+import OsgiKeys._
 
 object TimberBuild extends Build {
   val VERSION = "0.3-SNAPSHOT"
 
   val commonSettings =
-    Defaults.defaultSettings ++ Seq(
+    Defaults.defaultSettings ++ osgiSettings ++ Seq(
       version := VERSION,
       crossPaths := false,
       exportJars := true,
@@ -54,7 +56,15 @@ object TimberBuild extends Build {
   val api =
     Project("timber-api",file("api"),
       settings = commonSettings ++ Seq(
-        libraryDependencies ++= Seq(Dependencies.reflect)
+        libraryDependencies ++= Seq(Dependencies.reflect),
+        exportPackage ++= Seq(
+          "org.scalawag.timber.api",
+          "org.scalawag.timber.api.impl",
+          "org.scalawag.timber.api.style.jul",
+          "org.scalawag.timber.api.style.log4j",
+          "org.scalawag.timber.api.style.slf4j",
+          "org.scalawag.timber.api.style.syslog"
+        )
       )
     )
 
@@ -68,21 +78,30 @@ object TimberBuild extends Build {
   val slf4jOverTimber =
     Project("slf4j-over-timber",file("slf4j-over-timber"),
       settings = commonSettings ++ Seq(
-        libraryDependencies ++= Seq(Dependencies.slf4j)
+        libraryDependencies ++= Seq(Dependencies.slf4j),
+        exportPackage ++= Seq(
+          "org.scalawag.timber.bridge.slf4j"
+        )
       )
     ) dependsOn (timber)
 
   val timberOverSlf4j =
     Project("timber-over-slf4j",file("timber-over-slf4j"),
       settings = commonSettings ++ Seq(
-        libraryDependencies ++= Seq(Dependencies.slf4j)
+        libraryDependencies ++= Seq(Dependencies.slf4j),
+        exportPackage ++= Seq(
+          "org.scalawag.timber.api.impl"
+        )
       )
     ) dependsOn (api,timber)
 
   val logbackSupport =
     Project("timber-logback-support",file("logback-support"),
       settings = commonSettings ++ Seq(
-        libraryDependencies ++= Seq(Dependencies.logback)
+        libraryDependencies ++= Seq(Dependencies.logback),
+        exportPackage ++= Seq(
+          "org.scalawag.timber.slf4j.receiver.logback"
+        )
       )
     ) dependsOn (timber)
 
