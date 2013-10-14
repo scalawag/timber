@@ -83,7 +83,7 @@ object TimberBuild extends Build {
           "org.scalawag.timber.bridge.slf4j"
         )
       )
-    ) dependsOn (timber)
+    ) dependsOn (api)
 
   val timberOverSlf4j =
     Project("timber-over-slf4j",file("timber-over-slf4j"),
