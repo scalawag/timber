@@ -93,7 +93,7 @@ object TimberBuild extends Build {
           "org.scalawag.timber.api.impl"
         )
       )
-    ) dependsOn (api,timber)
+    ) dependsOn (api)
 
   val logbackSupport =
     Project("timber-logback-support",file("logback-support"),
