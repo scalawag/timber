@@ -80,7 +80,8 @@ object TimberBuild extends Build {
       settings = commonSettings ++ Seq(
         libraryDependencies ++= Seq(Dependencies.slf4j),
         exportPackage ++= Seq(
-          "org.scalawag.timber.bridge.slf4j"
+          "org.scalawag.timber.bridge.slf4j",
+          "org.slf4j.impl"
         )
       )
     ) dependsOn (api)
