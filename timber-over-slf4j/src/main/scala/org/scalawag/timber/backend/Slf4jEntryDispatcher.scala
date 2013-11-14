@@ -1,6 +1,7 @@
-package org.scalawag.timber.api.impl
+package org.scalawag.timber.backend
 
 import org.slf4j.{MarkerFactory, LoggerFactory}
+import org.scalawag.timber.api.impl._
 
 class Slf4jEntryDispatcher extends EntryDispatcher {
   import org.scalawag.timber.api.style.slf4j.Level._

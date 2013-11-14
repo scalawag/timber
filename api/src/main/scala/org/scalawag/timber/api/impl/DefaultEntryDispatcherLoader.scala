@@ -4,7 +4,7 @@ import scala.reflect.runtime.universe
 import scala.collection.JavaConversions._
 
 object DefaultEntryDispatcherLoader {
-  private val DEFAULT_ENTRY_DISPATCHER = "org.scalawag.timber.api.impl.DefaultEntryDispatcher"
+  private val DEFAULT_ENTRY_DISPATCHER = "org.scalawag.timber.backend.DefaultEntryDispatcher"
 
   lazy val dispatcher = {
     val classLoader = Thread.currentThread.getContextClassLoader //ClassLoader.getSystemClassLoader

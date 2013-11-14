@@ -1,4 +1,4 @@
-package org.scalawag.timber.api.impl
+package org.scalawag.timber.backend
 
 import scala.reflect.runtime.universe
 import org.scalawag.timber.impl.dispatcher.{Configuration, SynchronousEntryDispatcher}
@@ -6,6 +6,7 @@ import org.scalawag.timber.impl.InternalLogging
 import scala.reflect.internal.MissingRequirementError
 import org.scalawag.timber.impl.formatter.{EntryFormatter, DefaultEntryFormatter}
 import org.scalawag.timber.impl.receiver.{EntryReceiver, AutoFlush, StderrReceiver}
+import org.scalawag.timber.api.impl._
 
 trait TimberConfiguration {
   import org.scalawag.timber.dsl._

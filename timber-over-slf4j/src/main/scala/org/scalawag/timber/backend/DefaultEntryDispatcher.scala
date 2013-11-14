@@ -1,4 +1,4 @@
-package org.scalawag.timber.api.impl
+package org.scalawag.timber.backend
 
 object DefaultEntryDispatcher extends Slf4jEntryDispatcher
 

@@ -64,14 +64,16 @@ object TimberBuild extends Build {
           "org.scalawag.timber.api.style.log4j",
           "org.scalawag.timber.api.style.slf4j",
           "org.scalawag.timber.api.style.syslog"
-        )
+        ),
+        importPackage += "org.scalawag.timber.backend;version=\"0.4\""
       )
     )
 
   val timber =
     Project("timber",file("timber"),
       settings = commonSettings ++ Seq(
-        libraryDependencies ++= Seq(Dependencies.actor)
+        libraryDependencies ++= Seq(Dependencies.actor),
+        exportPackage += "org.scalawag.timber.backend"
       )
     ) dependsOn (api)
 
@@ -90,9 +92,7 @@ object TimberBuild extends Build {
     Project("timber-over-slf4j",file("timber-over-slf4j"),
       settings = commonSettings ++ Seq(
         libraryDependencies ++= Seq(Dependencies.slf4j),
-        exportPackage ++= Seq(
-          "org.scalawag.timber.api.impl"
-        )
+        exportPackage += "org.scalawag.timber.backend"
       )
     ) dependsOn (api)
 
