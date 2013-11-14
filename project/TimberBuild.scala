@@ -73,7 +73,16 @@ object TimberBuild extends Build {
     Project("timber",file("timber"),
       settings = commonSettings ++ Seq(
         libraryDependencies ++= Seq(Dependencies.actor),
-        exportPackage += "org.scalawag.timber.backend"
+        exportPackage ++= Seq(
+          "org.scalawag.timber.backend",
+          "org.scalawag.timber.dsl",
+          "org.scalawag.timber.dsl.debug",
+          "org.scalawag.timber.impl",
+          "org.scalawag.timber.impl.dispatcher",
+          "org.scalawag.timber.impl.factory",
+          "org.scalawag.timber.impl.formatter",
+          "org.scalawag.timber.impl.receiver"
+        )
       )
     ) dependsOn (api)
 
@@ -83,7 +92,7 @@ object TimberBuild extends Build {
         libraryDependencies ++= Seq(Dependencies.slf4j),
         exportPackage ++= Seq(
           "org.scalawag.timber.bridge.slf4j",
-          "org.slf4j.impl"
+          "org.slf4j.impl;version=1.6.0"
         )
       )
     ) dependsOn (api)
