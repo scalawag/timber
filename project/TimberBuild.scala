@@ -72,7 +72,7 @@ object TimberBuild extends Build {
   val timber =
     Project("timber",file("timber"),
       settings = commonSettings ++ Seq(
-        libraryDependencies ++= Seq(Dependencies.actor),
+        libraryDependencies ++= Seq(),
         exportPackage ++= Seq(
           "org.scalawag.timber.backend",
           "org.scalawag.timber.dsl",
@@ -137,7 +137,6 @@ object TimberBuild extends Build {
   object Dependencies {
     lazy val reflect = "org.scala-lang" % "scala-reflect" % "2.10.0"
     lazy val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
-    lazy val actor = "com.typesafe.akka" %% "akka-actor" % "2.1.0"
     lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.7"
     lazy val scalatest = "org.scalatest" %% "scalatest" % "1.9" % "test"
     lazy val mockito = "org.mockito" % "mockito-all" % "1.9.0" % "test"
