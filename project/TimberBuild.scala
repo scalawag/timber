@@ -6,7 +6,7 @@ import com.typesafe.sbt.osgi.SbtOsgi._
 import OsgiKeys._
 
 object TimberBuild extends Build {
-  val VERSION = "0.4-SNAPSHOT"
+  val VERSION = "0.4.0"
 
   val commonSettings =
     Defaults.defaultSettings ++ osgiSettings ++ Seq(
