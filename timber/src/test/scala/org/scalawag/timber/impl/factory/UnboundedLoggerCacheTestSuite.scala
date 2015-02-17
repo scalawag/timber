@@ -1,11 +1,9 @@
 package org.scalawag.timber.impl.factory
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.mock.MockitoSugar
+import org.scalatest.{Matchers,FunSuite}
 import org.scalawag.timber.api.{LoggerFactory, Logger}
 
-class UnboundedLoggerCacheTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
+class UnboundedLoggerCacheTestSuite extends FunSuite with Matchers {
 
   private class MyLoggerFactory extends LoggerFactory[Logger] {
     var calls = 0
@@ -20,12 +18,12 @@ class UnboundedLoggerCacheTestSuite extends FunSuite with ShouldMatchers with Mo
 
     val l1 = lf.getLogger("foo")
 
-    lf.calls should be (1)
+    lf.calls shouldBe 1
 
     val l2 = lf.getLogger("foo")
 
-    lf.calls should be (1)
-    l1 should be (l2)
+    lf.calls shouldBe 1
+    l1 shouldBe l2
   }
 
   test("cache doesn't prevent second call to super.getLogger with different name") {
@@ -33,11 +31,11 @@ class UnboundedLoggerCacheTestSuite extends FunSuite with ShouldMatchers with Mo
 
     val l1 = lf.getLogger("foo")
 
-    lf.calls should be (1)
+    lf.calls shouldBe 1
 
     val l2 = lf.getLogger("bar")
 
-    lf.calls should be (2)
+    lf.calls shouldBe 2
     l1 should not be (l2)
   }
 
@@ -46,26 +44,26 @@ class UnboundedLoggerCacheTestSuite extends FunSuite with ShouldMatchers with Mo
 
     val l1 = lf.getLogger("foo") // This should put "foo" into the cache
 
-    lf.calls should be (1)
+    lf.calls shouldBe 1
 
     val l2 = lf.getLogger("foo") // This should be a cache hit
 
-    lf.calls should be (1)
-    l1 should be (l2)
+    lf.calls shouldBe 1
+    l1 shouldBe l2
 
     val l3 = lf.getLogger("bar") // This should eject "foo" from the cache and insert "bar"
 
-    lf.calls should be (2)
+    lf.calls shouldBe 2
 
     val l4 = lf.getLogger("bar") // This should be a cache hit
 
-    lf.calls should be (2)
-    l3 should be (l4)
+    lf.calls shouldBe 2
+    l3 shouldBe l4
 
     val l5 = lf.getLogger("foo") // This should have to create a new logger due to the ejection above
 
-    lf.calls should be (2)
-    l5 should be (l1)
+    lf.calls shouldBe 2
+    l5 shouldBe l1
   }
 
 }

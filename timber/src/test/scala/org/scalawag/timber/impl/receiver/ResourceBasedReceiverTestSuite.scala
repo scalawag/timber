@@ -1,7 +1,6 @@
 package org.scalawag.timber.impl.receiver
 
-import org.scalatest.{OneInstancePerTest, FunSuite}
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers,OneInstancePerTest,FunSuite}
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
 import org.mockito.Matchers._
@@ -12,7 +11,7 @@ import org.scalawag.timber.impl.formatter.EntryFormatter
 import org.scalawag.timber.api.Level
 import org.scalawag.timber.api.impl.Entry
 
-class ResourceBasedReceiverTestSuite extends FunSuite with ShouldMatchers with MockitoSugar with OneInstancePerTest{
+class ResourceBasedReceiverTestSuite extends FunSuite with Matchers with MockitoSugar with OneInstancePerTest{
   private val w = mock[Writer]
   private val entry = new Entry("foo","logger",Level(0))
 
@@ -32,13 +31,13 @@ class ResourceBasedReceiverTestSuite extends FunSuite with ShouldMatchers with M
   private val receiver = spy(new TestReceiver)
 
   test("calling writer calls open") {
-    receiver.writer should be (w)
+    receiver.writer shouldBe w
     verify(receiver,times(1)).open
   }
 
   test("calling writer twice calls open once") {
-    receiver.writer should be (w)
-    receiver.writer should be (w)
+    receiver.writer shouldBe w
+    receiver.writer shouldBe w
     verify(receiver,times(1)).open
   }
 
@@ -58,9 +57,7 @@ class ResourceBasedReceiverTestSuite extends FunSuite with ShouldMatchers with M
   test("calling writer after close fails") {
     receiver.writer
     receiver.close
-    evaluating {
-      receiver.writer
-   } should produce [IllegalStateException]
+    an [IllegalStateException] shouldBe thrownBy (receiver.writer)
   }
 
   test("calling close before writer is OK") {
@@ -69,9 +66,7 @@ class ResourceBasedReceiverTestSuite extends FunSuite with ShouldMatchers with M
 
   test("calling writer after close fails even if the resource hadn't been open") {
     receiver.close
-    evaluating {
-      receiver.writer
-   } should produce [IllegalStateException]
+    an [IllegalStateException] shouldBe thrownBy (receiver.writer)
   }
 }
 

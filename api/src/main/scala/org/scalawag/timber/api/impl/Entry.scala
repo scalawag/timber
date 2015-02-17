@@ -1,6 +1,5 @@
 package org.scalawag.timber.api.impl
 
-import scala.collection.immutable.Stack
 import org.scalawag.timber.api.{Tag, Level, Message}
 
 object Entry {
@@ -15,7 +14,7 @@ case class Entry(message:Message,
                  timestamp: Long = System.currentTimeMillis,
                  thread: Thread = Thread.currentThread,
                  tags: Set[Tag] = Set(),
-                 context: Map[String, Stack[String]] = Map(),
+                 context: Map[String, List[String]] = Map(),
                  location: Option[Entry.Location] = None)
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

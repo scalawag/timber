@@ -1,7 +1,6 @@
 package com.example.logclient
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers,FunSuite}
 import org.scalawag.timber.impl.{Locationable, Location}
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
@@ -12,7 +11,7 @@ import scala.collection.JavaConversions._
 import org.scalawag.timber.api._
 import org.scalawag.timber.api.impl.Entry
 
-class LocationTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
+class LocationTestSuite extends FunSuite with Matchers with MockitoSugar {
   import Level.Implicits._
 
   test("location determination") {
@@ -25,7 +24,7 @@ class LocationTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
     verify(dispatcher,times(1)).dispatch(captor.capture())
 
     // This is extremely sensitive to file modifications.  Update it to match the number of the line above if it fails.
-    captor.getValue.location should be (Some(Entry.Location("LocationTestSuite.scala",22)))
+    captor.getValue.location shouldBe Some(Entry.Location("LocationTestSuite.scala",21))
   }
 
   test("no location determination (no mix-in)") {
@@ -36,7 +35,7 @@ class LocationTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     val captor = ArgumentCaptor.forClass(classOf[Entry])
     verify(dispatcher,times(1)).dispatch(captor.capture())
-    captor.getValue.location should be (None)
+    captor.getValue.location shouldBe None
   }
 
   test("locationable (optional location determination)") {
@@ -51,9 +50,9 @@ class LocationTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     val entries = captor.getAllValues.map(_.location)
 
-    entries.get(0) should be (None)
+    entries.get(0) shouldBe None
     // This is extremely sensitive to file modifications.  Update it to match the number of the line above if it fails.
-    entries.get(1) should be (Some(Entry.Location("LocationTestSuite.scala",47)))
+    entries.get(1) shouldBe Some(Entry.Location("LocationTestSuite.scala",46))
   }
 }
 

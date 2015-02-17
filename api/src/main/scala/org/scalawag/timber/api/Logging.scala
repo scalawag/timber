@@ -12,12 +12,17 @@ package org.scalawag.timber.api
   */
 
 trait Logging[+T <: Logger] {
-  @transient protected[this] implicit val stringFnToMessage = Message.stringFnToMessage _
-  @transient protected[this] implicit val throwableToMessage = Message.throwableToMessage _
-  @transient protected[this] implicit val messageGatherer = Message.messageGatherer _
+  @(transient @scala.annotation.meta.getter)
+  protected[this] implicit val stringFnToMessage = Message.stringFnToMessage _
+  @(transient @scala.annotation.meta.getter)
+  protected[this] implicit val throwableToMessage = Message.throwableToMessage _
+  @(transient @scala.annotation.meta.getter)
+  protected[this] implicit val messageGatherer = Message.messageGatherer _
 
-  @transient protected[this] val loggerFactory:LoggerFactory[T]
-  @transient protected[this] lazy val log:T = loggerFactory.getLogger(getClass)
+  @(transient @scala.annotation.meta.getter)
+  protected[this] val loggerFactory:LoggerFactory[T]
+  @(transient @scala.annotation.meta.getter)
+  protected[this] lazy val log:T = loggerFactory.getLogger(getClass)
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

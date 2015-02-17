@@ -2,13 +2,11 @@ package org.scalawag.timber.impl.receiver
 
 import language.reflectiveCalls
 
-import org.scalatest.{OneInstancePerTest, FunSuite}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.mock.MockitoSugar
+import org.scalatest.{Matchers,OneInstancePerTest,FunSuite}
 import org.scalawag.timber.api.Level
 import org.scalawag.timber.api.impl.Entry
 
-class AsynchronousTestSuite extends FunSuite with ShouldMatchers with MockitoSugar with OneInstancePerTest {
+class AsynchronousTestSuite extends FunSuite with Matchers with OneInstancePerTest {
   private val delay = 500L
   private val entry = new Entry("foo","logger",Level(0))
 
@@ -29,7 +27,7 @@ class AsynchronousTestSuite extends FunSuite with ShouldMatchers with MockitoSug
     }
 
     time should be < ( delay )
-    r.calls should be (0)
+    r.calls shouldBe 0
 
     var maxTries = 10
     while ( r.calls == 0 && maxTries > 0 ) {
@@ -37,7 +35,7 @@ class AsynchronousTestSuite extends FunSuite with ShouldMatchers with MockitoSug
       maxTries -= 1
     }
 
-    r.calls should be (1)
+    r.calls shouldBe 1
   }
 
   def timer(iters:Int)(fn: => Unit) = {

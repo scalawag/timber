@@ -1,12 +1,11 @@
 package org.scalawag.timber.impl
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers,FunSuite}
 import org.scalawag.timber.dsl._
 import org.scalatest.mock.MockitoSugar
 import receiver.EntryReceiver
 
-class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
+class ImmutableVertexTestSuite extends FunSuite with Matchers with MockitoSugar {
 
   test("apply - convert Filter") {
     val c = mock[Condition]
@@ -15,8 +14,8 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
     val ie = ImmutableVertex(f)
 
     narrow(ie) { f:ImmutableFilter =>
-      f.condition should be (c)
-      f.name should be (None)
+      f.condition shouldBe c
+      f.name shouldBe None
     }
   }
 
@@ -27,8 +26,8 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
     val ie = ImmutableVertex(f)
 
     narrow(ie) {f:ImmutableFilter =>
-      f.condition should be (c)
-      f.name should be (Some("bob"))
+      f.condition shouldBe c
+      f.name shouldBe Some("bob")
     }
   }
 
@@ -37,8 +36,8 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
     val ie = ImmutableVertex(v)
 
     narrow(ie) { iv:ImmutableValve =>
-      iv.open should be (open)
-      iv.name should be (None)
+      iv.open shouldBe open
+      iv.name shouldBe None
     }
   }
 
@@ -51,8 +50,8 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
     val ie = ImmutableVertex(v)
 
     narrow(ie) { iv:ImmutableValve =>
-      iv.open should be (open)
-      iv.name should be (Some("bob"))
+      iv.open shouldBe open
+      iv.name shouldBe Some("bob")
     }
   }
 
@@ -67,7 +66,7 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
     val ie = ImmutableVertex(r)
 
     narrow(ie) { ir:ImmutableReceiver =>
-      ir.receiver should be (er)
+      ir.receiver shouldBe er
     }
   }
 
@@ -83,15 +82,15 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
     val ie = ImmutableVertex(v1)
 
     narrow(ie) { iv:ImmutableValve =>
-      iv.outs.size should be (2)
+      iv.outs.size shouldBe 2
 
       // Both filters should point to the same ImmutableValve
       val outsouts = iv.outs flatMap { o =>
         narrow(o) { iv:ImmutableValve => iv.outs }
       }
 
-      outsouts.size should be (1)
-      outsouts.head.name should be (Some("v4"))
+      outsouts.size shouldBe 1
+      outsouts.head.name shouldBe Some("v4")
     }
   }
 
@@ -108,9 +107,9 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
     val ie = ImmutableVertex(v)
 
     narrow(ie) { iv:ImmutableValve =>
-      iv.outs.size should be (1)
+      iv.outs.size shouldBe 1
       narrow(iv.outs.head) { ir:ImmutableReceiver =>
-        ir.receiver should be (er)
+        ir.receiver shouldBe er
       }
     }
   }
@@ -128,7 +127,7 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
     val ie = ImmutableVertex(v)
 
     narrow(ie) { iv:ImmutableValve =>
-      iv.outs.size should be (2)
+      iv.outs.size shouldBe 2
     }
   }
 
@@ -146,14 +145,14 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
       }
     }
 
-    count should be (4)
+    count shouldBe 4
 
     val v4m = ImmutableValve(false,Set(),Some("v4m"))
     val v3m = ImmutableValve(false,Set(v4m),Some("v3m"))
     val v2m = ImmutableValve(false,Set(v4m),Some("v2m"))
     val v1m = ImmutableValve(false,Set(v2m,v3m),Some("v1m"))
 
-    mapped should be (v1m)
+    mapped shouldBe v1m
   }
 
   test("flatMap - no pruning") {
@@ -180,12 +179,12 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
 
     val mapped = v1.flatMap(prune,transform)
 
-    count should be (4)
+    count shouldBe 4
 
     val v3m = ImmutableValve(true,Set(v4,v5),Some("v3"))
     val v1m = ImmutableValve(true,Set(v3m),Some("v1"))
 
-    mapped should be (v1m)
+    mapped shouldBe v1m
   }
 
   test("flatMap - with pruning") {
@@ -209,11 +208,11 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
 
     val mapped = v1.flatMap(prune,transform)
 
-    count should be (3) // 1 was pruned
+    count shouldBe 3 // 1 was pruned
 
     val v1m = ImmutableValve(true,Set(v2),Some("v1"))
 
-    mapped should be (v1m)
+    mapped shouldBe v1m
   }
 
   test("reconfigure - Boolean") {
@@ -227,7 +226,7 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
     val v2m = v2.copy(open = false)
     val v1m = v1.copy(outs = Set(v2m,v3))
 
-    reconfigured should be (v1m)
+    reconfigured shouldBe v1m
   }
 
   test("reconfigure - Int") {
@@ -241,7 +240,7 @@ class ImmutableVertexTestSuite extends FunSuite with ShouldMatchers with Mockito
     val v2m = v2.copy(new LowestLevelCondition(8))
     val v1m = v1.copy(outs = Set(v2m,v3))
 
-    reconfigured should be (v1m)
+    reconfigured shouldBe v1m
   }
 
   private def narrow[T:Manifest,A](obj:Any)(fn:T => A) = {
