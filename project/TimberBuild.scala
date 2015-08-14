@@ -4,13 +4,12 @@ import de.johoop.jacoco4sbt._
 import JacocoPlugin._
 import com.typesafe.sbt.osgi.SbtOsgi._
 import OsgiKeys._
+import org.scalawag.sbt.gitflow.GitFlowPlugin
 
 object TimberBuild extends Build {
-  val VERSION = "0.4.0"
 
   val commonSettings =
-    Defaults.defaultSettings ++ osgiSettings ++ Seq(
-      version := VERSION,
+    Defaults.defaultSettings ++ osgiSettings ++ GitFlowPlugin.defaults ++ Seq(
       exportJars := true,
       scalacOptions ++= Seq("-unchecked","-deprecation","-feature","-language:implicitConversions","-target:jvm-1.6"),
       javacOptions ++= Seq("-source","1.6","-target","1.6"),
@@ -64,7 +63,7 @@ object TimberBuild extends Build {
           "org.scalawag.timber.api.style.slf4j",
           "org.scalawag.timber.api.style.syslog"
         ),
-        importPackage += "org.scalawag.timber.backend;version=\"0.4\""
+        importPackage += "org.scalawag.timber.backend;version=\"0.5\""
       )
     )
 
