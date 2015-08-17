@@ -1,7 +1,6 @@
 package org.scalawag.timber.impl.receiver
 
-import org.scalatest.{OneInstancePerTest, FunSuite}
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers,OneInstancePerTest,FunSuite}
 import org.scalatest.mock.MockitoSugar
 import java.io.Writer
 import org.mockito.Mockito._
@@ -11,7 +10,7 @@ import org.mockito.ArgumentCaptor
 import org.scalawag.timber.api.Level
 import org.scalawag.timber.api.impl.Entry
 
-class FormattingReceiverTestSuite extends FunSuite with ShouldMatchers with MockitoSugar with OneInstancePerTest {
+class FormattingReceiverTestSuite extends FunSuite with Matchers with MockitoSugar with OneInstancePerTest {
   private val entry = new Entry("foo","logger",Level(0))
 
   private val w = mock[Writer]
@@ -27,7 +26,7 @@ class FormattingReceiverTestSuite extends FunSuite with ShouldMatchers with Mock
 
     val captor = ArgumentCaptor.forClass(classOf[Entry])
     verify(f,times(1)).format(captor.capture)
-    captor.getValue.message.text should be ("foo")
+    captor.getValue.message.text shouldBe "foo"
     verifyNoMoreInteractions(f)
 
     verify(w,times(1)).write("bar")

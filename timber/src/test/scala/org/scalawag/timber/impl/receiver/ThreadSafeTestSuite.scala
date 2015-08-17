@@ -1,7 +1,6 @@
 package org.scalawag.timber.impl.receiver
 
-import org.scalatest.{OneInstancePerTest, FunSuite}
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers,OneInstancePerTest,FunSuite}
 import org.scalatest.mock.MockitoSugar
 import scala.concurrent._
 import scala.concurrent.Future._
@@ -11,7 +10,7 @@ import java.util.concurrent.{BrokenBarrierException, TimeoutException, TimeUnit,
 import org.scalawag.timber.api.Level
 import org.scalawag.timber.api.impl.Entry
 
-class ThreadSafeTestSuite extends FunSuite with ShouldMatchers with MockitoSugar with OneInstancePerTest {
+class ThreadSafeTestSuite extends FunSuite with Matchers with MockitoSugar with OneInstancePerTest {
 
   // Just useful for telling when two write() calls overlap in time.
 
@@ -70,30 +69,26 @@ class ThreadSafeTestSuite extends FunSuite with ShouldMatchers with MockitoSugar
   test("receive without ThreadSafe (control case)") {
     val r = new TestReceiver
 
-    val result1 = future(r.receive(entry))
-    val result2 = future(r.receive(entry))
+    val result1 = Future(r.receive(entry))
+    val result2 = Future(r.receive(entry))
     ready(sequence(Seq(result1,result2)),Duration.Inf)
 
-    r.callTimes.size should be (2)
-    r.hasOverlappingCalls should be (true)
+    r.callTimes.size shouldBe 2
+    r.hasOverlappingCalls shouldBe true
   }
 
   test("receive with ThreadSafe (test case)") {
     val r = new TestReceiver with ThreadSafe
 
-    val result1 = future(r.receive(entry))
-    val result2 = future(r.receive(entry))
+    val result1 = Future(r.receive(entry))
+    val result2 = Future(r.receive(entry))
 
-    evaluating {
-      result(result1,Duration.Inf)
-    } should produce [TimeoutException]
+    a [TimeoutException] shouldBe thrownBy(result(result1,Duration.Inf))
 
-    evaluating {
-      result(result2,Duration.Inf)
-    } should produce [BrokenBarrierException]
+    a [BrokenBarrierException] shouldBe thrownBy(result(result2,Duration.Inf))
 
-    r.callTimes.size should be (0)
-    r.hasOverlappingCalls should be (false)
+    r.callTimes.size shouldBe 0
+    r.hasOverlappingCalls shouldBe false
   }
 }
 

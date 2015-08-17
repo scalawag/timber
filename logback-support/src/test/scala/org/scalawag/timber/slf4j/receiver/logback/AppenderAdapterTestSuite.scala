@@ -1,7 +1,6 @@
 package org.scalawag.timber.slf4j.receiver.logback
 
 import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
 import org.scalawag.timber.api.{Level, Logger}
 import org.scalawag.timber.dsl._
 import org.scalawag.timber.impl.formatter.DefaultEntryFormatter
@@ -11,7 +10,7 @@ import ch.qos.logback.core.FileAppender
 import org.scalawag.timber.impl.dispatcher.SynchronousEntryDispatcher
 import org.scalawag.timber.api.impl.Entry
 
-class AppenderAdapterTestSuite extends FunSuite with ShouldMatchers {
+class AppenderAdapterTestSuite extends FunSuite  {
   import LogbackSupport._
   import Level.Implicits._
 

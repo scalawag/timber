@@ -4,19 +4,17 @@ import de.johoop.jacoco4sbt._
 import JacocoPlugin._
 import com.typesafe.sbt.osgi.SbtOsgi._
 import OsgiKeys._
+import org.scalawag.sbt.gitflow.GitFlowPlugin
 
 object TimberBuild extends Build {
-  val VERSION = "0.4.0"
 
   val commonSettings =
-    Defaults.defaultSettings ++ osgiSettings ++ Seq(
-      version := VERSION,
-      crossPaths := false,
+    Defaults.defaultSettings ++ osgiSettings ++ GitFlowPlugin.defaults ++ Seq(
       exportJars := true,
       scalacOptions ++= Seq("-unchecked","-deprecation","-feature","-language:implicitConversions","-target:jvm-1.6"),
       javacOptions ++= Seq("-source","1.6","-target","1.6"),
       javaOptions ++= Seq("-Xmx256m","-XX:MaxPermSize=256m"),
-      scalaVersion := "2.10.2",
+      crossScalaVersions := Seq("2.11.5","2.10.2"),
       testOptions += Tests.Argument("-oDF"),
       libraryDependencies ++= Seq(Dependencies.scalatest,Dependencies.mockito),
       organization := "org.scalawag.timber",
@@ -56,7 +54,7 @@ object TimberBuild extends Build {
   val api =
     Project("timber-api",file("api"),
       settings = commonSettings ++ Seq(
-        libraryDependencies ++= Seq(Dependencies.reflect),
+        libraryDependencies ++= Seq(Dependencies.reflect(scalaVersion.value)),
         exportPackage ++= Seq(
           "org.scalawag.timber.api",
           "org.scalawag.timber.api.impl",
@@ -65,7 +63,7 @@ object TimberBuild extends Build {
           "org.scalawag.timber.api.style.slf4j",
           "org.scalawag.timber.api.style.syslog"
         ),
-        importPackage += "org.scalawag.timber.backend;version=\"0.4\""
+        importPackage += "org.scalawag.timber.backend;version=\"0.5\""
       )
     )
 
@@ -101,7 +99,8 @@ object TimberBuild extends Build {
     Project("timber-over-slf4j",file("timber-over-slf4j"),
       settings = commonSettings ++ Seq(
         libraryDependencies ++= Seq(Dependencies.slf4j),
-        exportPackage += "org.scalawag.timber.backend"
+        exportPackage += "org.scalawag.timber.backend",
+        privatePackage := Seq()
       )
     ) dependsOn (api)
 
@@ -135,10 +134,10 @@ object TimberBuild extends Build {
   override val settings = super.settings ++ Seq(resolvers ++= myResolvers)
 
   object Dependencies {
-    lazy val reflect = "org.scala-lang" % "scala-reflect" % "2.10.0"
+    def reflect(scalaVersion:String) = "org.scala-lang" % "scala-reflect" % scalaVersion
     lazy val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
     lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.7"
-    lazy val scalatest = "org.scalatest" %% "scalatest" % "1.9" % "test"
+    lazy val scalatest = "org.scalatest" %% "scalatest" % "2.2.4" % "test"
     lazy val mockito = "org.mockito" % "mockito-all" % "1.9.0" % "test"
   }
 }

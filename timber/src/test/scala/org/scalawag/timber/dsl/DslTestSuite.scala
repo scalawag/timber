@@ -1,7 +1,6 @@
 package org.scalawag.timber.dsl
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers,FunSuite}
 import org.scalawag.timber.api._
 import org.mockito.Mockito._
 import org.mockito.Matchers._
@@ -15,7 +14,7 @@ import receiver.EntryReceiver
 import org.scalawag.timber.api.impl.Entry
 import org.scalawag.timber.api.style.slf4j
 
-class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
+class DslTestSuite extends FunSuite with Matchers with MockitoSugar {
   import Level.Implicits._
 
   test("unnamed, open valve") {
@@ -23,7 +22,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     (e: @unchecked) match {
       case nv:NameableValve =>
-        nv.open should be (true)
+        nv.open shouldBe true
     }
   }
 
@@ -32,8 +31,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     (e: @unchecked) match {
       case nv:NamedValve =>
-        nv.open should be (true)
-        nv.name should be ("bob")
+        nv.open shouldBe true
+        nv.name shouldBe "bob"
     }
   }
 
@@ -42,7 +41,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     (e: @unchecked) match {
       case nv:NameableValve =>
-        nv.open should be (false)
+        nv.open shouldBe false
     }
   }
 
@@ -51,8 +50,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     (e: @unchecked) match {
       case nv:NamedValve =>
-        nv.open should be (false)
-        nv.name should be ("bob")
+        nv.open shouldBe false
+        nv.name shouldBe "bob"
     }
   }
 
@@ -61,8 +60,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     (e: @unchecked) match {
       case nv:NamedValve =>
-        nv.open should be (false)
-        nv.name should be ("bob")
+        nv.open shouldBe false
+        nv.name shouldBe "bob"
     }
   }
 
@@ -73,7 +72,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
       case nf:NameableFilter =>
         (nf.condition: @unchecked) match {
           case llc:LowestLevelCondition =>
-            llc.threshold should be (5)
+            llc.threshold shouldBe 5
         }
     }
   }
@@ -83,10 +82,10 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     (e: @unchecked) match {
       case nf:NamedFilter =>
-        nf.name should be ("bob")
+        nf.name shouldBe "bob"
         (nf.condition: @unchecked) match {
           case llc:LowestLevelCondition =>
-            llc.threshold should be (5)
+            llc.threshold shouldBe 5
         }
     }
   }
@@ -98,7 +97,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
       case nf:NameableFilter =>
         (nf.condition: @unchecked) match {
           case hlc:HighestLevelCondition =>
-            hlc.threshold should be (5)
+            hlc.threshold shouldBe 5
         }
     }
   }
@@ -108,10 +107,10 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     (e: @unchecked) match {
       case nf:NamedFilter =>
-        nf.name should be ("bob")
+        nf.name shouldBe "bob"
         (nf.condition: @unchecked) match {
           case hlc:HighestLevelCondition =>
-            hlc.threshold should be (5)
+            hlc.threshold shouldBe 5
         }
     }
   }
@@ -123,7 +122,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
       case f:Filter =>
         (f.condition: @unchecked) match {
           case lpc:LoggerPrefixCondition =>
-            lpc.prefix should be ("bob")
+            lpc.prefix shouldBe "bob"
         }
     }
   }
@@ -135,8 +134,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
       case f:Filter =>
         (f.condition: @unchecked) match {
           case ccc:ContextContainsCondition =>
-            ccc.key should be ("client")
-            ccc.value should be ("bob")
+            ccc.key shouldBe "client"
+            ccc.value shouldBe "bob"
         }
     }
   }
@@ -148,8 +147,8 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
       case f:Filter =>
         (f.condition: @unchecked) match {
           case icec:InnermostContextEqualsCondition =>
-            icec.key should be ("client")
-            icec.value should be ("bob")
+            icec.key shouldBe "client"
+            icec.value shouldBe "bob"
         }
     }
   }
@@ -162,7 +161,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
       case f:Filter =>
         (f.condition: @unchecked) match {
           case tc:TaggedCondition =>
-            tc.tag should be (MyTag)
+            tc.tag shouldBe MyTag
         }
     }
   }
@@ -174,7 +173,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     (e: @unchecked) match {
       case r:Receiver =>
-        r.receiver should be (er)
+        r.receiver shouldBe er
     }
   }
 
@@ -187,7 +186,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
     // You should get different Receiver instances wrapping the same EntryReceiver.
 
     e1 should not be (e2)
-    e1.receiver should be (e2.receiver)
+    e1.receiver shouldBe e2.receiver
   }
 
   test("multiple condition wrapping") {
@@ -199,25 +198,25 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
     // You should get different Filter instances wrapping the same Condition.
 
     e1 should not be (e2)
-    e1.condition should be (e2.condition)
+    e1.condition shouldBe e2.condition
   }
 
   test("direct circular paths should throw an exception at run-time") {
     val filter:Filter = ( level <= 5 )
-    evaluating(filter :: filter) should produce [IllegalArgumentException]
+    an [IllegalArgumentException] shouldBe thrownBy (filter :: filter)
 
     // Should leave in an unconnected state (without the cycle)
-    filter.outputs should be ('empty)
+    filter.outputs shouldBe 'empty
   }
 
   test("indirect circular paths should throw an exception at run-time") {
     val f1:Filter = ( level <= 5 )
     val f2:Filter = ( level <= 6 )
 
-    evaluating(f1 :: f2 :: f1) should produce [IllegalArgumentException]
+    an [IllegalArgumentException] shouldBe thrownBy (f1 :: f2 :: f1)
 
-    f1.outputs should be ('empty)
-    f2.outputs should be (Set(f1))
+    f1.outputs shouldBe 'empty
+    f2.outputs shouldBe Set(f1)
   }
 
   ignore("mega test") {
@@ -260,9 +259,9 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
 
     dump(c,"blah.dot")
 
-    c.findReceivers(m1) should be (Set[EntryReceiver](so))
-    c.findReceivers(m2) should be (Set[EntryReceiver](so) ++ appenders)
-    c.findReceivers(m3) should be (Set[EntryReceiver](so) + appenders.head)
+    c.findReceivers(m1) shouldBe Set[EntryReceiver](so)
+    c.findReceivers(m2) shouldBe Set[EntryReceiver](so) ++ appenders
+    c.findReceivers(m3) shouldBe Set[EntryReceiver](so) + appenders.head
 
     dump(c,"blah1.dot")
 
@@ -272,7 +271,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
     IN :: grok2
 
     // should not take effect yet
-    c.findReceivers(m1) should be (Set[EntryReceiver](so))
+    c.findReceivers(m1) shouldBe Set[EntryReceiver](so)
 
     c = ImmutableVertex(IN)
 
@@ -280,7 +279,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
     dump(c.constrain(PartialEntry(logger = Some("org.scalawag.timber.something"))),"blah3.dot")
 
     // now it should have taken effect
-    c.findReceivers(m1) should be (Set[EntryReceiver](so,grok,grok2))
+    c.findReceivers(m1) shouldBe Set[EntryReceiver](so,grok,grok2)
 
     val ed = new SynchronousEntryDispatcher
     ed.configuration = IN
@@ -426,7 +425,7 @@ class DslTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
       }
     }
 
-    MyLoggerManager.getMBeanInfo.getAttributes.map(_.getName) should be (Array("something"))
+    MyLoggerManager.getMBeanInfo.getAttributes.map(_.getName) shouldBe Array("something")
   }
 }
 

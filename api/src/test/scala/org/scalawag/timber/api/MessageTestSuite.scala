@@ -1,10 +1,9 @@
 package org.scalawag.timber.api
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers,FunSuite}
 import java.io.PrintWriter
 
-class MessageTestSuite extends FunSuite with ShouldMatchers {
+class MessageTestSuite extends FunSuite with Matchers {
 
   test("gatherer conversion") {
     val text = "blah"
@@ -12,22 +11,22 @@ class MessageTestSuite extends FunSuite with ShouldMatchers {
       pw.print(text)
     }
 
-    msg.text should be (text)
+    msg.text shouldBe text
   }
 
   test("throwable conversion") {
     val text = "blah"
     val msg:Message = new Throwable(text)
 
-    msg.text.contains(text) should be (true)
-    msg.text.contains(this.getClass.getName) should be (true)
+    msg.text.contains(text) shouldBe true
+    msg.text.contains(this.getClass.getName) shouldBe true
   }
 
   test("getLines") {
     val lines = Traversable("foo","bar")
     val msg:Message = lines.mkString("","\n","\n")
 
-    msg.lines should be (lines)
+    msg.lines shouldBe lines
   }
 
 }

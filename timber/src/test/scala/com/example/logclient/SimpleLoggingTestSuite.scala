@@ -1,7 +1,6 @@
 package com.example.logclient
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers,FunSuite}
 import org.scalatest.mock.MockitoSugar
 import org.scalawag.timber.dsl._
 import org.mockito.ArgumentCaptor
@@ -11,7 +10,7 @@ import org.scalawag.timber.impl.dispatcher.SynchronousEntryDispatcher
 import org.scalawag.timber.api.{Level, LoggerFactory, Logger}
 import org.scalawag.timber.api.impl.Entry
 
-class SimpleLoggingTestSuite extends FunSuite with ShouldMatchers with MockitoSugar {
+class SimpleLoggingTestSuite extends FunSuite with Matchers with MockitoSugar {
   import Level.Implicits._
 
   test("test basic flow") {
@@ -42,20 +41,20 @@ class SimpleLoggingTestSuite extends FunSuite with ShouldMatchers with MockitoSu
 
     val entries = captor.getAllValues
 
-    entries.get(0).logger should be (il.name)
-    entries.get(0).level.level  should be (2)
+    entries.get(0).logger shouldBe il.name
+    entries.get(0).level.level shouldBe 2
 
-    entries.get(1).logger should be (il.name)
-    entries.get(1).level.level  should be (3)
+    entries.get(1).logger shouldBe il.name
+    entries.get(1).level.level shouldBe 3
 
-    entries.get(2).logger should be (il.name)
-    entries.get(2).level.level  should be (4)
+    entries.get(2).logger shouldBe il.name
+    entries.get(2).level.level shouldBe 4
 
-    entries.get(3).logger should be (el.name)
-    entries.get(3).level.level  should be (3)
+    entries.get(3).logger shouldBe el.name
+    entries.get(3).level.level shouldBe 3
 
-    entries.get(4).logger should be (el.name)
-    entries.get(4).level.level  should be (4)
+    entries.get(4).logger shouldBe el.name
+    entries.get(4).level.level shouldBe 4
   }
 }
 

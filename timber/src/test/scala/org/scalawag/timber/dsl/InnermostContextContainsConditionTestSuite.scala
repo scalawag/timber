@@ -1,11 +1,9 @@
 package org.scalawag.timber.dsl
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
-import collection.immutable.Stack
+import org.scalatest.{Matchers,FunSuite}
 import org.scalawag.timber.impl.PartialEntry
 
-class InnermostContextContainsConditionTestSuite extends FunSuite with ShouldMatchers {
+class InnermostContextContainsConditionTestSuite extends FunSuite with Matchers {
   private val k0 = "k0"
   private val k1 = "k1"
   private val v0 = "v0"
@@ -14,30 +12,30 @@ class InnermostContextContainsConditionTestSuite extends FunSuite with ShouldMat
   private val c = new InnermostContextEqualsCondition("k1","v1")
 
   test("disallow when other key contains the right value") {
-    c.allows(entry(Map("k0" -> Stack("v1")))) should be (Some(false))
+    c.allows(entry(Map("k0" -> List("v1")))) shouldBe Some(false)
   }
 
   test("disallow when right key contains the wrong value") {
-    c.allows(entry(Map("k1" -> Stack("v0")))) should be (Some(false))
+    c.allows(entry(Map("k1" -> List("v0")))) shouldBe Some(false)
   }
 
   test("disallow when right key contains value further down in the stack") {
-    c.allows(entry(Map("k1" -> Stack("v0","v1")))) should be (Some(false))
+    c.allows(entry(Map("k1" -> List("v0","v1")))) shouldBe Some(false)
   }
 
   test("disallow when key is not present") {
-    c.allows(entry(Map())) should be (Some(false))
+    c.allows(entry(Map())) shouldBe Some(false)
   }
 
   test("allow when the right key contains the right value") {
-    c.allows(entry(Map("k1" -> Stack("v1","v0"),"k0" -> Stack("v2")))) should be (Some(true))
+    c.allows(entry(Map("k1" -> List("v1","v0"),"k0" -> List("v2")))) shouldBe Some(true)
   }
 
   test("abstain when context is absent") {
-    c.allows(PartialEntry()) should be (None)
+    c.allows(PartialEntry()) shouldBe None
   }
 
-  private def entry(context:Map[String,Stack[String]]) = new PartialEntry(context = Some(context))
+  private def entry(context:Map[String,List[String]]) = new PartialEntry(context = Some(context))
 }
 
 /* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

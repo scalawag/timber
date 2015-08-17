@@ -1,10 +1,8 @@
 package org.scalawag.timber.api
 
-import collection.immutable.Stack
-
 object LoggingContext {
-  private val contextThreadLocal = new ThreadLocal[Map[String,Stack[String]]] {
-    override def initialValue() = Map[String,Stack[String]]()
+  private val contextThreadLocal = new ThreadLocal[Map[String,List[String]]] {
+    override def initialValue() = Map[String,List[String]]()
   }
 
   def getInnermost = get map { case(k,v) => (k,v.head) }
@@ -19,14 +17,16 @@ object LoggingContext {
     val (existingKeys,newKeys) = entries.partition( entry => context.contains(entry._1) )
 
     val newContext = context.map { case (key,existingValue) =>
-      existingKeys.get(key) match {
-        case Some(newValue) =>
-          ( key -> existingValue.push(newValue) )
-        case None =>
-          ( key -> existingValue )
-      }
+      val v =
+        existingKeys.get(key) match {
+          case Some(newValue) =>
+            newValue :: existingValue
+          case None =>
+            existingValue
+        }
+      key -> v
     } ++ newKeys.map { case (key,value) =>
-      ( key -> Stack(value) )
+      ( key -> List(value) )
     }.toMap
 
     this.contextThreadLocal.set(newContext)
@@ -52,7 +52,7 @@ object LoggingContext {
     val newContext = context.flatMap { case (key,existingValue) =>
       entries.get(key) match {
         case Some(newValue) =>
-          val stack = existingValue.pop
+          val stack = existingValue.tail
           if ( ! stack.isEmpty )
             Some( key -> stack )
           else
