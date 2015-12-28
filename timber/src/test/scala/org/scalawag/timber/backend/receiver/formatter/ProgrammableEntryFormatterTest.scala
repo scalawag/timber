@@ -14,7 +14,6 @@
 
 package org.scalawag.timber.backend.receiver.formatter
 
-import java.time._
 import java.util.{TimeZone, GregorianCalendar}
 
 import org.scalatest.{FunSpec, Matchers}
@@ -26,14 +25,7 @@ import ProgrammableEntryFormatter._
 class ProgrammableEntryFormatterTest extends FunSpec with Matchers {
   private val UTC = TimeZone.getTimeZone("UTC")
 
-  private val time =
-    GregorianCalendar.from(
-      ZonedDateTime.of(
-        LocalDate.of(1972,4,17),
-        LocalTime.of(15,40,0,123456789),
-        ZoneOffset.UTC
-      )
-    ).getTimeInMillis
+  private val time = 72373200123L
 
   // The thread name will appear in all the output strings produced
 

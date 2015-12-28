@@ -14,20 +14,12 @@
 
 package org.scalawag.timber.backend.receiver.formatter.timestamp
 
-import java.time._
-import java.util.{TimeZone, GregorianCalendar}
+import java.util.TimeZone
 
 import org.scalatest.{FunSpec, Matchers}
 
 class TimestampFormatterTest extends FunSpec with Matchers {
-  private val time =
-    GregorianCalendar.from(
-      ZonedDateTime.of(
-        LocalDate.of(1972,4,17),
-        LocalTime.of(15,40,0,123456789),
-        ZoneOffset.UTC
-      )
-    ).getTimeInMillis
+  private val time = 72373200123L
 
   it("should format properly with ISO8601TimestampFormatter and default TimeZone") {
     ISO8601TimestampFormatter.format(time) shouldBe ISO8601TimestampFormatter(TimeZone.getDefault).format(time)
