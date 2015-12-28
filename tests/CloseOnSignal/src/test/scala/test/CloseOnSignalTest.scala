@@ -71,7 +71,7 @@ class CloseOnSignalTest extends FunSpec with Matchers with MockFactory with Even
     }
   }
 
-  it("should complain if an Receiver can't be closed") {
+  it("should complain if a Receiver can't be closed") {
     val r = new Receiver {
       override def receive(entry: Entry) = ???
       override def flush() = ???
