@@ -42,6 +42,6 @@ class TimestampFormatterTest extends FunSpec with Matchers {
   }
 
   it("should format properly with custom SimpleDateFormatTimestampFormatter") {
-    new SimpleDateFormatTimestampFormatter("EEEE, MMMM d, y").format(time) shouldBe "Monday, April 17, 1972"
+    new SimpleDateFormatTimestampFormatter("EEEE, MMMM d, yyyy").format(time) shouldBe "Monday, April 17, 1972"
   }
 }
