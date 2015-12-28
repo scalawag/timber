@@ -99,7 +99,7 @@ class MessageTest extends FunSpec with Matchers {
       val withBufferedReaderTime = time(getLinesWithBufferedReader(text),iterations)
       val withSourceTime = time(getLinesWithSource(text),iterations)
 
-      withSourceTime shouldBe <= (withBufferedReaderTime * 1.5)
+      withSourceTime should be <= (withBufferedReaderTime)
     }
 
     it("should return the same thing as getLinesWithRegex") {
@@ -111,7 +111,7 @@ class MessageTest extends FunSpec with Matchers {
       val withRegexTime = time(getLinesWithRegex(text),iterations)
       val withSourceTime = time(getLinesWithSource(text),iterations)
 
-      withSourceTime shouldBe <= (withRegexTime)
+      withSourceTime should be <= (withRegexTime)
     }
 
     def time(fn: => Unit,iterations:Int):Long = {
