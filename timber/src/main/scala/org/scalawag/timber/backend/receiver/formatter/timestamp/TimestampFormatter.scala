@@ -40,7 +40,7 @@ case class SimpleDateFormatTimestampFormatter(format:String,tz:Option[TimeZone] 
   * @param tz the optional time zone to use to format timestamps, None means to use the system default
   */
 class ISO8601TimestampFormatter(tz:Option[TimeZone] = None)
-  extends SimpleDateFormatTimestampFormatter("yyyy-MM-dd'T'HH:mm:ss.SSSZ",tz)
+  extends SimpleDateFormatTimestampFormatter("yyyy-MM-dd'T'HH:mm:ss.SSSX",tz)
 
 /** Converts timestamps into their [[https://en.wikipedia.org/wiki/ISO_8601 ISO 8601]] string representation for the
   * system default time zone.
