@@ -1,49 +1,26 @@
+// timber -- Copyright 2012-2015 -- Justin Patterson
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package org.scalawag.timber.api
 
-import org.scalawag.timber.api.impl.{EntryDispatcher, Entry}
+import org.scalawag.timber.api.level._
 
-/** The main application interface into timber.
+/** Provides a [[org.scalawag.timber.api.BaseLogger BaseLogger]] that can be used out-of-the-box with a default set
+  * of level-specific log methods.
   *
-  * Loggers are what applications use to inject @link Entries into the system.
-  *
-  * Loggers don't support the isEnabled type methods provided by some other logging systems.  That's because
-  * the Logger doesn't make any decisions regarding where (or if) the entry it creates is actually written into
-  * a log file or processed in any way.
-  *
-  * The idea behind timber is that the application thread gets to return to what it's doing as quickly as possible.
-  *
-  * Arguably, this is better for the application code because your application code shouldn't be dependent on the
-  * logging configuration.  You have to try really hard to write code that depends on logging configuration.
-  *
-  * @param name the value that this Logger uses as the "logger" field in the Entries that it generates.
+  * @param attributes the logger attributes that this logger associates with the entries it creates
+  * @param tags the tags that this logger associates with the entries it creates
   */
-
-class Logger(val name:String,val dispatcher:EntryDispatcher) {
-
-  /** Submits an entry to the logging system.
-    *
-    * @param level the level to use for the entry created
-    * @param message the message to include with the entry
-    * @param tags the (optional) set of tags to include with the entry
-    */
-
-  def log(level:Level,message:Message,tags:Set[Tag]) {
-    dispatcher.dispatch(buildEntry(level,message,tags))
-  }
-
-  def log(level:Level,message:Message):Unit = log(level,message,Set.empty[Tag])
-  def log(level:Level,message:Message,tag:Tag*):Unit = log(level,message,tag.toSet)
-  def log(level:Level,tag:Tag*)(message:Message):Unit = log(level,message,tag.toSet)
-
-  protected def buildEntry(level:Level,message:Message,tags:Set[Tag]) =
-    Entry(message = message,
-          logger = this.name,
-          level = level,
-          timestamp = System.currentTimeMillis,
-          thread = Thread.currentThread,
-          tags = tags,
-          context = LoggingContext.get)
-
-}
-
-/* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */
+class Logger(override val attributes:Map[String,Any] = Map.empty, override val tags:Set[Tag] = Set.empty)(implicit dispatcher: Dispatcher)
+  extends BaseLogger(attributes, tags)(dispatcher) with Trace with Debug with Info with Warn with Error

@@ -1,25 +1,41 @@
+// timber -- Copyright 2012-2015 -- Justin Patterson
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package bridge
 
-import org.scalawag.timber.api.style.slf4j
-import org.scalawag.timber.impl.dispatcher.SynchronousEntryDispatcher
-import org.scalawag.timber.bridge.slf4j.Slf4jBridgeLoggerFactory
+import org.scalawag.timber.backend.dispatcher.Dispatcher
+import org.scalawag.timber.backend.dispatcher.configuration.Configuration
+import org.scalawag.timber.bridge.slf4j.Slf4jBridgeDispatcher
 
 object Logging {
 
-  object EntryDispatcher extends SynchronousEntryDispatcher
+  import org.scalawag.timber.backend.dispatcher.configuration.dsl._
+  import org.scalawag.timber.backend.receiver.formatter.ProgrammableEntryFormatter
+  import org.scalawag.timber.backend.receiver.formatter.ProgrammableEntryFormatter._
 
-  object LoggerFactory extends slf4j.LoggerFactory(EntryDispatcher) {
-    override def getLogger(name:String) = super.getLogger(name.reverse)
-  }
+  object Dispatcher extends Dispatcher(Configuration(
+    stderr(new ProgrammableEntryFormatter(Seq(
+      entry.loggingClass map { _.reverse }
+    ))))
+  )
 
-  /* This tells the slf4j bridge to use our factory here instead of the default one.  It must be called by the
-   * application prior to any slf4j loggers being created (for homogeneous Loggers).
+  /* This tells the slf4j bridge to use this dispatcher instead of the default one.  It can be changed at any time.
    */
 
   def configurate {
-    Slf4jBridgeLoggerFactory.factory = LoggerFactory
+    Slf4jBridgeDispatcher.set(Dispatcher)
   }
 
 }
 
-/* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */
