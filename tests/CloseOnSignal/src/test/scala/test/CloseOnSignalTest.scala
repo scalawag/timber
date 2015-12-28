@@ -17,6 +17,7 @@ package org.scalawag.timber.test
 import java.io.{ByteArrayOutputStream, BufferedWriter, StringWriter}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.concurrent.Eventually
+import org.scalatest.time.{Second, Seconds, Span}
 import org.scalatest.{Matchers, FunSpec}
 import org.scalawag.timber.api.{Entry, BaseLogger}
 import org.scalawag.timber.backend.InternalLogging
@@ -26,6 +27,7 @@ import org.scalawag.timber.backend.receiver.{Receiver, WriterBasedReceiver}
 import sun.misc.Signal
 
 class CloseOnSignalTest extends FunSpec with Matchers with MockFactory with Eventually {
+  override implicit def patienceConfig = PatienceConfig(Span(15,Seconds),Span(1,Second))
 
   it("should close specified Receivers on SIGHUP") {
     import org.scalawag.timber.backend.dispatcher.configuration.dsl._
