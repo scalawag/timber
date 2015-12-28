@@ -15,10 +15,10 @@
 import com.typesafe.sbt.osgi.OsgiKeys._
 import sbt._
 import scoverage._
+import org.scalawag.sbt.gitflow.GitFlowPlugin
 
-lazy val commonSettings = Seq(
+lazy val commonSettings = GitFlowPlugin.defaults ++ Seq(
   organization := "org.scalawag.timber",
-  version := "0.5-SNAPSHOT",
   scalaVersion := "2.11.7",
   exportJars := true,
   scalacOptions ++= Seq("-unchecked","-deprecation","-feature","-language:implicitConversions","-target:jvm-1.6"),
