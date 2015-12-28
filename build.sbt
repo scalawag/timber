@@ -28,9 +28,9 @@ lazy val commonSettings = Seq(
 
   publishMavenStyle := true,
   publishArtifact in Test := false,
-  publishTo <<= version { (v: String) =>
+  publishTo := {
     val nexus = "https://oss.sonatype.org/"
-    if (v.trim.endsWith("SNAPSHOT"))
+    if (version.value.trim.endsWith("SNAPSHOT"))
       Some("snapshots" at nexus + "content/repositories/snapshots")
     else
       Some("releases"  at nexus + "service/local/staging/deploy/maven2")
@@ -98,51 +98,72 @@ val logbackSupport = project.in(file("logback-support")).settings(commonSettings
   )
 ) dependsOn (timber)
 
+val testProjectSettings = commonSettings ++ Seq(
+  fork in Test := true,
+  publishArtifact := false
+)
+
 val examples = project.settings(commonSettings:_*).settings(
-  name := "timber-examples"
+  name := "timber-examples",
+  publishArtifact := false
 ) dependsOn (timber,slf4jOverTimber)
 
-val DebugModeTest = project.in(file("tests/DebugMode")).settings(commonSettings:_*).settings(
-  fork in Test := true,
-  javaOptions in Test := Seq("-Dtimber.debug")
-) dependsOn (timber)
+val DebugModeTest =
+  project.in(file("tests/DebugMode")).settings(testProjectSettings:_*).
+    settings(
+      javaOptions in Test := Seq("-Dtimber.debug")
+    ) dependsOn (timber)
 
-val SpecifiedDispatcherTest = project.in(file("tests/SpecifiedDispatcher")).settings(commonSettings:_*).settings(
-  fork in Test := true,
-  javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.ThrowingDispatcher")
-) dependsOn (timber)
+val SpecifiedDispatcherTest =
+  project.in(file("tests/SpecifiedDispatcher")).settings(testProjectSettings:_*).
+    settings(
+      javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.ThrowingDispatcher")
+    ) dependsOn (timber)
 
-val CantCastSpecifiedDispatcherTest = project.in(file("tests/CantCastSpecifiedDispatcher")).settings(commonSettings:_*).settings(
-  fork in Test := true,
-  javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.NotReallyADispatcher")
-) dependsOn (timber)
+val CantCastSpecifiedDispatcherTest =
+  project.in(file("tests/CantCastSpecifiedDispatcher")).settings(testProjectSettings:_*).
+    settings(
+      javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.NotReallyADispatcher")
+    ) dependsOn (timber)
 
-val CantFindSpecifiedDispatcherTest = project.in(file("tests/CantFindSpecifiedDispatcher")).settings(commonSettings:_*).settings(
-  fork in Test := true,
-  javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.MissingDispatcher")
-) dependsOn (timber)
+val CantFindSpecifiedDispatcherTest =
+  project.in(file("tests/CantFindSpecifiedDispatcher")).settings(testProjectSettings:_*).
+    settings(
+      javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.MissingDispatcher")
+    ) dependsOn (timber)
 
-val CantInstantiateSpecifiedDispatcherTest = project.in(file("tests/CantInstantiateSpecifiedDispatcher")).settings(commonSettings:_*).settings(
-  fork in Test := true,
-  javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.UnloadableClass")
-) dependsOn (timber)
+val CantInstantiateSpecifiedDispatcherTest =
+  project.in(file("tests/CantInstantiateSpecifiedDispatcher")).settings(testProjectSettings:_*).
+    settings(
+      javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.UnloadableClass")
+    ) dependsOn (timber)
 
-val RuntimeSpecifiedDispatcherTest = project.in(file("tests/RuntimeSpecifiedDispatcher")).settings(commonSettings:_*).settings(
-  fork in Test := true
-) dependsOn (timber)
+val RuntimeSpecifiedDispatcherTest =
+  project.in(file("tests/RuntimeSpecifiedDispatcher")).settings(testProjectSettings:_*) dependsOn (timber)
 
-val CloseOnShutdownTest = project.in(file("tests/CloseOnShutdown")).settings(commonSettings:_*).settings(
-  fork in Test := true
-) dependsOn (timber)
+val CloseOnShutdownTest =
+  project.in(file("tests/CloseOnShutdown")).settings(testProjectSettings:_*) dependsOn (timber)
 
-val CloseOnSignalTest = project.in(file("tests/CloseOnSignal")).settings(commonSettings:_*).settings(
-  fork in Test := true
-) dependsOn (timber)
+val CloseOnSignalTest =
+  project.in(file("tests/CloseOnSignal")).settings(testProjectSettings:_*) dependsOn (timber)
 
-//name := "root"
-//vallls
-// root = project.in(file(".")).aggregate(
-//  api,timber,slf4jOverTimber,timberOverSlf4j,logbackSupport,examples)
-//  settings(
-//    aggregate in update := false
-//  )
+val root = project.in(file(".")).settings(
+  aggregate in update := false,
+  publishArtifact := false,
+  publishTo := Some(Resolver.file("Not actually used but required by publish-signed", file("/tmp/bogusrepo")))
+).aggregate(
+  api,
+  timber,
+  slf4jOverTimber,
+  timberOverSlf4j,
+  logbackSupport,
+  examples,
+  DebugModeTest,
+  SpecifiedDispatcherTest,
+  CantCastSpecifiedDispatcherTest,
+  CantFindSpecifiedDispatcherTest,
+  CantInstantiateSpecifiedDispatcherTest,
+  RuntimeSpecifiedDispatcherTest,
+  CloseOnShutdownTest,
+  CloseOnSignalTest
+)
