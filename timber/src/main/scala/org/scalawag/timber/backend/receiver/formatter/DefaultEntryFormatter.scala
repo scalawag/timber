@@ -31,4 +31,3 @@ object DefaultEntryFormatter extends ProgrammableEntryFormatter(Seq(
   entry.tags formattedWith Commas,
   entry.threadAttributes map TopsOnly formattedWith CommasAndEquals
 ))
-

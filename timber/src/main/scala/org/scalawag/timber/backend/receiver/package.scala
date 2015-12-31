@@ -15,7 +15,7 @@
 package org.scalawag.timber.backend
 
 /** Contains all of the built-in support for [[org.scalawag.timber.backend.receiver.Receiver receivers]], which are
-  * the leafs of dispatcher routing graphs.  Receivers do something with [[org.scalawag.timber.api.Entry entries]].
+  * the leaves of dispatcher routing graphs.  Receivers do something with [[org.scalawag.timber.api.Entry entries]].
   * Exactly what they do depends on the implementation.
   */
 

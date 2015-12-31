@@ -67,20 +67,20 @@ object Subgraph {
   }
 }
 
-sealed class Subgraph[+A <: MutableVertex](private[backend] val root:MutableVertex, private[backend] val leafs:Seq[A])
+sealed class Subgraph[+A <: MutableVertex](private[backend] val root:MutableVertex, private[backend] val leaves:Seq[A])
 
 final class SubgraphWithOutputs[+A <: MutableVertexWithOutputs](override protected[backend] val root:MutableVertex,
-                                                                override protected[backend] val leafs:Seq[A])
-  extends Subgraph(root,leafs)
+                                                                override protected[backend] val leaves:Seq[A])
+  extends Subgraph(root,leaves)
 {
   def ~>[B <: MutableVertex](next:Subgraph[B]):Subgraph[B] = {
-    this.leafs.foreach(_.addNext(next.root))
-    new Subgraph(root,next.leafs)
+    this.leaves.foreach(_.addNext(next.root))
+    new Subgraph(root,next.leaves)
   }
 
   def ~>[B <: MutableVertexWithOutputs](next:SubgraphWithOutputs[B]):SubgraphWithOutputs[B] = {
-    this.leafs.foreach(_.addNext(next.root))
-    new SubgraphWithOutputs(root,next.leafs)
+    this.leaves.foreach(_.addNext(next.root))
+    new SubgraphWithOutputs(root,next.leaves)
   }
 }
 

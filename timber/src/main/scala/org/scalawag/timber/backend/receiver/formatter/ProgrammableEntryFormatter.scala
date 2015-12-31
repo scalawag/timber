@@ -140,7 +140,7 @@ import org.scalawag.timber.api.Entry
   *   - `timestamp` - the timestamp at which the entry was created
   *   - `level` - the level at which the entry was created (if available)
   *   - `loggingClass` - the class from which the log method was called (if available)
-  *   - loggingMethod` - the method from which the log method was called (if available)
+  *   - `loggingMethod` - the method from which the log method was called (if available)
   *   - `sourceLocation` - the location in source (file name and line number) from which the log method was called (if available)
   *   - `tags` - the tags associated with the entry
   *   - `loggerAttributes` - the logger attributes associated with the entry

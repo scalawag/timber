@@ -33,7 +33,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
       val g = true ~> false
 
       val v1 = g.root.asInstanceOf[MutableConditionVertex]
-      val v2 = g.leafs.head.asInstanceOf[MutableConditionVertex]
+      val v2 = g.leaves.head.asInstanceOf[MutableConditionVertex]
 
       v1.condition shouldBe AcceptAll
       v1.nexts shouldBe Set(v2)
@@ -46,7 +46,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
       val g = c ~> false
 
       val v1 = g.root.asInstanceOf[MutableConditionVertex]
-      val v2 = g.leafs.head
+      val v2 = g.leaves.head
 
       v1.condition shouldBe c
       v1.nexts shouldBe Set(v2)
@@ -59,7 +59,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
       val g = true ~> r
 
       val v1 = g.root.asInstanceOf[MutableConditionVertex]
-      val v2 = g.leafs.head
+      val v2 = g.leaves.head
 
       v1.condition shouldBe AcceptAll
       v1.nexts shouldBe Set(v2)
@@ -95,7 +95,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
       val g:Subgraph[MutableReceiverVertex] = er
 
       narrow[MutableReceiverVertex](g.root).receiver shouldBe er
-      g.leafs.head.receiver shouldBe er
+      g.leaves.head.receiver shouldBe er
     }
 
     it("should implicitly wrap when chaining") {
@@ -103,7 +103,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
       val g:Subgraph[MutableReceiverVertex] = true ~> er
 
       narrow[MutableConditionVertex](g.root).condition shouldBe AcceptAll
-      g.leafs.head.receiver shouldBe er
+      g.leaves.head.receiver shouldBe er
     }
 
     it("should produce a new Receiver each time an Receiver is wrapped") {
@@ -114,8 +114,8 @@ class DslTest extends FunSpec with Matchers with MockFactory {
 
       // You should get different Receiver instances wrapping the same Receiver.
 
-      e1.leafs.head should not be (e2.leafs.head)
-      e1.leafs.head.receiver shouldBe e2.leafs.head.receiver
+      e1.leaves.head should not be (e2.leaves.head)
+      e1.leaves.head.receiver shouldBe e2.leaves.head.receiver
     }
 
   }
@@ -128,7 +128,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
       val c:Subgraph[MutableConditionVertex] = cnd
 
       c.root.asInstanceOf[MutableConditionVertex].condition shouldBe cnd
-      c.leafs.head.condition shouldBe cnd
+      c.leaves.head.condition shouldBe cnd
     }
 
     it("should implicitly wrap when chaining") {
@@ -136,7 +136,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
       val g:Subgraph[MutableConditionVertex] = true ~> cnd
 
       narrow[MutableConditionVertex](g.root).condition shouldBe AcceptAll
-      g.leafs.head.condition shouldBe cnd
+      g.leaves.head.condition shouldBe cnd
     }
 
     it("should produce a new Filter each time a Condition is wrapped") {
@@ -148,8 +148,8 @@ class DslTest extends FunSpec with Matchers with MockFactory {
       // You should get different Receiver instances wrapping the same Receiver.  This way they can have
       // different outputs even though they are both using the same condition.
 
-      e1.leafs.head should not be (e2.leafs.head)
-      e1.leafs.head.condition shouldBe e2.leafs.head.condition
+      e1.leaves.head should not be (e2.leaves.head)
+      e1.leaves.head.condition shouldBe e2.leaves.head.condition
     }
 
   }

@@ -102,7 +102,7 @@ class MutableVertexTest extends FunSpec with Matchers with MockFactory {
       h.condition shouldBe AcceptAll
       h.nexts shouldBe 'empty
 
-      g.leafs shouldBe Seq(h)
+      g.leaves shouldBe Seq(h)
     }
 
     it("should create single-vertex subgraph from Condition") {
@@ -113,7 +113,7 @@ class MutableVertexTest extends FunSpec with Matchers with MockFactory {
       h.condition shouldBe c
       h.nexts shouldBe 'empty
 
-      g.leafs shouldBe Seq(h)
+      g.leaves shouldBe Seq(h)
     }
 
     it("should create single-vertex subgraph from Receiver") {
@@ -123,20 +123,20 @@ class MutableVertexTest extends FunSpec with Matchers with MockFactory {
       val h = g.root.asInstanceOf[MutableReceiverVertex]
       h.receiver shouldBe r
 
-      g.leafs shouldBe Seq(h)
+      g.leaves shouldBe Seq(h)
     }
 
-    it("should add another subgraph after leafs") {
+    it("should add another subgraph after leaves") {
       val g1 = Subgraph(true)
       val g2 = Subgraph(false)
 
       val g3 = g1 ~> g2
 
       g3.root shouldBe g1.root
-      g3.leafs shouldBe g2.leafs
+      g3.leaves shouldBe g2.leaves
     }
 
-    it("should add another terminal subgraph after leafs") {
+    it("should add another terminal subgraph after leaves") {
       val r = mock[Receiver]
       val g1 = Subgraph(true)
       val g2 = Subgraph(r)
@@ -144,17 +144,17 @@ class MutableVertexTest extends FunSpec with Matchers with MockFactory {
       val g3 = g1 ~> g2
 
       g3.root shouldBe g1.root
-      g3.leafs.toSet shouldBe Set(g2.root)
+      g3.leaves.toSet shouldBe Set(g2.root)
     }
 
     // A Subgraph represents a partial view of the entire graph based on what was just built.  This means that, if
     // you took the root and followed all the nexts of the vertices, you could get a different set than if you just
-    // looked at the leafs of the Subgraph.  This seems kind of counterintuitive at first, but it makes sense given
+    // looked at the leaves of the Subgraph.  This seems kind of counterintuitive at first, but it makes sense given
     // the fact that this is part of a DSL.  When you build a Subgraph using the DSL, you can add an edge to it and
     // the only vertices affected are those that were specifically mentioned when building the subgraph.  Otherwise,
     // you'd be creating edges that you weren't expecting.
 
-    it("should have leafs independent of its containing graph") {
+    it("should have leaves independent of its containing graph") {
 
       val b1 = Subgraph(true)
       val c1 = Subgraph(level > 1)
@@ -166,16 +166,16 @@ class MutableVertexTest extends FunSpec with Matchers with MockFactory {
       val g1 = b1 ~> c1 ~> c2 ~> c3
 
       g1.root shouldBe b1.root
-      g1.leafs shouldBe c3.leafs
+      g1.leaves shouldBe c3.leaves
 
       val g2 = b1 ~> c4 ~> c2 ~> c5
 
       g2.root shouldBe b1.root
-      g2.leafs shouldBe c5.leafs // shouldn't reflect the old paths from b1 ~> c1 or c2 ~> c3
+      g2.leaves shouldBe c5.leaves // shouldn't reflect the old paths from b1 ~> c1 or c2 ~> c3
 
       // Old subgraph should remain unchanged
       g1.root shouldBe b1.root
-      g1.leafs shouldBe c3.leafs // shouldn't reflect the new path from b1 ~> c4 or c2 ~> c5
+      g1.leaves shouldBe c3.leaves // shouldn't reflect the new path from b1 ~> c4 or c2 ~> c5
     }
 
   }

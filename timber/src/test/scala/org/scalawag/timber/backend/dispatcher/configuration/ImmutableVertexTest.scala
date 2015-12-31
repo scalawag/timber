@@ -87,12 +87,12 @@ class ImmutableVertexTest extends FunSpec with Matchers with MockFactory {
 
       val ie = ImmutableVertex(g.root)
 
-      def findLeafs(v:ImmutableVertex):Set[ImmutableVertex] = v match {
-        case ImmutableConditionVertex(_,nexts) => nexts.flatMap(findLeafs)
+      def findleaves(v:ImmutableVertex):Set[ImmutableVertex] = v match {
+        case ImmutableConditionVertex(_,nexts) => nexts.flatMap(findleaves)
         case ImmutableReceiverVertex(_) => Set(v)
       }
 
-      findLeafs(ie).size shouldBe 1
+      findleaves(ie).size shouldBe 1
     }
 
   }

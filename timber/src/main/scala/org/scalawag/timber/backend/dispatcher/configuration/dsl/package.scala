@@ -107,7 +107,7 @@ package object dsl {
       nexts map { v =>
         in ~> v
       }
-    new Subgraph(in.root,outs.flatMap(_.leafs))
+    new Subgraph(in.root,outs.flatMap(_.leaves))
   }
 
   def fanout(nexts:SubgraphWithOutputs[MutableVertexWithOutputs]*):SubgraphWithOutputs[MutableVertexWithOutputs] = {
@@ -116,7 +116,7 @@ package object dsl {
       nexts map { v =>
         in ~> v
       }
-    new SubgraphWithOutputs(in.root,outs.flatMap(_.leafs))
+    new SubgraphWithOutputs(in.root,outs.flatMap(_.leaves))
   }
 
   //-------------------------------------------------------------------------------------------------------------------
@@ -141,7 +141,7 @@ package object dsl {
       }
 
       // resulting chain has all the outputs of all the whenThens
-      new Subgraph(in.root,whenThens.flatMap(_.thenGraph.leafs).distinct)
+      new Subgraph(in.root,whenThens.flatMap(_.thenGraph.leaves).distinct)
     }
 
     def apply(whenThens:choose.WhenThenWithOutputs[MutableVertexWithOutputs]*):SubgraphWithOutputs[MutableVertexWithOutputs] = {
@@ -156,7 +156,7 @@ package object dsl {
       }
 
       // resulting chain has all the outputs of all the whenThens
-      new SubgraphWithOutputs(in.root,whenThens.flatMap(_.thenGraph.leafs).distinct)
+      new SubgraphWithOutputs(in.root,whenThens.flatMap(_.thenGraph.leaves).distinct)
     }
 
     final class WhenThenWithOutputs[+A <: MutableVertexWithOutputs](override protected[dsl] val whenCondition:Condition, override protected[dsl] val thenGraph:SubgraphWithOutputs[A])
@@ -164,12 +164,12 @@ package object dsl {
     {
       def ~>[B <: MutableVertex](next:Subgraph[B]) = new WhenThen(whenCondition,thenGraph ~> next)
       def ~>[B <: MutableVertexWithOutputs](next:SubgraphWithOutputs[B]) = new WhenThenWithOutputs(whenCondition,thenGraph ~> next)
-      override def toString: String = s"when($whenCondition,${thenGraph.root},${thenGraph.leafs})"
+      override def toString: String = s"when($whenCondition,${thenGraph.root},${thenGraph.leaves})"
     }
 
     sealed class WhenThen[+A <: MutableVertex](protected[dsl] val whenCondition:Condition, protected[dsl] val thenGraph:Subgraph[A]) {
       import thenGraph._
-      override def toString: String = s"when($whenCondition,$root,$leafs)"
+      override def toString: String = s"when($whenCondition,$root,$leaves)"
     }
 
     final class When(protected[dsl] val whenCondition:Condition) {
