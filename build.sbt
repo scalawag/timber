@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import com.typesafe.sbt.SbtSite
 import com.typesafe.sbt.osgi.OsgiKeys._
 import sbt._
 import scoverage._
 import org.scalawag.sbt.gitflow.GitFlowPlugin
+import SiteKeys._
 
 lazy val commonSettings = GitFlowPlugin.defaults ++ Seq(
   organization := "org.scalawag.timber",
@@ -48,7 +50,7 @@ lazy val commonSettings = GitFlowPlugin.defaults ++ Seq(
     "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2"
   ) map ( _ % "test" )
 
-) ++ osgiSettings ++ site.settings ++ site.includeScaladoc()
+) ++ osgiSettings ++ site.settings
 
 val api = project.in(file("api")).settings(commonSettings:_*).settings(
   name := "timber-api",
@@ -64,12 +66,12 @@ val api = project.in(file("api")).settings(commonSettings:_*).settings(
     "org.scalawag.timber.api.style.syslog"
   ),
   importPackage += "org.scalawag.timber.backend;version=\"0.5\""
-)
+).settings(site.includeScaladoc():_*)
 
 val timber = project.settings(commonSettings:_*).settings(
   name := "timber",
   exportPackage += "org.scalawag.timber.backend.*"
-) dependsOn (api)
+).settings(site.includeScaladoc():_*) dependsOn (api)
 
 val slf4jOverTimber = project.in(file("slf4j-over-timber")).settings(commonSettings:_*).settings(
   name := "slf4j-over-timber",
@@ -147,23 +149,45 @@ val CloseOnShutdownTest =
 val CloseOnSignalTest =
   project.in(file("tests/CloseOnSignal")).settings(testProjectSettings:_*) dependsOn (timber)
 
-val root = project.in(file(".")).settings(
-  aggregate in update := false,
-  publishArtifact := false,
-  publishTo := Some(Resolver.file("Not actually used but required by publish-signed", file("/tmp/bogusrepo")))
-).aggregate(
-  api,
-  timber,
-  slf4jOverTimber,
-  timberOverSlf4j,
-  logbackSupport,
-  examples,
-  DebugModeTest,
-  SpecifiedDispatcherTest,
-  CantCastSpecifiedDispatcherTest,
-  CantFindSpecifiedDispatcherTest,
-  CantInstantiateSpecifiedDispatcherTest,
-  RuntimeSpecifiedDispatcherTest,
-  CloseOnShutdownTest,
-  CloseOnSignalTest
-)
+val apiDoc = file("api/target/site/latest/api")
+
+val backendDoc = file("timber/target/site/latest/api")
+
+val root = project.in(file(".")).
+  settings(site.settings:_*).
+  settings(site.jekyllSupport():_*).
+  settings(
+    aggregate in update := false,
+    publishArtifact := false,
+    publishTo := Some(Resolver.file("Not actually used but required by publish-signed", file("/tmp/bogusrepo"))),
+//    siteMappings ++= ( apiDoc ** "*" ) pair relativeTo(apiDoc),
+//    siteMappings ++= ( backendDoc ** "*" ) pair relativeTo(backendDoc)
+    siteMappings ++= {
+      // TODO: Make sure the api/doc has been built (there's got to be a way to do this).
+//      doc.value
+//      mappings.all(ScopeFilter(inProjects(api),inConfigurations(Docs))).value
+      SbtSite.selectSubpaths(apiDoc,"*").map { case (f,t) => (f,s"docs/api/$t") }
+    },
+    siteMappings ++= {
+      // TODO: Make sure the timber/doc has been built (there's got to be a way to do this).
+//      Docs.doc.value
+//      mappings.all(ScopeFilter(inProjects(timber),inConfigurations(Docs))).value
+      SbtSite.selectSubpaths(backendDoc,"*").map { case (f,t) => (f,s"docs/timber/$t") }
+    }
+  ).
+  aggregate(
+    api,
+    timber,
+    slf4jOverTimber,
+    timberOverSlf4j,
+    logbackSupport,
+    examples,
+    DebugModeTest,
+    SpecifiedDispatcherTest,
+    CantCastSpecifiedDispatcherTest,
+    CantFindSpecifiedDispatcherTest,
+    CantInstantiateSpecifiedDispatcherTest,
+    RuntimeSpecifiedDispatcherTest,
+    CloseOnShutdownTest,
+    CloseOnSignalTest
+  )
