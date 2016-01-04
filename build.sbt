@@ -156,6 +156,7 @@ val backendDoc = file("timber/target/site/latest/api")
 val root = project.in(file(".")).
   settings(site.settings:_*).
   settings(site.jekyllSupport():_*).
+  settings(ghpages.settings:_*).
   settings(
     aggregate in update := false,
     publishArtifact := false,
@@ -173,7 +174,8 @@ val root = project.in(file(".")).
 //      Docs.doc.value
 //      mappings.all(ScopeFilter(inProjects(timber),inConfigurations(Docs))).value
       SbtSite.selectSubpaths(backendDoc,"*").map { case (f,t) => (f,s"docs/timber/$t") }
-    }
+    },
+    git.remoteRepo := "https://github.com/scalawag/timber.git"
   ).
   aggregate(
     api,
