@@ -2,7 +2,7 @@ title: Timber
 
 markdown: kramdown
 
-baseurl: /
+baseurl: /timber
 
 github:
   repo: https://github.com/scalawag/timber
@@ -13,14 +13,3 @@ kramdown:
   syntax_highlighter: rouge
 
 version: "0.6.0-SNAPSHOT"
-
-#markdown_ext: "md"
-#defaults:
-#  -
-#    scope:
-#      path: "docs"
-#      type: "pages"
-
-#collections:
-#  docs:
-#    output: true
