@@ -11,7 +11,7 @@
 
   <title>
     
-       &middot; Timber
+      Getting Started &middot; Timber
     
   </title>
 
@@ -42,7 +42,7 @@
     </div>
 
     <nav class="sidebar-nav">
-      <a class="sidebar-nav-item active" href="/">Home</a>
+      <a class="sidebar-nav-item" href="/">Home</a>
 
       
 
@@ -133,7 +133,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/api/GettingStarted">Getting Started</a>
+                <a class="sidebar-nav-item active" href="/api/GettingStarted">Getting Started</a>
               
             
           
@@ -321,46 +321,48 @@
 
     <div class="content container">
       <div class="page">
-  <h1 class="page-title"></h1>
-  <p>Timber is a logging system for Scala applications. It is written in Scala to take advantage of its unique language
-features. It’s not a wrapper for an existing Java logging library.</p>
+  <h1 class="page-title">Getting Started</h1>
+  <p>To generate log entries for any logging backend using timber, you need to use the timber API.</p>
 
-<p>Configuration is done through an [internal DSL](backend/ConfigurationDSL], allowing you to use the full power of
-Scala to configure your logging system.</p>
+<ul>
+  <li>
+    <p>Add the following dependency (and resolver, if necessary) to your sbt build:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">dispatcher</span><span class="o">.</span><span class="n">configure</span> <span class="o">{</span> <span class="nc">IN</span> <span class="k">=&gt;</span>
-  <span class="nc">IN</span> <span class="o">~&gt;</span> <span class="n">fanout</span> <span class="o">(</span>
-    <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">DEBUG</span> <span class="o">),</span>
-    <span class="o">(</span> <span class="n">loggingClass</span> <span class="n">startsWith</span> <span class="s">"com.example"</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">WARN</span> <span class="o">)</span>
-  <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">resolvers</span> <span class="o">+=</span> <span class="s">"sonatype-oss-snapshots"</span> <span class="n">at</span> <span class="s">"http://oss.sonatype.org/content/repositories/snapshots/"</span>
+
+<span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"org.scalawag.timber"</span> <span class="o">%%</span> <span class="s">"timber-api"</span> <span class="o">%</span> <span class="s">"0.6.0-SNAPSHOT"</span>
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>Create a logger and log away!</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+
+<span class="k">class</span> <span class="nc">MyLibraryClass</span> <span class="o">{</span>
+  <span class="k">private</span><span class="o">[</span><span class="kt">this</span><span class="o">]</span> <span class="k">val</span> <span class="n">log</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Logger</span>
+
+  <span class="k">def</span> <span class="n">doSomething</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">trace</span><span class="o">(</span><span class="s">"trace message"</span><span class="o">)</span>
+  <span class="o">}</span>
 <span class="o">}</span>
 </code></pre>
-</div>
+    </div>
+  </li>
+</ul>
 
-<p>It takes advantage of Scala’s by-name parameters and function literals to provide lazy message evaluation. That
-prevents doing work that doesn’t need to be done without requiring “isEnabled” conditionals.</p>
+<h2 id="next-steps">Next Steps</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="n">s</span><span class="s">"n = $n"</span><span class="o">)</span>
-
-<span class="n">log</span><span class="o">.</span><span class="n">debug</span> <span class="o">{</span> <span class="n">pw</span><span class="k">:</span> <span class="kt">PrintWriter</span> <span class="o">=&gt;</span>
-  <span class="n">pw</span><span class="o">.</span><span class="n">print</span><span class="o">(</span><span class="s">"Here's a multi-line log entry that"</span><span class="o">)</span>
-  <span class="n">pw</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="s">"won't be built unless it's needed."</span><span class="o">)</span>
-  <span class="n">traversable</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">pw</span><span class="o">.</span><span class="n">println</span><span class="o">)</span>
-<span class="o">}</span>
-</code></pre>
-</div>
-
-<p>It supports the <a href="http://www.slf4j.org/">slf4j</a> interface so that it can be used by Java classes and by
-applications that are already using the slf4j API (or any API for which slf4j includes a
-<a href="http://www.slf4j.org/legacy.html">bridge</a>).</p>
-
-<p>It supports logback appenders so you can keep using any custom appenders that you’ve already written.</p>
-
-<p>Get started by looking at the timber <a href="Concepts">concepts</a>.</p>
+<ul>
+  <li>Find out more about <a href="Loggers">loggers</a>.</li>
+  <li>Learn about timber’s <a href="Levels">levels</a>.</li>
+  <li>Find out how to specify more complicated <a href="Messages">messages</a>.</li>
+  <li>Explore <a href="BestPractices">best practices</a>.</li>
+</ul>
 
 </div>
 
-<a class="help" href="https://github.com/scalawag/timber/edit/develop/src/jekyll/index.md">
+<a class="help" href="https://github.com/scalawag/timber/edit/develop/src/jekyll/api/01-GettingStarted.md">
   Help improve this page.
 </a>
 

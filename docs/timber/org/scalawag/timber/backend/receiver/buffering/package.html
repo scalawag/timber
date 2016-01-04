@@ -1,0 +1,261 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>buffering - org.scalawag.timber.backend.receiver.buffering</title>
+          <meta name="description" content="buffering - org.scalawag.timber.backend.receiver.buffering" />
+          <meta name="keywords" content="buffering org.scalawag.timber.backend.receiver.buffering" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../../../index.html';
+            var hash = 'org.scalawag.timber.backend.receiver.buffering.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../../../package.html" class="extype" name="org">org</a>.<a href="../../../../package.html" class="extype" name="org.scalawag">scalawag</a>.<a href="../../../package.html" class="extype" name="org.scalawag.timber">timber</a>.<a href="../../package.html" class="extype" name="org.scalawag.timber.backend">backend</a>.<a href="../package.html" class="extype" name="org.scalawag.timber.backend.receiver">receiver</a></p>
+        <h1>buffering</h1><span class="permalink">
+      <a href="../../../../../../index.html#org.scalawag.timber.backend.receiver.buffering.package" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">buffering</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Contains the composable <a href="../Receiver.html" class="extype" name="org.scalawag.timber.backend.receiver.Receiver">Receiver</a> buffering policies available in timber.  These only affect how often the
+receiver is flushed by timber.  Many receivers will be based on instances of other classes that are themselves
+buffered (e.g., BufferedWriters and BufferedOutputStreams).  While the flushes that timber instigates should make
+it down to the underlying objects, those objects may also flush for other reasons (e.g., their buffer reaching
+capacity). So, this buffering policy may not be the only source of flushes.</p><p>Each of the policies has two flavors.  The first is a trait that can be used to mixin to a <a href="../StackableReceiver.html" class="extype" name="org.scalawag.timber.backend.receiver.StackableReceiver">StackableReceiver</a>.
+The second is an object that can be used as an argument to the <code>file()</code> method in the
+<a href="../../dispatcher/configuration/dsl/package.html" class="extype" name="org.scalawag.timber.backend.dispatcher.configuration.dsl">DSL</a>.
+</p></div><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="org.scalawag.timber.backend.receiver.buffering"><span>buffering</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.scalawag.timber.backend.receiver.buffering.BufferingPolicy" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="BufferingPolicyextendsAnyRef"></a>
+      <a id="BufferingPolicy:BufferingPolicy"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="BufferingPolicy.html"><span class="name">BufferingPolicy</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#org.scalawag.timber.backend.receiver.buffering.package@BufferingPolicyextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalawag.timber.backend.receiver.buffering.ImmediateFlushing" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ImmediateFlushingextendsAnyRef"></a>
+      <a id="ImmediateFlushing:ImmediateFlushing"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ImmediateFlushing.html"><span class="name">ImmediateFlushing</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#org.scalawag.timber.backend.receiver.buffering.package@ImmediateFlushingextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Applies the ImmediateFlushing (see companion object) buffering policy to the <a href="../StackableReceiver.html" class="extype" name="org.scalawag.timber.backend.receiver.StackableReceiver">StackableReceiver</a> it is mixed into.</p>
+    </li><li name="org.scalawag.timber.backend.receiver.buffering.LazyFlushing" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="LazyFlushingextendsAnyRef"></a>
+      <a id="LazyFlushing:LazyFlushing"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="LazyFlushing.html"><span class="name">LazyFlushing</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#org.scalawag.timber.backend.receiver.buffering.package@LazyFlushingextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Applies the LazyFlushing (see companion object) buffering policy to the <a href="../StackableReceiver.html" class="extype" name="org.scalawag.timber.backend.receiver.StackableReceiver">StackableReceiver</a> it is mixed into.</p>
+    </li><li name="org.scalawag.timber.backend.receiver.buffering.PeriodicFlushing" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="PeriodicFlushingextendsAnyRef"></a>
+      <a id="PeriodicFlushing:PeriodicFlushing"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="PeriodicFlushing.html"><span class="name">PeriodicFlushing</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#org.scalawag.timber.backend.receiver.buffering.package@PeriodicFlushingextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Applies the PeriodicFlushing (see companion object) buffering policy to the <a href="../StackableReceiver.html" class="extype" name="org.scalawag.timber.backend.receiver.StackableReceiver">StackableReceiver</a> it is mixed into.</p><div class="fullcomment"><div class="comment cmt"><p>Applies the PeriodicFlushing (see companion object) buffering policy to the <a href="../StackableReceiver.html" class="extype" name="org.scalawag.timber.backend.receiver.StackableReceiver">StackableReceiver</a> it is mixed into.</p><p>Override the <code>maximumFlushInterval</code> member to change the frequency of automatic flushes.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.scalawag.timber.backend.receiver.buffering.ImmediateFlushing" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ImmediateFlushing"></a>
+      <a id="ImmediateFlushing:ImmediateFlushing"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ImmediateFlushing$.html"><span class="name">ImmediateFlushing</span></a><span class="result"> extends <a href="BufferingPolicy.html" class="extype" name="org.scalawag.timber.backend.receiver.buffering.BufferingPolicy">BufferingPolicy</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#org.scalawag.timber.backend.receiver.buffering.package@ImmediateFlushing" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Flushes a <a href="../Receiver.html" class="extype" name="org.scalawag.timber.backend.receiver.Receiver">Receiver</a> immediately after each entry is received.</p>
+    </li><li name="org.scalawag.timber.backend.receiver.buffering.LazyFlushing" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LazyFlushing"></a>
+      <a id="LazyFlushing:LazyFlushing"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="LazyFlushing$.html"><span class="name">LazyFlushing</span></a><span class="result"> extends <a href="BufferingPolicy.html" class="extype" name="org.scalawag.timber.backend.receiver.buffering.BufferingPolicy">BufferingPolicy</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#org.scalawag.timber.backend.receiver.buffering.package@LazyFlushing" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Disables automatic flushing of a <a href="../Receiver.html" class="extype" name="org.scalawag.timber.backend.receiver.Receiver">Receiver</a>.</p>
+    </li><li name="org.scalawag.timber.backend.receiver.buffering.PeriodicFlushing" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="PeriodicFlushing"></a>
+      <a id="PeriodicFlushing:PeriodicFlushing"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="PeriodicFlushing$.html"><span class="name">PeriodicFlushing</span></a><span class="result"> extends <span class="extype" name="org.scalawag.timber.backend.receiver.buffering.PeriodicFlushingPolicy">PeriodicFlushingPolicy</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../../index.html#org.scalawag.timber.backend.receiver.buffering.package@PeriodicFlushing" title="Permalink" target="_top">
+        <img src="../../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Periodically flushes a <a href="../Receiver.html" class="extype" name="org.scalawag.timber.backend.receiver.Receiver">Receiver</a> at the default frequency (5 seconds).</p><div class="fullcomment"><div class="comment cmt"><p>Periodically flushes a <a href="../Receiver.html" class="extype" name="org.scalawag.timber.backend.receiver.Receiver">Receiver</a> at the default frequency (5 seconds).  The receiver may flush more often than
+this interval in other scenarios (e.g., when buffer capacity is reached).</p><p>The interval is dependent only on flushes that are initiated from the receiver, either explicitly through its
+<code>flush()</code> method or automatically through the periodic schedule.  It does not take into account flushes that
+occur in the underlying objects.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Dispatchers &middot; Timber
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/custom.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <!-- <link rel="shortcut icon" href="/public/favicon.ico"> -->
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      <h1>
+        Timber
+      </h1>
+      <p class="lead"></p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+
+      
+        
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/Concepts">Concepts</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-api
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/Loggers">Loggers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/Messages">Messages</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/Levels">Levels</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/ThreadAttributes">Thread Attributes</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/BestPractices">Best Practices</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/AdvancedUsage">Advanced Usage</a>
+              
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-backend
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item active" href="/backend/Dispatchers">Dispatchers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/ConfigurationDSL">Configuration DSL</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/Conditions">Conditions</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/Entries">Entries</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/Formatters">Formatters</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/Receivers">Receivers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber">View on GitHub</a>
+<!--      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber/archive/v0.6.0-SNAPSHOT.zip">Download</a> -->
+      <span class="sidebar-nav-item">Currently v0.6.0-SNAPSHOT</span>
+    </nav>
+
+    <p>&copy; 2016</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">Dispatchers</h1>
+  <p>Dispatchers route <a href="Entries">entries</a> to the appropriate <a href="Receivers">receivers</a> based on their <a href="DSL">configuration</a>.
+Each <a href="../api/Loggers">logger</a> must be associated with exactly one dispatcher when its constructed. After that, a
+logger’s dispatcher can not be change. The specified dispatcher will handle all the entries generated by that logger
+for the logger’s lifetime. While a given logger uses only one dispatcher, any number of loggers may use the same
+dispatcher.</p>
+
+<p>Dispatchers are represented by the trait <code class="highlighter-rouge">org.scalawag.timber.api.Dispatcher</code> in the timber API. You can implement
+this trait yourself, but there shouldn’t be a reason for most applications.  You can simply use the concrete
+dispatcher (<code class="highlighter-rouge">org.scalawag.timber.backend.dispatcher.Dispatcher</code>) supplied by the timber backend.
+The rest of this page deals solely with the backend’s concrete <code class="highlighter-rouge">Dispatcher</code> class unless otherwise noted.</p>
+
+<p>If the dispatcher is not specified at logger construction, either through an explicit parameter or an implicit
+dispatcher in scope, the <em>default dispatcher</em> will be used.</p>
+
+<p><a name="default_dispatcher"></a></p>
+
+<h2 id="the-default-dispatcher">The Default Dispatcher</h2>
+
+<p>The <em>default dispatcher</em> handles entries from loggers that don’t specify an another one.  It also handles entries
+bridged from other logging systems, unless otherwise configured. In the simple example in
+<a href="GettingStarted">GettingStarted</a>, no dispatcher is specified when the logger is instantiated, so the default
+dispatcher is used.  There is always a default dispatcher in place when using the timber backend.</p>
+
+<p>The <em>initial</em> default dispatcher (the one that’s in place when your application starts) writes all its entries
+to <code class="highlighter-rouge">stderr</code> with a default format. If you want timber to do something with the entries other than write them all
+to <code class="highlighter-rouge">stderr</code>, you’ll need to configure the default dispatcher.</p>
+
+<p>Here’s an example that limits the entries written to only those with a level of INFO or higher.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Logger</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level.INFO</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.DefaultDispatcher</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.Dispatcher</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.Configuration</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+
+<span class="k">object</span> <span class="nc">Main</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">setupLogging</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="n">config</span> <span class="k">=</span> <span class="nc">Configuration</span> <span class="o">{</span>
+      <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
+    <span class="o">}</span>
+    <span class="k">val</span> <span class="n">disp</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Dispatcher</span><span class="o">(</span><span class="n">config</span><span class="o">)</span>
+    <span class="nc">DefaultDispatcher</span><span class="o">.</span><span class="n">set</span><span class="o">(</span><span class="n">disp</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span><span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="n">setupLogging</span><span class="o">()</span>
+
+    <span class="k">val</span> <span class="n">log</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Logger</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">trace</span><span class="o">(</span><span class="s">"trace message"</span><span class="o">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="o">(</span><span class="s">"error message"</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">Main</span><span class="o">.</span><span class="n">main</span><span class="o">(</span><span class="nc">Array</span><span class="o">.</span><span class="n">empty</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<p>You can’t configure the initial default dispatcher per se.  However, you can create a new dispatcher and put
+<em>it</em> in place as the default dispatcher.  You will then have a reference to that dispatcher so that you can
+reconfigure it. That’s exactly what’s happening in the example above: <code class="highlighter-rouge">disp</code> is created and configured and then
+established as the new default dispatcher with the call to <code class="highlighter-rouge">DefaultDispatcher.set()</code>.  From that point on, any logger
+that hasn’t specified a dispatcher will use <code class="highlighter-rouge">disp</code>.  In the example, <code class="highlighter-rouge">disp</code> (the reference) is not used after that.
+In your application, you could store the reference so that you could subsequently change the configuration.</p>
+
+<p>Where you want to establish your default dispatcher is up to you.  It should probably be in your application startup
+code for the most consistent logging experience.  It’s not critical that it happen before logging calls begin but
+you may get some entry leakage on stderr if you don’t have it configured prior to those calls being made.</p>
+
+<p>You can change the default dispatcher at any time during the life of your application.  Just call
+<code class="highlighter-rouge">DefaultDispatcher.set()</code> again. All the entries will either go to the old one or the new one. None will be lost.</p>
+
+<h2 id="configuring-a-dispatcher">Configuring a Dispatcher</h2>
+
+<p>You tell a dispatcher how to route entries by configuring it with a routing graph.  The easiest way to build the
+graph is through the timber <a href="DSL">DSL</a>. This can either be done through a constructor parameter when the dispatcher
+is created or by calling the <code class="highlighter-rouge">setConfiguration(Configuration)</code> or  <code class="highlighter-rouge">configure(fn)</code> method.  How you choose to provide
+the configuration is largely a matter of style.</p>
+
+<p>All three of the following dispatchers have effectively the same configuration.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level.INFO</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+
+<span class="k">val</span> <span class="n">cfg</span><span class="k">:</span><span class="kt">Configuration</span> <span class="o">=</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
+
+<span class="k">val</span> <span class="n">disp1</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Dispatcher</span><span class="o">(</span><span class="n">cfg</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">disp2</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Dispatcher</span>
+<span class="n">disp2</span><span class="o">.</span><span class="n">setConfiguration</span><span class="o">(</span><span class="n">cfg</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">disp3</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Dispatcher</span>
+<span class="n">disp3</span><span class="o">.</span><span class="n">configure</span> <span class="o">{</span> <span class="nc">IN</span> <span class="k">=&gt;</span>
+  <span class="nc">IN</span> <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>For more information on building the Configuration itself, see [[DSL]].</p>
+
+<h2 id="multiple-dispatchers">Multiple Dispatchers</h2>
+
+<p>Normally, there will be only one dispatcher in use in your application, though there’s no reason that you can’t
+use multiple if the need arises. The most likely case is when you have multiple streams of entries that are always
+generated from different loggers and always written to different destinations.  An example is the request log on a
+web server.  Request logs don’t really have levels (everything is the same level) and you don’t normally want
+the request log entries mixed in with your application debug logging.  Also, there’s generally one location in the
+code that generates all of the entries for the request log, as opposed to application debugging which is probably
+all over the place.</p>
+
+<p>Instead of trying to use a specific attribute or tag to identify the request log entries, it probably makes sense to
+just keep the two streams separate.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.DefaultDispatcher</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.Dispatcher</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.Configuration</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.buffering.ImmediateFlushing</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.MessageOnlyEntryFormatter</span>
+
+<span class="k">object</span> <span class="nc">Main</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">requestLogDispatcher</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Dispatcher</span><span class="o">(</span><span class="nc">Configuration</span><span class="o">(</span>
+    <span class="n">file</span><span class="o">(</span><span class="s">"request.log"</span><span class="o">,</span><span class="nc">ImmediateFlushing</span><span class="o">)(</span><span class="nc">MessageOnlyEntryFormatter</span><span class="o">)</span>
+  <span class="o">))</span>
+
+  <span class="k">val</span> <span class="n">applicationLogDispatcher</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Dispatcher</span><span class="o">(</span><span class="nc">Configuration</span><span class="o">(</span>
+    <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">file</span><span class="o">(</span><span class="s">"application.log"</span><span class="o">,</span><span class="nc">ImmediateFlushing</span><span class="o">)</span>
+  <span class="o">))</span>
+
+  <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span><span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// Create a logger for the request log, specifying the dispatcher.
+</span>    <span class="k">val</span> <span class="n">requestLog</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BaseLogger</span><span class="o">()(</span><span class="n">requestLogDispatcher</span><span class="o">)</span>
+
+    <span class="c1">// Use the other dispatcher as the default dispatcher.
+</span>    <span class="nc">DefaultDispatcher</span><span class="o">.</span><span class="n">set</span><span class="o">(</span><span class="n">applicationLogDispatcher</span><span class="o">)</span>
+
+    <span class="k">val</span> <span class="n">log</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Logger</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">trace</span><span class="o">(</span><span class="s">"trace message"</span><span class="o">)</span>
+    <span class="n">requestLog</span><span class="o">.</span><span class="n">log</span><span class="o">(</span><span class="s">"handled request from 127.0.0.1 in 39 ms"</span><span class="o">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="o">(</span><span class="s">"error message"</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">Main</span><span class="o">.</span><span class="n">main</span><span class="o">(</span><span class="nc">Array</span><span class="o">.</span><span class="n">empty</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<h2 id="configuration-caching">Configuration Caching</h2>
+
+<p>By default, dispatchers evaluate the configuration every time an entry is dispatched. This can be rather expensive if
+you have a complex graph. To improve performance, you can tell the dispatcher to cache constrained configurations
+for similar entries based on a subset of their attributes by providing the second argument (a <code class="highlighter-rouge">CacheKeyExtractor</code>)
+to the <code class="highlighter-rouge">Dispatcher</code> constructor.</p>
+
+<p>A key extractor supplies a single method <code class="highlighter-rouge">extractKey(Entry)</code> which extracts distinguishing fields from the entry
+and returns them in an <code class="highlighter-rouge">EntryFacets</code>. Depending on your configuration and the distribution of entries you expect
+to generate, this can significantly improve the performance of your dispatcher.  Key fields should be significant
+in the configuration graph or else you’ll waste memory caching the same configuration for multiple partial entries.</p>
+
+<p>For example, given the (ridiculously bad) configuration graph:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">choose</span> <span class="o">(</span>
+  <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">ERROR</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">tagged</span> <span class="nc">MyTag</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">r1</span><span class="o">,</span>
+  <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">WARN</span> <span class="o">)</span>  <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">tagged</span> <span class="nc">MyTag</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">r2</span><span class="o">,</span>
+  <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span> <span class="o">)</span>  <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">tagged</span> <span class="nc">MyTag</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">r3</span><span class="o">,</span>
+  <span class="n">otherwise</span> <span class="o">~&gt;</span> <span class="n">r4</span>
+<span class="o">)</span>
+</code></pre>
+</div>
+
+<p>Sure, it’s easy to see how to make this configuration more efficient but it’s just to illustrate configuration
+caching.  In this case, you’d want to create a cache key extractor that makes the entry’s tags the significant key.
+That’s because the graph is wildly different depending on whether or not <code class="highlighter-rouge">MyTag</code> is present on the entry.</p>
+
+<p>Doing that will cause the dispatcher to cache two constrained graphs: one for entries whose tag set is
+<code class="highlighter-rouge">Set(MyTag)</code> and one whose tag set is <code class="highlighter-rouge">Set()</code> (I’m assuming that there aren’t any other tags being used in
+the logging system or else this might not be as effective).  Now, instead of evaluating the entire graph for each
+entry, the dispatcher will first use <code class="highlighter-rouge">extractKey</code> to get a <code class="highlighter-rouge">EntryFacets</code> for each <code class="highlighter-rouge">Entry</code>.  In the fake world
+we’ve contrived, that will produce one of the following partial entries, which will cache the corresponding
+constrained graph.</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">EntryFacets(tags = Some(Set(MyTag)))</code></p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">choose</span> <span class="o">(</span>
+  <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">ERROR</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">r1</span><span class="o">,</span>
+  <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">WARN</span> <span class="o">)</span>  <span class="o">~&gt;</span> <span class="n">r2</span><span class="o">,</span>
+  <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span> <span class="o">)</span>  <span class="o">~&gt;</span> <span class="n">r3</span><span class="o">,</span>
+  <span class="n">otherwise</span> <span class="o">~&gt;</span> <span class="n">r4</span>
+<span class="o">)</span>
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">EntryFacets(tags = Some(Set()))</code></p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r4</span>
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<p>As you can see, the graph for the former becomes somewhat simpler but the graph for the latter becomes
+incredibly simple, no longer containing any branches.  If we know that most of the entries in our application
+will not have the <code class="highlighter-rouge">MyTag</code> tag, this is a big win for the performance of our dispatcher.</p>
+
+<h3 id="cachekeyextractor-factory">CacheKeyExtractor factory</h3>
+
+<p>To make it easier to create cache key extractors, timber comes with a factory to help you generate the more common
+ones.  You just need to specify the entry attributes that you want to key off of and it will generate the extractor.
+Here’s an example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.EntryDispatcher._</span>
+
+<span class="k">val</span> <span class="n">extractor</span> <span class="k">=</span> <span class="nc">CacheKeyExtractor</span><span class="o">(</span><span class="nc">Attribute</span><span class="o">.</span><span class="nc">Tags</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<p>This code generates the cache key extractor from the previous section, where only the <code class="highlighter-rouge">tags</code> are significant for
+caching.  If you want to use a more complex key, you can specify multiple attributes.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.EntryDispatcher._</span>
+
+<span class="k">val</span> <span class="n">extractor</span> <span class="k">=</span> <span class="nc">CacheKeyExtractor</span><span class="o">(</span><span class="nc">Attribute</span><span class="o">.</span><span class="nc">CallingClass</span><span class="o">,</span><span class="nc">Attribute</span><span class="o">.</span><span class="nc">Level</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<p>This would tell the dispatcher that it should cache constrained configurations for calling class name and level.
+This would make sense if those are the only two attributes that your configuration uses to determine where entries
+are received. If there are too many calling classes, though, this might use up too much memory.</p>
+
+<h3 id="custom-cachekeyextractor">Custom CacheKeyExtractor</h3>
+
+<p>Suppose that you have many Tags flowing around in your system but you still have the call distribution from above
+(mostly entries with empty <code class="highlighter-rouge">tags</code>).  You may not want to use the <code class="highlighter-rouge">CacheKeyExtractor</code> factory method because it will
+cache the configuration for every combination of tags present on any entry.  In this scenario, you can create a
+custom cache key extractor that only distinguishes between empty <code class="highlighter-rouge">tags</code> and non-empty <code class="highlighter-rouge">tags</code>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Tag</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.api.impl.Entry</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.PartialEntry</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.EntryDispatcher.CacheKeyExtractor</span>
+
+<span class="k">val</span> <span class="n">extractor</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">CacheKeyExtractor</span> <span class="o">{</span>
+  <span class="k">object</span> <span class="nc">DummyTag</span> <span class="k">extends</span> <span class="nc">Tag</span>
+
+  <span class="k">def</span> <span class="n">extractKey</span><span class="o">(</span><span class="n">entry</span><span class="k">:</span><span class="kt">Entry</span><span class="o">)</span><span class="k">:</span> <span class="kt">PartialEntry</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span> <span class="n">entry</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">isEmpty</span> <span class="o">)</span>
+      <span class="nc">PartialEntry</span><span class="o">(</span><span class="n">tags</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="nc">Set</span><span class="o">()))</span>
+    <span class="k">else</span>
+      <span class="nc">PartialEntry</span><span class="o">(</span><span class="n">tags</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="nc">Set</span><span class="o">(</span><span class="nc">DummyTag</span><span class="o">)))</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h2 id="changing-the-initial-defaultdispatcher">Changing the initial DefaultDispatcher</h2>
+
+<p>If you’re in a situation where you can’t wait until your bootstrap code to execute before changing the default
+dispatcher, you have another option available to you.  Setting the system property <code class="highlighter-rouge">timber.dispatcher.class</code> will
+cause timber to use that class to create the initial default dispatcher.  The specified class must have a default
+constructor or you will get an error and <code class="highlighter-rouge">org.scalawag.timber.backend.dispatcher.Dispatcher</code>, the default initial
+default dispatcher (sorry, I couldn’t resist), will be used instead.</p>
+
+<p>This dispatcher can still be replaced at runtime through the mechanism shown above.  This just makes it so that you
+can establish your preferred dispatcher earlier.</p>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>That’s really all you need to know about the dispatchers. Of course, you haven’t really learned much about creating
+their configurations with the <a href="DSL">DSL</a> yet and that’s the most interesting thing about dispatchers.</p>
+
+</div>
+
+<a class="help" href="https://github.com/scalawag/timber/edit/develop/src/jekyll/backend/02-Dispatchers.md">
+  Help improve this page.
+</a>
+
+    </div>
+
+  </body>
+</html>

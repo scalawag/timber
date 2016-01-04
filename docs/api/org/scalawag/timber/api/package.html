@@ -1,0 +1,463 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>api - org.scalawag.timber.api</title>
+          <meta name="description" content="api - org.scalawag.timber.api" />
+          <meta name="keywords" content="api org.scalawag.timber.api" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../index.html';
+            var hash = 'org.scalawag.timber.api.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalawag">scalawag</a>.<a href="../package.html" class="extype" name="org.scalawag.timber">timber</a></p>
+        <h1>api</h1><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">api</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.scalawag.timber.api.BaseLogger" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="BaseLoggerextendsAnyRef"></a>
+      <a id="BaseLogger:BaseLogger"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="BaseLogger.html"><span class="name">BaseLogger</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@BaseLoggerextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Embodies the main interface into timber.</p><div class="fullcomment"><div class="comment cmt"><p>Embodies the main interface into timber.  Instances of this class are very simple objects that are essentially
+<a href="Entry.html" class="extype" name="org.scalawag.timber.api.Entry">entry</a> factories.  They are used to create entries and pass them to a <a href="Dispatcher.html" class="extype" name="org.scalawag.timber.api.Dispatcher">dispatcher</a> for
+handling, after gathering some additional contextual information. Every BaseLogger has its associated dispatcher
+established at construction-time. This dispatcher dispatches all of the entries that this logger creates
+throughout its lifetime, since the dispatcher can not be changed after construction.</p><p>Instances of this class are lightweight, immutable and thread-safe.  You should not go to great lengths to avoid
+creating loggers.</p><p>In addition to gathering contextual information, BaseLoggers can be given attributes and tags that will be applied
+to all the entries they create.  Given that they are lightweight, this gives you a way to associated some shared
+statically-scoped attributes with certain entries across threads, where the thread executing the code is not as
+important as the static attributes.  This can be particularly useful when using scala Futures or a similar
+technology where threads become more fungible.  Here is an example where the thread context (which is normally how
+you would associate the same data with several log calls) becomes meaningless.</p><pre><span class="kw">import</span> scala.util._
+<span class="kw">import</span> scala.concurrent.Future
+<span class="kw">import</span> org.scalawag.timber.api._
+<span class="kw">import</span> scala.concurrent.ExecutionContext.Implicits.global
+
+<span class="kw">def</span> handleRequest(clientIp:<span class="std">String</span>) {
+  <span class="kw">val</span> logger = <span class="kw">new</span> Logger(<span class="std">Map</span>(<span class="lit">"clientIp"</span> -&gt; clientIp))
+  logger.debug(<span class="lit">"about to start handling request"</span>)
+  Future {
+    logger.debug(<span class="lit">"handling request"</span>)
+  } onComplete {
+    <span class="kw">case</span> Success(_) <span class="kw">=&gt;</span>
+      logger.debug(<span class="lit">"request handled"</span>)
+    <span class="kw">case</span> Failure(ex) <span class="kw">=&gt;</span>
+      logger.debug(s<span class="lit">"failed to handle request: $$ex"</span>)
+  }
+}</pre><p>You could also pass the static context (<code>clientIp</code>) to each log call individually, but the style shown here is a
+little cleaner and less error-prone.</p><p>BaseLoggers don't support the <code>isEnabled</code> type methods provided by some other logging systems.  That's because the
+logger doesn't make any decisions regarding if (or where) the entries it creates are actually processed in any way.
+You don't need to protect against message generation overhead because <a href="Message.html" class="extype" name="org.scalawag.timber.api.Message">messages</a> are lazily built
+(unless you specify the <a href="ImmediateMessage$.html" class="extype" name="org.scalawag.timber.api.ImmediateMessage">ImmediateMessage</a> tag). Anything else that you would do in application code that
+depends on the status of the logging system is probably a bad idea.
+</p></div></div>
+    </li><li name="org.scalawag.timber.api.Dispatcher" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DispatcherextendsAnyRef"></a>
+      <a id="Dispatcher:Dispatcher"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Dispatcher.html"><span class="name">Dispatcher</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@DispatcherextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Dispatches <a href="Entry.html" class="extype" name="org.scalawag.timber.api.Entry">entries</a> to their appropriate destination(s).</p>
+    </li><li name="org.scalawag.timber.api.Entry" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="EntryextendsProductwithSerializable"></a>
+      <a id="Entry:Entry"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Entry.html"><span class="name">Entry</span></a><span class="params">(<span name="level">level: <span class="extype" name="scala.Option">Option</span>[<a href="Level.html" class="extype" name="org.scalawag.timber.api.Level">Level</a>] = <span class="symbol">None</span></span>, <span name="message">message: <span class="extype" name="scala.Option">Option</span>[<a href="Message.html" class="extype" name="org.scalawag.timber.api.Message">Message</a>] = <span class="symbol">None</span></span>, <span name="sourceLocation">sourceLocation: <span class="extype" name="scala.Option">Option</span>[<a href="Entry$$SourceLocation.html" class="extype" name="org.scalawag.timber.api.Entry.SourceLocation">SourceLocation</a>] = <span class="symbol">None</span></span>, <span name="loggingClass">loggingClass: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="loggingMethod">loggingMethod: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="tags">tags: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="Tag.html" class="extype" name="org.scalawag.timber.api.Tag">Tag</a>] = <span class="symbol">Set.empty</span></span>, <span name="timestamp">timestamp: <span class="extype" name="scala.Long">Long</span> = <span class="symbol">System.currentTimeMillis</span></span>, <span name="threadName">threadName: <span class="extype" name="scala.Predef.String">String</span> = <span class="symbol">Thread.currentThread.getName</span></span>, <span name="loggerAttributes">loggerAttributes: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>] = <span class="symbol">Map.empty</span></span>, <span name="threadAttributes">threadAttributes: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Predef.String">String</span>]] = <span class="symbol">Map.empty</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@EntryextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents a log-worthy event in the timber logging system.</p><div class="fullcomment"><div class="comment cmt"><p>Represents a log-worthy event in the timber logging system.</p><p>Depending on the origin of the entry, different fields may be present or absent.  For example, information about
+the entry's origin (sourceLocation, loggingClass, loggingMethod) will normally be present when the entry is
+created using the timber API but may be absent for entries bridged from other logging systems' APIs.
+</p></div><dl class="paramcmts block"><dt class="param">level</dt><dd class="cmt"><p>the optional level at which this entry was logged</p></dd><dt class="param">message</dt><dd class="cmt"><p>the optional text content of this entry, which may contain multiple lines</p></dd><dt class="param">sourceLocation</dt><dd class="cmt"><p>the optional source code location from which this entry was logged</p></dd><dt class="param">loggingClass</dt><dd class="cmt"><p>the optional name of the class from which this entry was logged</p></dd><dt class="param">loggingMethod</dt><dd class="cmt"><p>the optional name of the method from which this entry was logged</p></dd><dt class="param">tags</dt><dd class="cmt"><p>the set of tags that have been associated with this entry</p></dd><dt class="param">timestamp</dt><dd class="cmt"><p>the timestamp at which this entry was created, milliseconds since Java epoch UTC</p></dd><dt class="param">threadName</dt><dd class="cmt"><p>the name of the thread which created this entry</p></dd><dt class="param">loggerAttributes</dt><dd class="cmt"><p>the attributes associated with the logger that created this entry</p></dd><dt class="param">threadAttributes</dt><dd class="cmt"><p>the attributes associated with the thread that created this entry</p></dd></dl></div>
+    </li><li name="org.scalawag.timber.api.Level" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LevelextendsOrdered[org.scalawag.timber.api.Level]withProductwithSerializable"></a>
+      <a id="Level:Level"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Level.html"><span class="name">Level</span></a><span class="params">(<span name="intValue">intValue: <span class="extype" name="scala.Int">Int</span></span>, <span name="name">name: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Ordered">Ordered</span>[<a href="Level.html" class="extype" name="org.scalawag.timber.api.Level">Level</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@LevelextendsOrdered[org.scalawag.timber.api.Level]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents a log level of an <a href="Entry.html" class="extype" name="org.scalawag.timber.api.Entry">Entry</a> (sometimes known in other systems as &quot;severity&quot;).</p><div class="fullcomment"><div class="comment cmt"><p>Represents a log level of an <a href="Entry.html" class="extype" name="org.scalawag.timber.api.Entry">Entry</a> (sometimes known in other systems as &quot;severity&quot;).  Levels are always
+treated as their integer values internally.  The only components that care about the names are the eventual entry
+destinations, which could be log files or sockets, etc.</p><p>The names provided by the API are simply hints which the destination <em>may</em> choose use to format the entry.
+The destinations may also choose to ignore the names and only use the numeric value or even translate the integers
+to its own labels.
+</p></div><dl class="paramcmts block"><dt class="param">intValue</dt><dd class="cmt"><p>the numeric value of the level, used for comparison with other levels internally</p></dd><dt class="param">name</dt><dd class="cmt"><p>a suggested name to use when ultimately writing entries logged at this level</p></dd></dl></div>
+    </li><li name="org.scalawag.timber.api.Logger" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LoggerextendsBaseLoggerwithTracewithDebugwithInfowithWarnwithError"></a>
+      <a id="Logger:Logger"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Logger.html"><span class="name">Logger</span></a><span class="result"> extends <a href="BaseLogger.html" class="extype" name="org.scalawag.timber.api.BaseLogger">BaseLogger</a> with <a href="level/Trace.html" class="extype" name="org.scalawag.timber.api.level.Trace">Trace</a> with <a href="level/Debug.html" class="extype" name="org.scalawag.timber.api.level.Debug">Debug</a> with <a href="level/Info.html" class="extype" name="org.scalawag.timber.api.level.Info">Info</a> with <a href="level/Warn.html" class="extype" name="org.scalawag.timber.api.level.Warn">Warn</a> with <a href="level/Error.html" class="extype" name="org.scalawag.timber.api.level.Error">Error</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@LoggerextendsBaseLoggerwithTracewithDebugwithInfowithWarnwithError" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Provides a <a href="BaseLogger.html" class="extype" name="org.scalawag.timber.api.BaseLogger">BaseLogger</a> that can be used out-of-the-box with a default set
+of level-specific log methods.</p>
+    </li><li name="org.scalawag.timber.api.Message" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="MessageextendsAnyRef"></a>
+      <a id="Message:Message"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Message.html"><span class="name">Message</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@MessageextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Represents the textual content of an <a href="Entry.html" class="extype" name="org.scalawag.timber.api.Entry">entry</a>.</p><div class="fullcomment"><div class="comment cmt"><p>Represents the textual content of an <a href="Entry.html" class="extype" name="org.scalawag.timber.api.Entry">entry</a>.  You normally won't create a
+message object explicitly but will use one of the implicit conversions in the companion object (see the
+<a href="http://spray.io/blog/2012-12-13-the-magnet-pattern/" target="_blank">magnet pattern</a>).
+You don't normally need to create instances of this class
+directly but can use the implicits defined in the Logging object.
+</p></div></div>
+    </li><li name="org.scalawag.timber.api.Tag" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="TagextendsAnyRef"></a>
+      <a id="Tag:Tag"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Tag.html"><span class="name">Tag</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@TagextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Marks classes that can be used as tags in timber.</p><div class="fullcomment"><div class="comment cmt"><p>Marks classes that can be used as tags in timber.  While you could technically use anything as a tag, this makes
+it so that the Logger API is a little nicer, since the type is particular to timber.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.scalawag.timber.api.BaseLogger" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BaseLogger"></a>
+      <a id="BaseLogger:BaseLogger"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="BaseLogger$.html"><span class="name">BaseLogger</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@BaseLogger" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalawag.timber.api.Dispatcher" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Dispatcher"></a>
+      <a id="Dispatcher:Dispatcher"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Dispatcher$.html"><span class="name">Dispatcher</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@Dispatcher" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalawag.timber.api.Entry" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Entry"></a>
+      <a id="Entry:Entry"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Entry$.html"><span class="name">Entry</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@Entry" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalawag.timber.api.ImmediateMessage" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ImmediateMessage"></a>
+      <a id="ImmediateMessage:ImmediateMessage"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ImmediateMessage$.html"><span class="name">ImmediateMessage</span></a><span class="result"> extends <a href="Tag.html" class="extype" name="org.scalawag.timber.api.Tag">Tag</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@ImmediateMessage" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Tells the BaseLogger to evaluate the <a href="Message.html" class="extype" name="org.scalawag.timber.api.Message">message</a> immediately.</p><div class="fullcomment"><div class="comment cmt"><p>Tells the BaseLogger to evaluate the <a href="Message.html" class="extype" name="org.scalawag.timber.api.Message">message</a> immediately.  This may be
+useful if you're referring to <code>var</code>s whose values could change between the time that the message is created and
+the time that it is ultimately evaluated.  This could be once it asynchronously reaches its final destination.</p><p>If you want your BaseLogger to always evaluate its messages immediately, you can add this tag to the logger when
+it is constructed.
+</p></div></div>
+    </li><li name="org.scalawag.timber.api.Level" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Level"></a>
+      <a id="Level:Level"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Level$.html"><span class="name">Level</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@Level" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Defines some common log levels that encompass most of the log levels used by legacy logging systems.</p><div class="fullcomment"><div class="comment cmt"><p>Defines some common log levels that encompass most of the log levels used by legacy logging systems.
+This object also provides implicit conversions for levels to and from integers.
+</p></div></div>
+    </li><li name="org.scalawag.timber.api.Message" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Message"></a>
+      <a id="Message:Message"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Message$.html"><span class="name">Message</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@Message" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Contains some useful implicit conversions to Message.</p><div class="fullcomment"><div class="comment cmt"><p>Contains some useful implicit conversions to Message.  These are all that make using the timber API bearable.
+They should be in scope by virtue of being members of the companion object of the target class.
+</p></div></div>
+    </li><li name="org.scalawag.timber.api.ThreadAttributes" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ThreadAttributes"></a>
+      <a id="ThreadAttributes:ThreadAttributes"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ThreadAttributes$.html"><span class="name">ThreadAttributes</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@ThreadAttributes" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Provides a convenient mechanism for associating thread-specific attributes with your log <a href="Entry.html" class="extype" name="org.scalawag.timber.api.Entry">entries</a>.</p><div class="fullcomment"><div class="comment cmt"><p>Provides a convenient mechanism for associating thread-specific attributes with your log <a href="Entry.html" class="extype" name="org.scalawag.timber.api.Entry">entries</a>.
+<a href="BaseLogger.html" class="extype" name="org.scalawag.timber.api.BaseLogger">Loggers</a> will copy the thread-specific attributes available through this object
+(ThreadAttributes.get()) into the <code>threadAttributes</code> field of every entry they create.</p><p>Thread attribute values are stacked, making it possible to push an attribute value for a specific code block and
+then pop the value from the attribute stack, leaving the thread attributes in the state that was present before
+the block was executed. This is directly implemented in the <code>during()</code> method calls.  It can also be managed
+explicitly by the calling code (e.g., when the push and pop operations need to span method bodies) using the
+<code>push</code> and <code>pop</code> methods.
+</p></div></div>
+    </li><li name="org.scalawag.timber.api.impl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="impl"></a>
+      <a id="impl:impl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="impl/package.html"><span class="name">impl</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@impl" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalawag.timber.api.level" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="level"></a>
+      <a id="level:level"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="level/package.html"><span class="name">level</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@level" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Contains composable traits that can be used to add many common level-specific log methods to your custom loggers.</p><div class="fullcomment"><div class="comment cmt"><p>Contains composable traits that can be used to add many common level-specific log methods to your custom loggers.
+They are inspired by various legacy logging technologies.</p><p>Each trait defines several methods for logging and level <code>val</code> that can be overridden to control the level at
+which those methods log entries. See <a href="Logger.html" class="extype" name="org.scalawag.timber.api.Logger">Logger</a> for an example.</p><p>Another example that mixes in a ridiculous set of level methods:</p><pre><span class="kw">import</span> org.scalawag.timber.api
+<span class="kw">import</span> org.scalawag.timber.api.Dispatcher
+<span class="kw">import</span> org.scalawag.timber.api.level._
+
+<span class="kw">class</span> Logger(<span class="kw">override</span> <span class="kw">val</span> attributes:<span class="std">Map</span>[<span class="std">String</span>,<span class="std">Any</span>] = <span class="std">Map</span>.empty, <span class="kw">override</span> <span class="kw">val</span> tags:<span class="std">Set</span>[Tag] = <span class="std">Set</span>.empty)(<span class="kw">implicit</span> dispatcher: Dispatcher)
+  <span class="kw">extends</span> BaseLogger(attributes, tags)(dispatcher) <span class="kw">with</span> Emergency <span class="kw">with</span> Finest <span class="kw">with</span> Warning <span class="kw">with</span> Warn</pre></div></div>
+    </li><li name="org.scalawag.timber.api.style" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="style"></a>
+      <a id="style:style"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="style/package.html"><span class="name">style</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.api.package@style" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

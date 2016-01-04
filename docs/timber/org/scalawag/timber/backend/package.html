@@ -1,0 +1,168 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>backend - org.scalawag.timber.backend</title>
+          <meta name="description" content="backend - org.scalawag.timber.backend" />
+          <meta name="keywords" content="backend org.scalawag.timber.backend" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../../index.html';
+            var hash = 'org.scalawag.timber.backend.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../../lib/package_big.png" />
+        <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.scalawag">scalawag</a>.<a href="../package.html" class="extype" name="org.scalawag.timber">timber</a></p>
+        <h1>backend</h1><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.backend.package" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">backend</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.scalawag.timber.backend.DefaultDispatcher" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="DefaultDispatcher"></a>
+      <a id="DefaultDispatcher:DefaultDispatcher"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="DefaultDispatcher$.html"><span class="name">DefaultDispatcher</span></a><span class="result"> extends <span class="extype" name="org.scalawag.timber.api.Dispatcher">Dispatcher</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.backend.package@DefaultDispatcher" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Provides a default <span class="extype" name="api.Dispatcher">dispatcher</span> to be used by any timber API loggers in the system that didn't
+specify another dispatcher.</p><div class="fullcomment"><div class="comment cmt"><p>Provides a default <span class="extype" name="api.Dispatcher">dispatcher</span> to be used by any timber API loggers in the system that didn't
+specify another dispatcher. It delegates all of the dispatching work to another dispatcher which can be specified
+using a system property or changed at runtime.</p><p>By default, the delegate created by this object is an instance of
+<a href="dispatcher/Dispatcher.html" class="extype" name="org.scalawag.timber.backend.dispatcher.Dispatcher">org.scalawag.timber.backend.dispatcher.Dispatcher</a>.  This should be appropriate for most situations.  In the
+event that you need a different type of dispatcher, there are two ways that you can determine the delegate.</p><p> -
+    If the <code><b>timber.dispatcher.class</b></code> system property contains the name of a class with a default constructor
+    that extends the <span class="extype" name="Dispatcher">Dispatcher</span> trait, the initial delegate will be a newly-created instance of that class.</p><p> -
+    During your process bootstrap, you can use the set(Dispatcher) method to change the delegate.  In this case,
+    a default constructor is not required, since you instantiate the object yourself.  It's not essential that this
+    call be made prior to any logging calls, but only entries that are dispatched after the call will use the new
+    dispatcher that you put in place.  There may be some leakage on stderr (where the default initial dispatcher
+    writes its entries) if you don't get your dispatcher in place soon enough.</p></div></div>
+    </li><li name="org.scalawag.timber.backend.dispatcher" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="dispatcher"></a>
+      <a id="dispatcher:dispatcher"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="dispatcher/package.html"><span class="name">dispatcher</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.backend.package@dispatcher" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.scalawag.timber.backend.receiver" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="receiver"></a>
+      <a id="receiver:receiver"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="receiver/package.html"><span class="name">receiver</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#org.scalawag.timber.backend.package@receiver" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Contains all of the built-in support for <a href="receiver/Receiver.html" class="extype" name="org.scalawag.timber.backend.receiver.Receiver">receivers</a>, which are
+the leaves of dispatcher routing graphs.</p><div class="fullcomment"><div class="comment cmt"><p>Contains all of the built-in support for <a href="receiver/Receiver.html" class="extype" name="org.scalawag.timber.backend.receiver.Receiver">receivers</a>, which are
+the leaves of dispatcher routing graphs.  Receivers do something with <span class="extype" name="org.scalawag.timber.api.Entry">entries</span>.
+Exactly what they do depends on the implementation.
+</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

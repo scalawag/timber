@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Receivers &middot; Timber
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="/public/css/custom.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <!-- <link rel="shortcut icon" href="/public/favicon.ico"> -->
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      <h1>
+        Timber
+      </h1>
+      <p class="lead"></p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+
+      
+        
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/Concepts">Concepts</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-api
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/Loggers">Loggers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/Messages">Messages</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/Levels">Levels</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/ThreadAttributes">Thread Attributes</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/BestPractices">Best Practices</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/api/AdvancedUsage">Advanced Usage</a>
+              
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-backend
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/Dispatchers">Dispatchers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/ConfigurationDSL">Configuration DSL</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/Conditions">Conditions</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/Entries">Entries</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/backend/Formatters">Formatters</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item active" href="/backend/Receivers">Receivers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber">View on GitHub</a>
+<!--      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber/archive/v0.6.0-SNAPSHOT.zip">Download</a> -->
+      <span class="sidebar-nav-item">Currently v0.6.0-SNAPSHOT</span>
+    </nav>
+
+    <p>&copy; 2016</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">Receivers</h1>
+  <p>Receivers do something interesting with <a href="Entries">entries</a>.  What they do is entirely up to them and dependent on
+their code and configuration.  They are the final destination for entries.  Indeed, they provide the reason that you
+bother to create entries in the first place.</p>
+
+<p>Normally, receivers are used to write Entries to a file or terminal but they can do anything you please:</p>
+
+<ul>
+  <li>send them as email messages,</li>
+  <li>send them to an alerting system, or</li>
+  <li>forward them to a central logging server.</li>
+</ul>
+
+<h2 id="built-in-stackable-receivers">Built-in Stackable Receivers</h2>
+
+<p>Currently, timber comes with few built-in receivers but they handle most of the normal use cases.  Anything they
+don’t handle can be done with a custom receiver.  The built-in receivers are <em>stackable</em>.  This means that
+there some composable behaviors (detailed in the following sections) that timber providers which you can mix into
+the receivers when you create them.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">ConsoleOutReceiver</code></td>
+      <td>writes to <code class="highlighter-rouge">Console.out</code> which is usually <code class="highlighter-rouge">stdout</code> but can be redirected</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">ConsoleErrReceiver</code></td>
+      <td>writes to <code class="highlighter-rouge">Console.err</code> which is usually <code class="highlighter-rouge">stderr</code> but can be redirected</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">WriterBasedStackableReceiver</code></td>
+      <td>writes to a <code class="highlighter-rouge">Writer</code> that you provide a creation function for at construction</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="concurrency-policies">Concurrency Policies</h3>
+
+<p>By default, receivers in timber have no concurrency control.  Any thread can call the receiver methods and all the
+calls are handled concurrently.  If you want to impose some control, which is usually a good idea if you’re
+application is multithreaded, you should use one of the following traits.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">NoThreadSafety</code></td>
+      <td>provides no concurrency control (the default)</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Locking</code></td>
+      <td>provides concurrency control through locking (better for minimizing thread count)</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">Queueing</code></td>
+      <td>provides concurrency control through worker queues (better for message throughput)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="buffering-policies">Buffering Policies</h3>
+
+<p>By default, receivers in timber never flush their resources.  They rely on the underlying resources themselves to
+flush when necessary.  This provides the best performance, as it minimizes I/O calls.  However, sometimes, you’ll
+want to flush more frequently.  For example, suppose that you have a process watching a log file for errors so that
+it can send an alert.  You want the error to be flushed immediately.  You don’t want to wait until enough errors have
+amassed that the file’s buffer is full.  By then, it’s too late.</p>
+
+<p>If you want to change the default buffering behavior, mix in one of the following policies.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">LazyFlushing</code></td>
+      <td>never flushes (the default, better for throughput, worse for latency)</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">ImmediateFlushing</code></td>
+      <td>flushes every time an entry is written (better for latency, worse for throughput)</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">PeriodicFlushing</code></td>
+      <td>flushed at least as often as its specified period (defaults to 5 seconds)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>It’s important to realize that this is just flushing that’s initiated from the receiver.  Flushing can occur in the
+underlying resource and it will have no effect on the receiver’s policy (for example, a flush in the underlying
+resource won’t reset the <code class="highlighter-rouge">PeriodicFlushing</code> timer).</p>
+
+<h3 id="examples">Examples</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.io.FileWriter</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.buffering._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.concurrency._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter._</span>
+
+<span class="k">val</span> <span class="n">ra</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">WriterBasedStackableReceiver</span><span class="o">(</span><span class="k">new</span> <span class="nc">FileWriter</span><span class="o">(</span><span class="s">"/tmp/a"</span><span class="o">))</span> <span class="k">with</span> <span class="nc">PeriodicFlushing</span> <span class="k">with</span> <span class="nc">Locking</span>
+<span class="k">val</span> <span class="n">rb</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ConsoleOutReceiver</span><span class="o">(</span><span class="nc">DefaultEntryFormatter</span><span class="o">)</span> <span class="k">with</span> <span class="nc">ImmediateFlushing</span> <span class="k">with</span> <span class="nc">Queueing</span>
+<span class="k">val</span> <span class="n">rc</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ConsoleErrReceiver</span><span class="o">(</span><span class="nc">DefaultEntryFormatter</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<h3 id="using-the-configuration-dsl">Using the Configuration DSL</h3>
+
+<p>The configuration DSL provides some convenient methods for creating file-based (and filehandle-based) receivers.
+Since you aren’t using constructors, you can’t mix in the policy traits.  The DSL functions still allow you to take
+advantage of them as parameters, though.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.buffering._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.concurrency._</span>
+<span class="k">import</span> <span class="nn">scala.concurrent.duration._</span>
+
+<span class="k">val</span> <span class="n">ra</span> <span class="k">=</span> <span class="n">file</span><span class="o">(</span><span class="s">"/tmp/a"</span><span class="o">,</span><span class="nc">PeriodicFlushing</span><span class="o">,</span><span class="nc">Queueing</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">rb</span> <span class="k">=</span> <span class="n">file</span><span class="o">(</span><span class="s">"/tmp/b"</span><span class="o">,</span><span class="nc">PeriodicFlushing</span><span class="o">(</span><span class="mf">1.</span><span class="n">minute</span><span class="o">),</span><span class="nc">Locking</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">rc</span> <span class="k">=</span> <span class="n">file</span><span class="o">(</span><span class="s">"/tmp/c"</span><span class="o">,</span><span class="nc">ImmediateFlushing</span><span class="o">,</span><span class="nc">NoThreadSafety</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">rd</span> <span class="k">=</span> <span class="n">file</span><span class="o">(</span><span class="s">"/tmp/d"</span><span class="o">,</span><span class="nc">LazyFlushing</span><span class="o">,</span><span class="nc">Queueing</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<h2 id="custom-receivers">Custom Receivers</h2>
+
+<p>If you need a receiver that does something other than what the timber built-ins receivers do, you’ll need to create
+a custom receiver.  You must implement the <code class="highlighter-rouge">org.scalawag.timber.backend.receiver.Receiver</code> trait.  If you want to
+take advantage of timber’s policy stacking, you have two options.  You can either extend
+<code class="highlighter-rouge">org.scalawag.timber.backend.receiver.StackableReceiver</code> and then your users (including you) can use the policy
+mixins at construction or you can implement <code class="highlighter-rouge">Receiver</code> directly and inform your users (including you) to use the
+<code class="highlighter-rouge">StackableReceiver</code> constructor to allow the mixins.</p>
+
+<h2 id="ensuring-receiver-closure">Ensuring Receiver Closure</h2>
+
+<p>Timber doesn’t automatically close receivers (or their underlying resources).  This is because you can change the
+configuration at any point and it doesn’t make sense to close and reopen all of the resources unless they’re
+actually being decommissioned.  You could also change the dispatcher configuration so that it’s no longer dispatching
+to a specific receiver but another dispatcher is still using that receiver.  This is messy enough that timber washes
+its hands of managing the receivers automatically.  This means that you need to close your own receivers when you’re
+done using them.  This is especially important if you’re using a aggressive buffering behavior.  Anything not
+flushed will be lost when the process shuts down.</p>
+
+<p>To make life a little easier for you, timber <em>does</em> provide a way to give it some responsibility.  Passing your
+receiver to <code class="highlighter-rouge">Receiver.closeOnShutdown()</code> means that timber will install a shutdown hook to close your receiver
+during a normal system shutdown.  This isn’t foolproof.  There are situations (mostly crashes) where the JVM will
+exit without calling the shutdown hooks and your entries could be lost.  If this isn’t OK with you, you should do
+something else – maybe change the buffering policy on your receiver to <code class="highlighter-rouge">ImmediateFlushing</code>.  The shutdown hook
+strategy should cover most normal cases, though.</p>
+
+<p><a name="logrotate"></a></p>
+
+<h2 id="integration-with-logrotate">Integration with logrotate</h2>
+
+<p>If you want to integrate with an external service like <a href="https://github.com/logrotate/logrotate">logrotate</a>, you’ll
+need a way for that service to inform your receivers when they need to close and reopen their file handles.
+Otherwise, your receiver will keep its existing filehandle and continue writing to the old file even if it has been
+moved or deleted.  One of the preferred ways to provide this notification is through
+<a href="https://en.wikipedia.org/wiki/Unix_signal">UNIX signals</a>.</p>
+
+<p>Similar to the way timber provide close-on-shutdown, it also provides the ability to easily wire your receivers up
+to a signal handler so that your receivers can close and reopen when the signal is received.  This example ties the
+receiver to the <code class="highlighter-rouge">SIGHUP</code> signal (a common choice).</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver._</span>
+
+<span class="k">val</span> <span class="n">r</span> <span class="k">=</span> <span class="n">file</span><span class="o">(</span><span class="s">"application.log"</span><span class="o">)</span>
+<span class="nc">Receiver</span><span class="o">.</span><span class="n">closeOnSignal</span><span class="o">(</span><span class="s">"HUP"</span><span class="o">,</span><span class="n">r</span><span class="o">)</span>
+</code></pre>
+</div>
+
+</div>
+
+<a class="help" href="https://github.com/scalawag/timber/edit/develop/src/jekyll/backend/07-Receivers.md">
+  Help improve this page.
+</a>
+
+    </div>
+
+  </body>
+</html>
