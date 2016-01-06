@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Entries
-permalink: backend/Entries
+permalink: timber-backend/Entries
 group: "timber-backend"
 ---
 

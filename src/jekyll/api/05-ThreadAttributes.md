@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Thread Attributes
-permalink: api/ThreadAttributes
+permalink: timber-api/ThreadAttributes
 group: "timber-api"
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Conditions
-permalink: backend/Conditions
+permalink: timber-backend/Conditions
 group: "timber-backend"
 ---
 

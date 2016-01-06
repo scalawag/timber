@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Loggers
-permalink: api/Loggers
+permalink: timber-api/Loggers
 group: "timber-api"
 ---
 
@@ -39,7 +39,7 @@ val log = new Logger(Map("name" -> "com.example.MyClass"))
 {: .language-scala}
 
 All the things that can be done with the logger name in other logging systems (e.g., filtering and inclusion in the
-log files) can be done in timber as well (see [Conditions](../backend/Conditions)).
+log files) can be done in timber as well (see [Conditions](../timber-backend/Conditions)).
 
 ## Logger Tags
 

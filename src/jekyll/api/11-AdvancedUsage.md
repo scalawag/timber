@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Advanced Usage
-permalink: api/AdvancedUsage
+permalink: timber-api/AdvancedUsage
 group: "timber-api"
 ---
 

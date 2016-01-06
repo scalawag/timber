@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Getting Started
-permalink: api/GettingStarted
+permalink: timber-api/GettingStarted
 group: "timber-api"
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Formatters
-permalink: backend/Formatters
+permalink: timber-backend/Formatters
 group: "timber-backend"
 ---
 

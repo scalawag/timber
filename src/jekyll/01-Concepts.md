@@ -8,25 +8,25 @@ group: ""
 Before any of the timber documentation will make sense, you'll need to understand some of the core concepts and
 terminology.
 
-* [Entries](api/Entries) are the main data structures in timber. You can think of them as lines in an application
-log file. As a matter of fact, that's usually what they end up becoming.
-* [Messages](api/Messages) represent the textual content of entries.  Usually, the message is the essence of a
-particular entry, although in timber, it is optional.
-* [Loggers](api/Loggers) are used by timber API consumers to generate entries and inject them into the logging system
-(an activity more commonly known as "logging"). Loggers can have attributes and tags that get associated with the
-entries that they create.
-* [Tags](api/Tags) are used to mark specific entries with application-specific semantics.  Tags can be specified as
-parameters to the logging method call or imparted by the logger.
-* [ThreadAttributes](api/ThreadAttributes) can be used to maintain extra application-specific metadata per thread,
-which will become associated with any entries created by that thread.
+* [Entries](timber-api/Entries) are the main data structures in timber. You can think of them as lines in an 
+application log file. As a matter of fact, that's usually what they end up becoming.
+* [Messages](timber-api/Messages) represent the textual content of entries.  Usually, the message is the essence of 
+a particular entry, although in timber, it is optional.
+* [Loggers](timber-api/Loggers) are used by timber API consumers to generate entries and inject them into the logging 
+system (an activity more commonly known as "logging"). Loggers can have attributes and tags that get associated with 
+the entries that they create.
+* [Tags](timber-api/Tags) are used to mark specific entries with application-specific semantics.  Tags can be 
+specified as parameters to the logging method call or imparted by the logger.
+* [ThreadAttributes](timber-api/ThreadAttributes) can be used to maintain extra application-specific metadata per 
+thread, which will become associated with any entries created by that thread.
 
 Some concepts are only important if you're using the timber logging backend.
 
-* [Receivers](backend/Receivers) perform the actual processing of entries by writing them into log files, sending
-them to network servers, etc.
-* [Formatters](backend/Formatters) turn entries into text.  A formatter is usually required by any receiver that needs
-a text representation of the entry (e.g., one that writes entries to the console).
-* [Dispatchers](backend/Dispatchers) route entries to the correct receivers based on their configuration.
+* [Receivers](timber-backend/Receivers) perform the actual processing of entries by writing them into log files, 
+sending them to network servers, etc.
+* [Formatters](timber-backend/Formatters) turn entries into text.  A formatter is usually required by any receiver 
+that needs a text representation of the entry (e.g., one that writes entries to the console).
+* [Dispatchers](timber-backend/Dispatchers) route entries to the correct receivers based on their configuration.
 
 Timber draws a clear distinction between code that generates log entries (using the timber API) and code that
 processes those log entries (using the timber backend). API consumers generally don't know or care about the

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Getting Started
-permalink: backend/GettingStarted
+permalink: timber-backend/GettingStarted
 group: "timber-backend"
 ---
 
@@ -12,7 +12,7 @@ To handle log entries created with any logging API using timber, you need to use
   ~~~~
   resolvers += "sonatype-oss-snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
-  libraryDependencies += "org.scalawag.timber" % "timber" % "{{site.version}}"
+  libraryDependencies += "org.scalawag.timber" %% "timber-backend" % "{{site.version}}"
   ~~~~
   {: .language-scala}
 

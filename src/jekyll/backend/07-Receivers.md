@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Receivers
-permalink: backend/Receivers
+permalink: timber-backend/Receivers
 group: "timber-backend"
 ---
 

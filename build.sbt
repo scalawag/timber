@@ -52,7 +52,7 @@ lazy val commonSettings = GitFlowPlugin.defaults ++ Seq(
 
 ) ++ osgiSettings ++ site.settings
 
-val api = project.in(file("api")).settings(commonSettings:_*).settings(
+val timberApi = project.in(file("timber-api")).settings(commonSettings:_*).settings(
   name := "timber-api",
   libraryDependencies ++= Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value
@@ -68,10 +68,10 @@ val api = project.in(file("api")).settings(commonSettings:_*).settings(
   importPackage += "org.scalawag.timber.backend;version=\"0.5\""
 ).settings(site.includeScaladoc():_*)
 
-val timber = project.settings(commonSettings:_*).settings(
-  name := "timber",
+val timberBackend = project.in(file("timber-backend")).settings(commonSettings:_*).settings(
+  name := "timber-backend",
   exportPackage += "org.scalawag.timber.backend.*"
-).settings(site.includeScaladoc():_*) dependsOn (api)
+).settings(site.includeScaladoc():_*) dependsOn (timberApi)
 
 val slf4jOverTimber = project.in(file("slf4j-over-timber")).settings(commonSettings:_*).settings(
   name := "slf4j-over-timber",
@@ -80,7 +80,7 @@ val slf4jOverTimber = project.in(file("slf4j-over-timber")).settings(commonSetti
     "org.scalawag.timber.bridge.slf4j",
     "org.slf4j.impl;version=1.6.0"
   )
-) dependsOn (api)
+) dependsOn (timberApi)
 
 val timberOverSlf4j = project.in(file("timber-over-slf4j")).settings(commonSettings:_*).settings(
   name := "timber-over-slf4j",
@@ -88,9 +88,9 @@ val timberOverSlf4j = project.in(file("timber-over-slf4j")).settings(commonSetti
   exportPackage ++= Seq(
     "org.scalawag.timber.backend"
   )
-) dependsOn (api)
+) dependsOn (timberApi)
 
-val logbackSupport = project.in(file("logback-support")).settings(commonSettings:_*).settings(
+val logbackSupport = project.in(file("timber-logback-support")).settings(commonSettings:_*).settings(
   name := "timber-logback-support",
   libraryDependencies ++= Seq(
     "ch.qos.logback" % "logback-classic" % "1.0.7"
@@ -98,7 +98,7 @@ val logbackSupport = project.in(file("logback-support")).settings(commonSettings
   exportPackage ++= Seq(
     "org.scalawag.timber.slf4j.receiver.logback"
   )
-) dependsOn (timber)
+) dependsOn (timberBackend)
 
 val testProjectSettings = commonSettings ++ Seq(
   fork in Test := true,
@@ -108,50 +108,50 @@ val testProjectSettings = commonSettings ++ Seq(
 val examples = project.settings(commonSettings:_*).settings(
   name := "timber-examples",
   publishArtifact := false
-) dependsOn (timber,slf4jOverTimber)
+) dependsOn (timberBackend,slf4jOverTimber)
 
 val DebugModeTest =
   project.in(file("tests/DebugMode")).settings(testProjectSettings:_*).
     settings(
       javaOptions in Test := Seq("-Dtimber.debug")
-    ) dependsOn (timber)
+    ) dependsOn (timberBackend)
 
 val SpecifiedDispatcherTest =
   project.in(file("tests/SpecifiedDispatcher")).settings(testProjectSettings:_*).
     settings(
       javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.ThrowingDispatcher")
-    ) dependsOn (timber)
+    ) dependsOn (timberBackend)
 
 val CantCastSpecifiedDispatcherTest =
   project.in(file("tests/CantCastSpecifiedDispatcher")).settings(testProjectSettings:_*).
     settings(
       javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.NotReallyADispatcher")
-    ) dependsOn (timber)
+    ) dependsOn (timberBackend)
 
 val CantFindSpecifiedDispatcherTest =
   project.in(file("tests/CantFindSpecifiedDispatcher")).settings(testProjectSettings:_*).
     settings(
       javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.MissingDispatcher")
-    ) dependsOn (timber)
+    ) dependsOn (timberBackend)
 
 val CantInstantiateSpecifiedDispatcherTest =
   project.in(file("tests/CantInstantiateSpecifiedDispatcher")).settings(testProjectSettings:_*).
     settings(
       javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.UnloadableClass")
-    ) dependsOn (timber)
+    ) dependsOn (timberBackend)
 
 val RuntimeSpecifiedDispatcherTest =
-  project.in(file("tests/RuntimeSpecifiedDispatcher")).settings(testProjectSettings:_*) dependsOn (timber)
+  project.in(file("tests/RuntimeSpecifiedDispatcher")).settings(testProjectSettings:_*) dependsOn (timberBackend)
 
 val CloseOnShutdownTest =
-  project.in(file("tests/CloseOnShutdown")).settings(testProjectSettings:_*) dependsOn (timber)
+  project.in(file("tests/CloseOnShutdown")).settings(testProjectSettings:_*) dependsOn (timberBackend)
 
 val CloseOnSignalTest =
-  project.in(file("tests/CloseOnSignal")).settings(testProjectSettings:_*) dependsOn (timber)
+  project.in(file("tests/CloseOnSignal")).settings(testProjectSettings:_*) dependsOn (timberBackend)
 
-val apiDoc = file("api/target/site/latest/api")
+val apiDoc = file("timber-api/target/site/latest/api")
 
-val backendDoc = file("timber/target/site/latest/api")
+val backendDoc = file("timber-backend/target/site/latest/api")
 
 val root = project.in(file(".")).
   settings(site.settings:_*).
@@ -167,19 +167,19 @@ val root = project.in(file(".")).
       // TODO: Make sure the api/doc has been built (there's got to be a way to do this).
 //      doc.value
 //      mappings.all(ScopeFilter(inProjects(api),inConfigurations(Docs))).value
-      SbtSite.selectSubpaths(apiDoc,"*").map { case (f,t) => (f,s"docs/api/$t") }
+      SbtSite.selectSubpaths(apiDoc,"*").map { case (f,t) => (f,s"docs/timber-api/$t") }
     },
     siteMappings ++= {
       // TODO: Make sure the timber/doc has been built (there's got to be a way to do this).
 //      Docs.doc.value
 //      mappings.all(ScopeFilter(inProjects(timber),inConfigurations(Docs))).value
-      SbtSite.selectSubpaths(backendDoc,"*").map { case (f,t) => (f,s"docs/timber/$t") }
+      SbtSite.selectSubpaths(backendDoc,"*").map { case (f,t) => (f,s"docs/timber-backend/$t") }
     },
     git.remoteRepo := "https://github.com/scalawag/timber.git"
   ).
   aggregate(
-    api,
-    timber,
+    timberApi,
+    timberBackend,
     slf4jOverTimber,
     timberOverSlf4j,
     logbackSupport,

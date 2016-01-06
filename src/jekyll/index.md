@@ -5,8 +5,8 @@ layout: page
 Timber is a logging system for Scala applications. It is written in Scala to take advantage of its unique language
 features. It's not a wrapper for an existing Java logging library.
 
-Configuration is done through an [internal DSL](backend/ConfigurationDSL], allowing you to use the full power of
-Scala to configure your logging system.
+Configuration is done through an [internal DSL](timber-backend/ConfigurationDSL], allowing you to use the full 
+power of Scala to configure your logging system.
 
 ~~~~
 dispatcher.configure { IN =>

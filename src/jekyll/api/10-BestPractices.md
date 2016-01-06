@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Best Practices
-permalink: api/BestPractices
+permalink: timber-api/BestPractices
 group: "timber-api"
 ---
 
@@ -78,9 +78,9 @@ don't include it in your `compile` classpath or you might end up inadvertently c
 in your library and that's a bad thing (see above).
 
 ~~~~
-libraryDependencies += "org.scalawag.timber" % "timber" % "0.5-SNAPSHOT" % "test"
+libraryDependencies += "org.scalawag.timber" %% "timber-backend" % "{{site.version}}" % "test"
 ~~~~
 {: .language-scala}
 
-If you want anything fancier than that, read about [using the timber backend](../backend/GettingStarted) to discover
+If you want anything fancier than that, read about [using the timber backend](../timber-backend/GettingStarted) to discover
 everything you can do.

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Levels
-permalink: api/Levels
+permalink: timber-api/Levels
 group: "timber-api"
 ---
 

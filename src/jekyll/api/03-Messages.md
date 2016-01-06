@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Messages
-permalink: api/Messages
+permalink: timber-api/Messages
 group: "timber-api"
 ---
 

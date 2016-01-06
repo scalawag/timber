@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Configuration DSL
-permalink: backend/ConfigurationDSL
+permalink: timber-backend/ConfigurationDSL
 group: "timber-backend"
 ---
 
