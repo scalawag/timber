@@ -11,7 +11,7 @@
 
   <title>
     
-       &middot; Timber
+      Advanced Usage &middot; Timber
     
   </title>
 
@@ -42,7 +42,7 @@
     </div>
 
     <nav class="sidebar-nav">
-      <a class="sidebar-nav-item active" href="/timber">Home</a>
+      <a class="sidebar-nav-item" href="/timber">Home</a>
 
       
 
@@ -205,7 +205,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/timber-api/AdvancedUsage">Advanced Usage</a>
+                <a class="sidebar-nav-item active" href="/timber/timber-api/AdvancedUsage">Advanced Usage</a>
               
             
           
@@ -321,46 +321,45 @@
 
     <div class="content container">
       <div class="page">
-  <h1 class="page-title"></h1>
-  <p>Timber is a logging system for Scala applications. It is written in Scala to take advantage of its unique language
-features. It’s not a wrapper for an existing Java logging library.</p>
+  <h1 class="page-title">Advanced Usage</h1>
+  <h2 id="creating-your-own-custom-level-methods">Creating Your Own Custom Level Methods</h2>
 
-<p>Configuration is done through an [internal DSL](timber-backend/ConfigurationDSL], allowing you to use the full power of
-Scala to configure your logging system.</p>
+<p>If the built-in level mixins don’t satisfy your need to be different, you can create your own traits similar to the
+included ones.  Here’s an example of creating a super low-level method called <code class="highlighter-rouge">whisper</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">dispatcher</span><span class="o">.</span><span class="n">configure</span> <span class="o">{</span> <span class="nc">IN</span> <span class="k">=&gt;</span>
-  <span class="nc">IN</span> <span class="o">~&gt;</span> <span class="n">fanout</span> <span class="o">(</span>
-    <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">DEBUG</span> <span class="o">),</span>
-    <span class="o">(</span> <span class="n">loggingClass</span> <span class="n">startsWith</span> <span class="s">"com.example"</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">WARN</span> <span class="o">)</span>
-  <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.api.level._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.api.BaseLogger._</span>
+
+<span class="k">trait</span> <span class="nc">Whisper</span> <span class="o">{</span> <span class="k">_:</span> <span class="kt">BaseLogger</span> <span class="o">=&gt;</span>
+  <span class="cm">/** Override to customize the level at which calls to `whisper` create entries. */</span>
+  <span class="k">protected</span><span class="o">[</span><span class="kt">this</span><span class="o">]</span> <span class="k">val</span> <span class="n">whisperLevel</span><span class="k">:</span><span class="kt">Level</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">def</span> <span class="n">whisper</span><span class="o">(</span><span class="n">message</span><span class="k">:</span><span class="kt">Message</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">location</span><span class="k">:</span><span class="kt">LogCallLocation</span><span class="o">)</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="n">log</span><span class="o">(</span><span class="n">whisperLevel</span><span class="o">,</span><span class="nc">Set</span><span class="o">.</span><span class="n">empty</span><span class="o">)(</span><span class="n">message</span><span class="o">)(</span><span class="n">location</span><span class="o">)</span>
+  <span class="k">def</span> <span class="n">whisper</span><span class="o">(</span><span class="n">tags</span><span class="k">:</span><span class="kt">TraversableOnce</span><span class="o">[</span><span class="kt">Tag</span><span class="o">])(</span><span class="n">message</span><span class="k">:</span><span class="kt">Message</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">location</span><span class="k">:</span><span class="kt">LogCallLocation</span><span class="o">)</span><span class="k">:</span><span class="kt">Unit</span> <span class="o">=</span> <span class="n">log</span><span class="o">(</span><span class="n">whisperLevel</span><span class="o">,</span><span class="n">tags</span><span class="o">)(</span><span class="n">message</span><span class="o">)(</span><span class="n">location</span><span class="o">)</span>
 <span class="o">}</span>
+
+<span class="k">val</span> <span class="n">log</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BaseLogger</span> <span class="k">with</span> <span class="nc">Emergency</span> <span class="k">with</span> <span class="nc">Fatal</span> <span class="k">with</span> <span class="nc">Finest</span> <span class="k">with</span> <span class="nc">Whisper</span>
 </code></pre>
 </div>
 
-<p>It takes advantage of Scala’s by-name parameters and function literals to provide lazy message evaluation. That
-prevents doing work that doesn’t need to be done without requiring “isEnabled” conditionals.</p>
+<p>Of course, you don’t need to use this pattern.  This may just be easier because it’s copy-and-paste from the built-in
+mixin level traits.  It also allows you to mix in other built-in traits as well.  You could just as easily subclass
+<code class="highlighter-rouge">BaseLogger</code> and add whatever methods you want, ignoring the above pattern altogether.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="n">s</span><span class="s">"n = $n"</span><span class="o">)</span>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
 
-<span class="n">log</span><span class="o">.</span><span class="n">debug</span> <span class="o">{</span> <span class="n">pw</span><span class="k">:</span> <span class="kt">PrintWriter</span> <span class="o">=&gt;</span>
-  <span class="n">pw</span><span class="o">.</span><span class="n">print</span><span class="o">(</span><span class="s">"Here's a multi-line log entry that"</span><span class="o">)</span>
-  <span class="n">pw</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="s">"won't be built unless it's needed."</span><span class="o">)</span>
-  <span class="n">traversable</span><span class="o">.</span><span class="n">foreach</span><span class="o">(</span><span class="n">pw</span><span class="o">.</span><span class="n">println</span><span class="o">)</span>
+<span class="k">class</span> <span class="nc">MyLogger</span> <span class="k">extends</span> <span class="nc">BaseLogger</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">scream</span><span class="o">()</span> <span class="k">=</span> <span class="n">log</span><span class="o">(</span><span class="mi">10000</span><span class="o">)(</span><span class="s">"AAAARGH!"</span><span class="o">)</span>
 <span class="o">}</span>
+
+<span class="k">val</span> <span class="n">log</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">MyLogger</span>
+<span class="n">log</span><span class="o">.</span><span class="n">scream</span><span class="o">()</span>
 </code></pre>
 </div>
 
-<p>It supports the <a href="http://www.slf4j.org/">slf4j</a> interface so that it can be used by Java classes and by
-applications that are already using the slf4j API (or any API for which slf4j includes a
-<a href="http://www.slf4j.org/legacy.html">bridge</a>).</p>
-
-<p>It supports logback appenders so you can keep using any custom appenders that you’ve already written.</p>
-
-<p>Get started by looking at the timber <a href="Concepts">concepts</a>.</p>
-
 </div>
 
-<a class="help" href="https://github.com/scalawag/timber/edit/develop/src/jekyll/index.md">
+<a class="help" href="https://github.com/scalawag/timber/edit/develop/src/jekyll/api/11-AdvancedUsage.md">
   Help improve this page.
 </a>
 

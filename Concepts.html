@@ -133,7 +133,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/api/GettingStarted">Getting Started</a>
+                <a class="sidebar-nav-item" href="/timber/timber-api/GettingStarted">Getting Started</a>
               
             
           
@@ -145,7 +145,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/api/Loggers">Loggers</a>
+                <a class="sidebar-nav-item" href="/timber/timber-api/Loggers">Loggers</a>
               
             
           
@@ -157,7 +157,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/api/Messages">Messages</a>
+                <a class="sidebar-nav-item" href="/timber/timber-api/Messages">Messages</a>
               
             
           
@@ -169,7 +169,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/api/Levels">Levels</a>
+                <a class="sidebar-nav-item" href="/timber/timber-api/Levels">Levels</a>
               
             
           
@@ -181,7 +181,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/api/ThreadAttributes">Thread Attributes</a>
+                <a class="sidebar-nav-item" href="/timber/timber-api/ThreadAttributes">Thread Attributes</a>
               
             
           
@@ -197,7 +197,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/api/BestPractices">Best Practices</a>
+                <a class="sidebar-nav-item" href="/timber/timber-api/BestPractices">Best Practices</a>
               
             
           
@@ -205,7 +205,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/api/AdvancedUsage">Advanced Usage</a>
+                <a class="sidebar-nav-item" href="/timber/timber-api/AdvancedUsage">Advanced Usage</a>
               
             
           
@@ -223,7 +223,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/backend/GettingStarted">Getting Started</a>
+                <a class="sidebar-nav-item" href="/timber/timber-backend/GettingStarted">Getting Started</a>
               
             
           
@@ -235,7 +235,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/backend/Dispatchers">Dispatchers</a>
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Dispatchers">Dispatchers</a>
               
             
           
@@ -247,7 +247,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/backend/ConfigurationDSL">Configuration DSL</a>
+                <a class="sidebar-nav-item" href="/timber/timber-backend/ConfigurationDSL">Configuration DSL</a>
               
             
           
@@ -259,7 +259,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/backend/Conditions">Conditions</a>
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Conditions">Conditions</a>
               
             
           
@@ -271,7 +271,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/backend/Entries">Entries</a>
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Entries">Entries</a>
               
             
           
@@ -283,7 +283,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/backend/Formatters">Formatters</a>
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Formatters">Formatters</a>
               
             
           
@@ -291,7 +291,7 @@
           
             
               
-                <a class="sidebar-nav-item" href="/timber/backend/Receivers">Receivers</a>
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Receivers">Receivers</a>
               
             
           
@@ -326,27 +326,27 @@
 terminology.</p>
 
 <ul>
-  <li><a href="api/Entries">Entries</a> are the main data structures in timber. You can think of them as lines in an application
-log file. As a matter of fact, that’s usually what they end up becoming.</li>
-  <li><a href="api/Messages">Messages</a> represent the textual content of entries.  Usually, the message is the essence of a
-particular entry, although in timber, it is optional.</li>
-  <li><a href="api/Loggers">Loggers</a> are used by timber API consumers to generate entries and inject them into the logging system
-(an activity more commonly known as “logging”). Loggers can have attributes and tags that get associated with the
-entries that they create.</li>
-  <li><a href="api/Tags">Tags</a> are used to mark specific entries with application-specific semantics.  Tags can be specified as
-parameters to the logging method call or imparted by the logger.</li>
-  <li><a href="api/ThreadAttributes">ThreadAttributes</a> can be used to maintain extra application-specific metadata per thread,
-which will become associated with any entries created by that thread.</li>
+  <li><a href="timber-api/Entries">Entries</a> are the main data structures in timber. You can think of them as lines in an 
+application log file. As a matter of fact, that’s usually what they end up becoming.</li>
+  <li><a href="timber-api/Messages">Messages</a> represent the textual content of entries.  Usually, the message is the essence of 
+a particular entry, although in timber, it is optional.</li>
+  <li><a href="timber-api/Loggers">Loggers</a> are used by timber API consumers to generate entries and inject them into the logging 
+system (an activity more commonly known as “logging”). Loggers can have attributes and tags that get associated with 
+the entries that they create.</li>
+  <li><a href="timber-api/Tags">Tags</a> are used to mark specific entries with application-specific semantics.  Tags can be 
+specified as parameters to the logging method call or imparted by the logger.</li>
+  <li><a href="timber-api/ThreadAttributes">ThreadAttributes</a> can be used to maintain extra application-specific metadata per 
+thread, which will become associated with any entries created by that thread.</li>
 </ul>
 
 <p>Some concepts are only important if you’re using the timber logging backend.</p>
 
 <ul>
-  <li><a href="backend/Receivers">Receivers</a> perform the actual processing of entries by writing them into log files, sending
-them to network servers, etc.</li>
-  <li><a href="backend/Formatters">Formatters</a> turn entries into text.  A formatter is usually required by any receiver that needs
-a text representation of the entry (e.g., one that writes entries to the console).</li>
-  <li><a href="backend/Dispatchers">Dispatchers</a> route entries to the correct receivers based on their configuration.</li>
+  <li><a href="timber-backend/Receivers">Receivers</a> perform the actual processing of entries by writing them into log files, 
+sending them to network servers, etc.</li>
+  <li><a href="timber-backend/Formatters">Formatters</a> turn entries into text.  A formatter is usually required by any receiver 
+that needs a text representation of the entry (e.g., one that writes entries to the console).</li>
+  <li><a href="timber-backend/Dispatchers">Dispatchers</a> route entries to the correct receivers based on their configuration.</li>
 </ul>
 
 <p>Timber draws a clear distinction between code that generates log entries (using the timber API) and code that

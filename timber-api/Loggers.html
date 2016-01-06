@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Loggers &middot; Timber
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/timber/public/css/poole.css">
+  <link rel="stylesheet" href="/timber/public/css/syntax.css">
+  <link rel="stylesheet" href="/timber/public/css/hyde.css">
+  <link rel="stylesheet" href="/timber/public/css/custom.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <!-- <link rel="shortcut icon" href="/timberpublic/favicon.ico"> -->
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      <h1>
+        Timber
+      </h1>
+      <p class="lead"></p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/timber">Home</a>
+
+      
+
+      
+      
+
+      
+        
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/Concepts">Concepts</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-api
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item active" href="/timber/timber-api/Loggers">Loggers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Messages">Messages</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Levels">Levels</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/ThreadAttributes">Thread Attributes</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/BestPractices">Best Practices</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/AdvancedUsage">Advanced Usage</a>
+              
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-backend
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Dispatchers">Dispatchers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/ConfigurationDSL">Configuration DSL</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Conditions">Conditions</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Entries">Entries</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Formatters">Formatters</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Receivers">Receivers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber">View on GitHub</a>
+<!--      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber/archive/v0.6.0-SNAPSHOT.zip">Download</a> -->
+      <span class="sidebar-nav-item">Currently v0.6.0-SNAPSHOT</span>
+    </nav>
+
+    <p>&copy; 2016</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">Loggers</h1>
+  <p>Loggers are objects used by timber API consumers to log entries.</p>
+
+<p>Loggers in timber roughly correspond to loggers in other logging systems that you’ve probably used before. There are
+a few differences that should be kept in mind, though.  Timber loggers are extremely lightweight, immutable and
+thread-safe. There’s almost no overhead in creating one, so there’s no good reason to try to maintain a small set of
+loggers or try hard to reuse them.  There’s also no need to worry about concurrency control.  Feel free to use a
+single logger for every thread and object in your library, if that’s what is best for your situation.  Feel free to
+create a new logger every time you need to log something if that’s what works best.  Either extreme works fine for
+timber.</p>
+
+<p>Loggers are so lightweight because they are essentially just factories that know how to gather context and parameters
+and put together an entry.  Then, they hand off the entry to a dispatcher for processing.  The dispatcher is a much
+heavier and long-lived object.  It normally lives throughout the process’ lifetime.  When a logger is created, it is
+associated with a dispatcher which handles all of its entries.  While a logger can only have a single dispatcher, one
+dispatcher can handle all the loggers in the system.</p>
+
+<h2 id="logger-attributes">Logger Attributes</h2>
+
+<p>Unlike other logging systems, timber loggers <em>don’t</em> have names. The names are usually used to represent the class
+from which entries are logged.  This is an old pattern established by log4j many years ago.  In timber, this
+information is gathered at compile-time through macros, so it’s not tied to the logger.  You can use a single logger
+and each entry will still know what class it was created by.</p>
+
+<p>Loggers <em>can</em> have arbitrary attributes, though.  So, if you <em>really</em> want a logger name, you can just add a <code class="highlighter-rouge">name</code>
+attribute to it.  Attributes are specified when the logger is created.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+
+<span class="k">val</span> <span class="n">log</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Logger</span><span class="o">(</span><span class="nc">Map</span><span class="o">(</span><span class="s">"name"</span> <span class="o">-&gt;</span> <span class="s">"com.example.MyClass"</span><span class="o">))</span>
+</code></pre>
+</div>
+
+<p>All the things that can be done with the logger name in other logging systems (e.g., filtering and inclusion in the
+log files) can be done in timber as well (see <a href="../timber-backend/Conditions">Conditions</a>).</p>
+
+<h2 id="logger-tags">Logger Tags</h2>
+
+<p>Loggers may also have a set of <a href="Tags">tags</a> associated with them.  These are just copied to every entry that the
+logger creates.  Even though you can specify an entry’s tags as parameters to the logging call, this gives you a
+little more flexibility. You may, for example, decide to identify entries from a specific subsytem (or maybe all
+the entries from your library) using a specific tag.  This makes it possible to do so without having to touch each
+individual logging call.</p>
+
+<p>Tags specified as parameters to the logging call are combined with the logger’s tags to create the set of tags for
+the entry.</p>
+
+<p><a name="slc"></a></p>
+
+<h2 id="static-logging-context">Static Logging Context</h2>
+
+<p>The two collections mentioned above (logger attributes and logger tags) are imparted to every entry created by a
+logger.  Combining this with the lightweight nature of timber loggers gives you the ability to use the logger to
+maintain some static (or lexical) context for their entries (as opposed to the dynamic context provided by <a href="ThreadAttributes">thread
+attributes</a>).  This can be useful when you’re using akka or scala Futures or some other technology
+that renders threads completely fungible.</p>
+
+<p>In this example, the client IP is associated with all of the entries in scope of <code class="highlighter-rouge">logger</code> even though it’s possible
+that the logging method calls are being executed by three different threads.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">scala.util._</span>
+<span class="k">import</span> <span class="nn">scala.concurrent.Future</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+<span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext.Implicits.global</span>
+
+<span class="k">def</span> <span class="n">handleRequest</span><span class="o">(</span><span class="n">clientIp</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">logger</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Logger</span><span class="o">(</span><span class="nc">Map</span><span class="o">(</span><span class="s">"clientIp"</span> <span class="o">-&gt;</span> <span class="n">clientIp</span><span class="o">))</span>
+  <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="s">"about to start handling request"</span><span class="o">)</span>
+  <span class="nc">Future</span> <span class="o">{</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="s">"handling request"</span><span class="o">)</span>
+  <span class="o">}</span> <span class="n">onComplete</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nc">Success</span><span class="o">(</span><span class="k">_</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="s">"request handled"</span><span class="o">)</span>
+    <span class="k">case</span> <span class="nc">Failure</span><span class="o">(</span><span class="n">ex</span><span class="o">)</span> <span class="k">=&gt;</span>
+      <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="n">s</span><span class="s">"failed to handle request: $$ex"</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<h2 id="logging-methods">Logging Methods</h2>
+
+<p>In addition to the generic <code class="highlighter-rouge">log()</code> method available on timbers <code class="highlighter-rouge">BaseLogger</code>, loggers may also provide level-specific
+logging methods.  If you don’t like the particular set of methods supported by a logger, you can roll your own,
+using the built in level mixins.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.api.level._</span>
+
+<span class="k">val</span> <span class="n">log</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BaseLogger</span> <span class="k">with</span> <span class="nc">Emergency</span> <span class="k">with</span> <span class="nc">Fatal</span> <span class="k">with</span> <span class="nc">Finest</span>
+</code></pre>
+</div>
+
+<p>You can also create your own custom log levels.  See <a href="AdvancedUsage">Advanced Usage</a> for more information.</p>
+
+<h2 id="wheres-isenabled">Where’s <code class="highlighter-rouge">isEnabled</code>?</h2>
+
+<p>BaseLoggers don’t support the <code class="highlighter-rouge">isEnabled()</code> type methods provided by some other JVM logging systems.  That’s because
+the logger doesn’t make any decisions regarding if (or where) the entries it creates are actually processed in any way.
+You don’t need to protect against message generation overhead because <a href="Messages">messages</a> are lazily built
+(unless you specify the <code class="highlighter-rouge">ImmediateMessage</code> tag). Anything else that you would do in application code that
+depends on the status of the logging system is probably a bad idea.</p>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<ul>
+  <li>Learn more about entry <a href="Messages">messages</a>.</li>
+  <li>Learn about timber’s <a href="Levels">levels</a>.</li>
+</ul>
+
+</div>
+
+<a class="help" href="https://github.com/scalawag/timber/edit/develop/src/jekyll/api/02-Loggers.md">
+  Help improve this page.
+</a>
+
+    </div>
+
+  </body>
+</html>

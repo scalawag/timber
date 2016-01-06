@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Conditions &middot; Timber
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/timber/public/css/poole.css">
+  <link rel="stylesheet" href="/timber/public/css/syntax.css">
+  <link rel="stylesheet" href="/timber/public/css/hyde.css">
+  <link rel="stylesheet" href="/timber/public/css/custom.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <!-- <link rel="shortcut icon" href="/timberpublic/favicon.ico"> -->
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      <h1>
+        Timber
+      </h1>
+      <p class="lead"></p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/timber">Home</a>
+
+      
+
+      
+      
+
+      
+        
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/Concepts">Concepts</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-api
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Loggers">Loggers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Messages">Messages</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Levels">Levels</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/ThreadAttributes">Thread Attributes</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/BestPractices">Best Practices</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/AdvancedUsage">Advanced Usage</a>
+              
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-backend
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Dispatchers">Dispatchers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/ConfigurationDSL">Configuration DSL</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item active" href="/timber/timber-backend/Conditions">Conditions</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Entries">Entries</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Formatters">Formatters</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Receivers">Receivers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber">View on GitHub</a>
+<!--      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber/archive/v0.6.0-SNAPSHOT.zip">Download</a> -->
+      <span class="sidebar-nav-item">Currently v0.6.0-SNAPSHOT</span>
+    </nav>
+
+    <p>&copy; 2016</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">Conditions</h1>
+  <p>Conditions are objects that evaluate <a href="Entries">entries</a> for acceptance.  They are an important part of a timber
+<a href="ConfigurationDSL">configuration graph</a>. The result of a condition’s evaluation is ternary:</p>
+
+<ul>
+  <li><strong>accept</strong> - The condition holds true for the entry.</li>
+  <li><strong>reject</strong> - The condition does not hold true for the entry.</li>
+  <li><strong>abstain</strong> - There’s not enough information in the entry to know whether the condition holds true or not.</li>
+</ul>
+
+<p>You can either take advantage of the built-in conditions, which will probably meet most of your needs, or create
+your own.</p>
+
+<h2 id="built-in-conditions">Built-in Conditions</h2>
+
+<p>There are currently four types of conditions built-in to timber:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">Int</code> conditions</li>
+  <li><code class="highlighter-rouge">String</code> conditions</li>
+  <li><code class="highlighter-rouge">Tag</code> conditions</li>
+  <li>Logical conditions</li>
+</ul>
+
+<h3 id="int-conditions">Int Conditions</h3>
+
+<p>Int conditions support the following operations:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">&lt;=</code></li>
+  <li><code class="highlighter-rouge">&lt;</code></li>
+  <li><code class="highlighter-rouge">===</code> / <code class="highlighter-rouge">is</code></li>
+  <li><code class="highlighter-rouge">&gt;</code></li>
+  <li><code class="highlighter-rouge">&gt;=</code></li>
+</ul>
+
+<p>Hopefully, these are self-explanatory.</p>
+
+<p>The use of <code class="highlighter-rouge">===</code> versus <code class="highlighter-rouge">is</code> is entirely up to you.  They behave exactly the same.  Choosing one over the other
+depends on whether you’d rather be able to read your timber configuration like English or rather spend hours trying
+to figure out that you only put two equals signs in your configuration instead of three. :)</p>
+
+<h4 id="level">Level</h4>
+
+<p>The only <code class="highlighter-rouge">Int</code> field currently built into timber is the <code class="highlighter-rouge">level</code> field.  You can use it to create a condition based
+on the level of the entry.  If the entry does not have a level (<code class="highlighter-rouge">entry.level == None</code>), the condition will abstain.
+The RHS of a level condition operator must be a <code class="highlighter-rouge">Level</code>.  It can be one of the standard levels or a level that
+you’ve defined yourself. You can also specify the comparison level using an <code class="highlighter-rouge">Int</code> and it will be converted to a
+<code class="highlighter-rouge">Level</code> for you.  All comparisons are done based on the integer value of the levels.  The names are completely
+ignored.</p>
+
+<h4 id="examples">Examples</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+
+<span class="n">level</span> <span class="o">&gt;</span> <span class="mi">5</span>
+<span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span>
+<span class="n">level</span> <span class="n">is</span> <span class="nc">ERROR</span>
+</code></pre>
+</div>
+
+<h3 id="string-conditions">String Conditions</h3>
+
+<p>String conditions support the following operations:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">is</code> / <code class="highlighter-rouge">===</code> / <code class="highlighter-rouge">matches</code></li>
+  <li><code class="highlighter-rouge">contains</code></li>
+  <li><code class="highlighter-rouge">startsWith</code></li>
+  <li><code class="highlighter-rouge">endsWith</code></li>
+</ul>
+
+<p>The argument for each is a pattern that can be specified either as a <code class="highlighter-rouge">String</code>, a <code class="highlighter-rouge">scala.Regex</code> or a
+<code class="highlighter-rouge">java.util.Pattern</code>.  The operators probably do exactly what they sound like they do.</p>
+
+<p>Fields that are currently available to create <code class="highlighter-rouge">String</code> conditions are:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">loggingClass</code> - the name of the class from which the log method was called</li>
+  <li><code class="highlighter-rouge">message</code> - the text of the message</li>
+  <li><code class="highlighter-rouge">sourceFile</code> - the source file from which the log method was called</li>
+  <li><code class="highlighter-rouge">logger(</code><em><code class="highlighter-rouge">attr</code></em><code class="highlighter-rouge">)</code> - the value of the logger attribute named <code class="highlighter-rouge">attr</code></li>
+  <li><code class="highlighter-rouge">thread(</code><em><code class="highlighter-rouge">attr</code></em><code class="highlighter-rouge">).any</code> - any value on the stack for the thread attribute named <code class="highlighter-rouge">attr</code></li>
+  <li><code class="highlighter-rouge">thread(</code><em><code class="highlighter-rouge">attr</code></em><code class="highlighter-rouge">).top</code> - the top value on the stack for the thread attribute named <code class="highlighter-rouge">attr</code></li>
+  <li><code class="highlighter-rouge">thread.name</code> - the name of the thread from which the log method was called</li>
+</ul>
+
+<p>All of these are optional (may not be present in the entry) except for <code class="highlighter-rouge">thread.name</code>.  If the field does not have a
+value for a given entry, all conditions will <em>abstain</em> when evaluating the entry.</p>
+
+<h4 id="examples-1">Examples</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+
+<span class="n">loggingClass</span> <span class="n">startsWith</span> <span class="s">"org.scalawag.timber"</span>
+<span class="n">message</span> <span class="n">contains</span> <span class="s">"[Ee][Rr][Rr][Oo][Rr]"</span><span class="o">.</span><span class="n">r</span>
+<span class="n">logger</span><span class="o">(</span><span class="s">"clientIpAddress"</span><span class="o">)</span> <span class="n">is</span> <span class="s">"127.0.0.1"</span>
+<span class="n">thread</span><span class="o">.</span><span class="n">name</span> <span class="n">endsWith</span> <span class="s">"-test"</span>
+<span class="n">thread</span><span class="o">(</span><span class="s">"subsystem"</span><span class="o">).</span><span class="n">any</span> <span class="n">is</span> <span class="err">"</span><span class="n">db</span>
+</code></pre>
+</div>
+
+<h3 id="tag-conditions">Tag Conditions</h3>
+
+<p>Tag conditions are not so much a group as a single condition.  You can use a Tag condition to determine if an entry
+has been tagged with a specific Tag.</p>
+
+<h4 id="example">Example</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+
+<span class="k">object</span> <span class="nc">MyTag</span> <span class="k">extends</span> <span class="nc">Tag</span>
+
+<span class="n">tagged</span><span class="o">(</span><span class="nc">MyTag</span><span class="o">)</span>
+</code></pre>
+</div>
+
+<h3 id="logical-conditions">Logical Conditions</h3>
+
+<p>In addition to the above conditions, timber also allows you to combine conditions to make more complex decisions
+using logical operations on other conditions.  The logical operations that timber supports are:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">and</code> / <code class="highlighter-rouge">&amp;&amp;</code></li>
+  <li><code class="highlighter-rouge">or</code> / <code class="highlighter-rouge">||</code></li>
+  <li><code class="highlighter-rouge">not</code> / <code class="highlighter-rouge">!</code></li>
+</ul>
+
+<p>Again, they should do what you expect them to.  The only thing that may need clarification is that if any operand of
+a logical condition abstains, the logical condition itself abstains. The English words and operators are equivalent.
+They should operate exactly the same.  Which one to use is up to you, based on your style preferences. Scala’s
+operator precedence may also help you decide on one versus the other, as the rules are different for symbols versus letters.</p>
+
+<h4 id="examples-2">Examples</h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+
+<span class="k">object</span> <span class="nc">AlertTag</span> <span class="k">extends</span> <span class="nc">Tag</span>
+
+<span class="o">!</span> <span class="n">tagged</span><span class="o">(</span><span class="nc">AlertTag</span><span class="o">)</span>
+<span class="o">(</span> <span class="n">level</span> <span class="o">&gt;</span> <span class="nc">INFO</span> <span class="o">)</span> <span class="n">or</span> <span class="o">(</span> <span class="n">loggingClass</span> <span class="n">startsWith</span> <span class="s">"org.scalawag"</span> <span class="o">)</span>
+</code></pre>
+</div>
+
+<h2 id="custom-conditions">Custom Conditions</h2>
+
+<h3 id="from-scratch">From Scratch</h3>
+
+<p>Conditions are represented by the <code class="highlighter-rouge">org.scalawag.timber.backend.dispatcher.configuration.dsl.Condition</code> trait.
+The single abstract method it declares is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="n">accepts</span><span class="o">(</span><span class="n">entry</span><span class="k">:</span><span class="kt">EntryFacets</span><span class="o">)</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">]</span>
+</code></pre>
+</div>
+
+<p>This method should return one of the following three responses.</p>
+
+<ul>
+  <li><code class="highlighter-rouge">Some(true)</code> - accept</li>
+  <li><code class="highlighter-rouge">Some(false)</code> - reject</li>
+  <li><code class="highlighter-rouge">None</code> - abstain</li>
+</ul>
+
+<p>It’s important that you handle the abstain case (<code class="highlighter-rouge">None</code>) properly because it’s used internally by timber to optimize
+the configuration graph.  It may pass a hypothetical <code class="highlighter-rouge">EntryFacets</code> to your condition prior to entry evaluation during
+dispatch to determine whether it can prune or bypass a path in the DAG.</p>
+
+<h3 id="piggy-back-implementations">Piggy-back Implementations</h3>
+
+<p>If you just want to create <code class="highlighter-rouge">Int</code> or <code class="highlighter-rouge">String</code> conditions based on a field that doesn’t currently have an extractor
+in timber, you can piggy-back on some of the existing timber code both to make your job easier and to ensure that
+it behaves the same as other timber condition fields of the same type (i.e., supporting the same comparison operators).</p>
+
+<p>Here’s an example of using timber’s <code class="highlighter-rouge">IntConditionFactory</code> to create a new field that contains the depth of a
+thread attribute stack.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">loggerAttributeCount</span> <span class="k">=</span> <span class="nc">IntConditionFactory</span><span class="o">(</span><span class="s">"loggerAttributeCount"</span><span class="o">)</span> <span class="o">{</span> <span class="n">entry</span> <span class="k">=&gt;</span>
+  <span class="n">entry</span><span class="o">.</span><span class="n">loggerAttributes</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">size</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>All you have to provide is an extractor function that extracts your field’s value from a partial entry.  This
+function should return <code class="highlighter-rouge">None</code> if the field is absent from the entry and <code class="highlighter-rouge">Some</code> if it has a definite value.  Note
+that this condition field is not very useful.  That’s why it’s not built into timber!</p>
+
+</div>
+
+<a class="help" href="https://github.com/scalawag/timber/edit/develop/src/jekyll/backend/04-Conditions.md">
+  Help improve this page.
+</a>
+
+    </div>
+
+  </body>
+</html>
