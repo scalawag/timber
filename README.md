@@ -8,5 +8,5 @@ Timber is a logging system for Scala applications. It is written in Scala and ta
 For more information, check out :
 
 * the [documentation site](http://scalawag.org/timber/)
-* the [API docs](http://scalawag.org/timber/docs/api/) for the timber logging API
-* the [API docs](http://scalawag.org/timber/docs/timber/) for the timber logging backend
+* the [API docs](http://scalawag.org/timber/docs/timber-api/) for the timber logging API
+* the [API docs](http://scalawag.org/timber/docs/timber-backend/) for the timber logging backend
