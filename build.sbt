@@ -14,6 +14,7 @@
 
 import com.typesafe.sbt.SbtSite
 import com.typesafe.sbt.osgi.OsgiKeys._
+import com.typesafe.sbt.site.JekyllSupport
 import sbt._
 import scoverage._
 import org.scalawag.sbt.gitflow.GitFlowPlugin
@@ -157,8 +158,9 @@ val root = project.in(file(".")).
     aggregate in update := false,
     publishArtifact := false,
     publishTo := Some(Resolver.file("Not actually used but required by publish-signed", file("/tmp/bogusrepo"))),
-    siteMappings ++= siteMappings.all(ScopeFilter(inProjects(timberApi))).value.flatten.map { case (f,t) => (f,t.replace("latest/api","docs/timber-api")) },
-    siteMappings ++= siteMappings.all(ScopeFilter(inProjects(timberBackend))).value.flatten.map { case (f,t) => (f,t.replace("latest/api","docs/timber-backend")) },
+    siteMappings ++= siteMappings.in(timberApi).value.map { case (f,t) => (f,t.replace("latest/api","docs/timber-api")) },
+    siteMappings ++= siteMappings.in(timberBackend).value.map { case (f,t) => (f,t.replace("latest/api","docs/timber-backend")) },
+    siteMappings ++= (sourceDirectory.in(JekyllSupport.Jekyll).value ** "*.svg") pair relativeTo(sourceDirectory.in(JekyllSupport.Jekyll).value),
     git.remoteRepo := "https://github.com/scalawag/timber.git"
   ).
   aggregate(
