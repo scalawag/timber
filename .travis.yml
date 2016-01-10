@@ -8,6 +8,8 @@ script: "sbt clean coverage test && sbt coverageAggregate"
 scala:
  - 2.11.7
 
+rvm: 2.3.0
+
 jdk:
  - oraclejdk8
  - oraclejdk7
