@@ -149,10 +149,6 @@ val CloseOnShutdownTest =
 val CloseOnSignalTest =
   project.in(file("tests/CloseOnSignal")).settings(testProjectSettings:_*) dependsOn (timberBackend)
 
-val apiDoc = file("timber-api/target/site/latest/api")
-
-val backendDoc = file("timber-backend/target/site/latest/api")
-
 val root = project.in(file(".")).
   settings(site.settings:_*).
   settings(site.jekyllSupport():_*).
@@ -161,20 +157,8 @@ val root = project.in(file(".")).
     aggregate in update := false,
     publishArtifact := false,
     publishTo := Some(Resolver.file("Not actually used but required by publish-signed", file("/tmp/bogusrepo"))),
-//    siteMappings ++= ( apiDoc ** "*" ) pair relativeTo(apiDoc),
-//    siteMappings ++= ( backendDoc ** "*" ) pair relativeTo(backendDoc)
-    siteMappings ++= {
-      // TODO: Make sure the api/doc has been built (there's got to be a way to do this).
-//      doc.value
-//      mappings.all(ScopeFilter(inProjects(api),inConfigurations(Docs))).value
-      SbtSite.selectSubpaths(apiDoc,"*").map { case (f,t) => (f,s"docs/timber-api/$t") }
-    },
-    siteMappings ++= {
-      // TODO: Make sure the timber/doc has been built (there's got to be a way to do this).
-//      Docs.doc.value
-//      mappings.all(ScopeFilter(inProjects(timber),inConfigurations(Docs))).value
-      SbtSite.selectSubpaths(backendDoc,"*").map { case (f,t) => (f,s"docs/timber-backend/$t") }
-    },
+    siteMappings ++= siteMappings.all(ScopeFilter(inProjects(timberApi))).value.flatten.map { case (f,t) => (f,t.replace("latest/api","docs/timber-api")) },
+    siteMappings ++= siteMappings.all(ScopeFilter(inProjects(timberBackend))).value.flatten.map { case (f,t) => (f,t.replace("latest/api","docs/timber-backend")) },
     git.remoteRepo := "https://github.com/scalawag/timber.git"
   ).
   aggregate(

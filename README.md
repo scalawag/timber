@@ -11,3 +11,17 @@ For more information, check out :
 * the [documentation site](http://scalawag.org/timber/)
 * the [API docs](http://scalawag.org/timber/docs/timber-api/) for the timber logging API
 * the [API docs](http://scalawag.org/timber/docs/timber-backend/) for the timber logging backend
+
+## Building from Source
+
+### Building the Documentation
+
+To build the documentation site, you need to install the Jekyll Ruby gem:
+```
+sudo gem install jekyll
+```
+
+Then, to build the documentation site:
+```
+sbt makeSite
+```
