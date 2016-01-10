@@ -1,5 +1,8 @@
 language: scala
 
+install:
+ - gem install jekyll -v 3.0.1
+
 script: "sbt clean coverage test && sbt coverageAggregate"
 
 scala:
