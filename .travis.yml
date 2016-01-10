@@ -18,10 +18,10 @@ jdk:
 
 after_success:
  - sbt coveralls
- - git config user.email "travis@scalawag.org"
- - git config user.name "Travis CI Builder"
- - git config credential.helper "store --file=.git/credentials"
- - echo "https://${GH_TOKEN}@github.com" > .git/credentials
+ - git config --global user.email "travis@scalawag.org"
+ - git config --global user.name "Travis CI Builder"
+ - git config --global credential.helper "store --file=/tmp/gitcredentials"
+ - echo "https://${GH_TOKEN}@github.com" > /tmp/gitcredentials
  - sbt ghpagesPushSite
 
 env:
