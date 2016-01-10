@@ -20,6 +20,7 @@ after_success:
  - sbt coveralls
  - git config --global user.email "travis@scalawag.org"
  - git config --global user.name "Travis CI Builder"
+ - git config --global push.default simple
  - git config --global credential.helper "store --file=/tmp/gitcredentials"
  - echo "https://${GH_TOKEN}@github.com" > /tmp/gitcredentials
  - sbt ghpagesPushSite
