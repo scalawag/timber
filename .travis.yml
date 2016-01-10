@@ -1,5 +1,8 @@
 language: scala
 
+before_install:
+ - rvm install 2.3.0
+
 install:
  - gem install jekyll -v 3.0.1
 
@@ -7,8 +10,6 @@ script: "sbt clean coverage test && sbt coverageAggregate"
 
 scala:
  - 2.11.7
-
-rvm: 2.3.0
 
 jdk:
  - oraclejdk8
