@@ -19,7 +19,7 @@ jdk:
 after_success:
  - sbt coveralls
  - git config credential.helper "store --file=.git/credentials"
- - echo "https://${GH_TOKEN}:@github.com" > .git/credentials
+ - echo "https://${GH_TOKEN}@github.com" > .git/credentials
  - sbt ghpagesPushSite
 
 env:
