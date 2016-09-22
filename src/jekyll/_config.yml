@@ -1,0 +1,15 @@
+title: timber
+
+markdown: kramdown
+
+baseurl: /timber
+
+github:
+  repo: https://github.com/scalawag/timber
+  branch: develop
+  path: src/jekyll
+
+kramdown:
+  syntax_highlighter: rouge
+
+version: "0.6.0-SNAPSHOT"

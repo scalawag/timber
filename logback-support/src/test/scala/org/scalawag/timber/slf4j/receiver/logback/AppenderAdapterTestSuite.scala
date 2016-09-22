@@ -1,46 +1,61 @@
+// timber -- Copyright 2012-2015 -- Justin Patterson
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package org.scalawag.timber.slf4j.receiver.logback
 
 import org.scalatest.FunSuite
-import org.scalawag.timber.api.{Level, Logger}
-import org.scalawag.timber.dsl._
-import org.scalawag.timber.impl.formatter.DefaultEntryFormatter
+import org.scalawag.timber.api.{Entry, BaseLogger}
+import org.scalawag.timber.backend.dispatcher.Dispatcher
+import org.scalawag.timber.backend.receiver.Receiver
+import org.scalawag.timber.backend.dispatcher.configuration.dsl._
+import org.scalawag.timber.backend.receiver.formatter.DefaultEntryFormatter
 
 import org.scalawag.timber.slf4j.receiver.logback
 import ch.qos.logback.core.FileAppender
-import org.scalawag.timber.impl.dispatcher.SynchronousEntryDispatcher
-import org.scalawag.timber.api.impl.Entry
 
 class AppenderAdapterTestSuite extends FunSuite  {
   import LogbackSupport._
-  import Level.Implicits._
 
-  private val dispatcher = new SynchronousEntryDispatcher
-  implicit val formatter = new DefaultEntryFormatter
+  implicit private val dispatcher = new Dispatcher
+  implicit val formatter = DefaultEntryFormatter
 
   test("test file") {
     dispatcher.configure { IN =>
       withLogbackSupport { implicit context =>
-        val file = new AppenderAdapter(logback.file("/tmp/blah")) with StopAtShutdown
-        IN :: file
+        val file = new AppenderAdapter(logback.file("/tmp/blah"))
+        Receiver.closeOnShutdown(file)
+        IN ~> file
       }
     }
 
-    val log = new Logger("dummy",dispatcher)
-    log.log(1,"log message")
+    val log = new BaseLogger
+    log.log(1)("log message")
   }
 
   test("test rolling file") {
     dispatcher.configure { IN =>
       withLogbackSupport { implicit context =>
         val rollingPolicy = logback.timeBasedRollingPolicy("/tmp/blahr-%d{yyyy-MM-dd-HH-mm-ss}.log")
-        val file = new AppenderAdapter(logback.rollingFile("/tmp/blahr",rollingPolicy)) with StopAtShutdown
-        IN :: file
+        val file = new AppenderAdapter(logback.rollingFile("/tmp/blahr",rollingPolicy))
+        Receiver.closeOnShutdown(file)
+        IN ~> file
       }
     }
 
-    val log = new Logger("dummy",dispatcher)
+    val log = new BaseLogger
     (1 to 5) foreach { n =>
-      log.log(1,"log message " + n)
+      log.log(1)("log message " + n)
       Thread.sleep(1000)
     }
   }
@@ -48,7 +63,7 @@ class AppenderAdapterTestSuite extends FunSuite  {
   test("test any logback ") {
     dispatcher.configure { IN =>
       withLogbackSupport { implicit context =>
-        val encoder = new EncoderAdapter(new DefaultEntryFormatter)
+        val encoder = new EncoderAdapter(DefaultEntryFormatter)
         encoder.setContext(context)
         context.add(encoder)
 
@@ -59,14 +74,14 @@ class AppenderAdapterTestSuite extends FunSuite  {
         appender.setName("test")
         context.add(appender)
 
-        val file = new AppenderAdapter(appender) with StopAtShutdown
-        IN :: file
+        val file = new AppenderAdapter(appender)
+        Receiver.closeOnShutdown(file)
+        IN ~> file
       }
     }
 
-    val log = new Logger("dummy",dispatcher)
-    log.log(1,"log message")
+    val log = new BaseLogger
+    log.log(1)("log message")
   }
 }
 
-/* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */

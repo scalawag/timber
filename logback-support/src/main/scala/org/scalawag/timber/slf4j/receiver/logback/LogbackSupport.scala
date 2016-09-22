@@ -1,13 +1,27 @@
+// timber -- Copyright 2012-2015 -- Justin Patterson
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package org.scalawag.timber.slf4j.receiver.logback
 
-import org.scalawag.timber.impl.InternalLogging
 import ch.qos.logback.core.{BasicStatusManager, ContextBase}
-import ch.qos.logback.core.status.{StatusManager, Status}
+import ch.qos.logback.core.status.Status
 import java.io.PrintWriter
 import ch.qos.logback.core.spi.LifeCycle
 import org.scalawag.timber.api.style.slf4j
+import org.scalawag.timber.backend.InternalLogger
 
-object LogbackSupport extends InternalLogging {
+object LogbackSupport {
   import scala.collection.JavaConversions._
 
   def withLogbackSupport[A](fn:(LogbackContext) => A):A = {
@@ -39,7 +53,7 @@ class LogbackContext extends ContextBase {
   }
 }
 
-class LogbackStatusManager extends BasicStatusManager with InternalLogging {
+class LogbackStatusManager extends BasicStatusManager {
 
   private val levelMap = Map(
     Status.INFO  -> slf4j.Level.DEBUG,
@@ -50,11 +64,10 @@ class LogbackStatusManager extends BasicStatusManager with InternalLogging {
   override def add(status: Status) {
     super.add(status)
 
-    log.log(levelMap(status.getLevel)) { pw:PrintWriter =>
+    InternalLogger.log(levelMap(status.getLevel)) { pw:PrintWriter =>
       pw.print(status.getMessage)
       Option(status.getThrowable).foreach(_.printStackTrace(pw))
     }
   }
 }
 
-/* timber -- Copyright 2012 Justin Patterson -- All Rights Reserved */
