@@ -348,7 +348,7 @@ and each entry will still know what class it was created by.</p>
 <p>Loggers <em>can</em> have arbitrary attributes, though.  So, if you <em>really</em> want a logger name, you can just add a <code class="highlighter-rouge">name</code>
 attribute to it.  Attributes are specified when the logger is created.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
 
 <span class="k">val</span> <span class="n">log</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Logger</span><span class="o">(</span><span class="nc">Map</span><span class="o">(</span><span class="s">"name"</span> <span class="o">-&gt;</span> <span class="s">"com.example.MyClass"</span><span class="o">))</span>
 </code></pre>
@@ -381,7 +381,7 @@ that renders threads completely fungible.</p>
 <p>In this example, the client IP is associated with all of the entries in scope of <code class="highlighter-rouge">logger</code> even though it’s possible
 that the logging method calls are being executed by three different threads.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">scala.util._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">scala.util._</span>
 <span class="k">import</span> <span class="nn">scala.concurrent.Future</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
 <span class="k">import</span> <span class="nn">scala.concurrent.ExecutionContext.Implicits.global</span>
@@ -407,7 +407,7 @@ that the logging method calls are being executed by three different threads.</p>
 logging methods.  If you don’t like the particular set of methods supported by a logger, you can roll your own,
 using the built in level mixins.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.api.level._</span>
 
 <span class="k">val</span> <span class="n">log</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">BaseLogger</span> <span class="k">with</span> <span class="nc">Emergency</span> <span class="k">with</span> <span class="nc">Fatal</span> <span class="k">with</span> <span class="nc">Finest</span>

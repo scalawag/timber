@@ -335,7 +335,7 @@ be to identify the subsystem within which the logging call takes place, for exam
 <p>For simple cases, use the <code class="highlighter-rouge">during()</code> method which both pushes a new value onto the stack and pops it once its
 thunk is complete.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nc">ThreadAttributes</span><span class="o">.</span><span class="n">during</span><span class="o">(</span><span class="s">"subsystem"</span><span class="o">,</span><span class="s">"model"</span><span class="o">)</span> <span class="o">{</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">ThreadAttributes</span><span class="o">.</span><span class="n">during</span><span class="o">(</span><span class="s">"subsystem"</span><span class="o">,</span><span class="s">"model"</span><span class="o">)</span> <span class="o">{</span>
   <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="s">"msg1"</span><span class="o">)</span>
   <span class="nc">ThreadAttributes</span><span class="o">.</span><span class="n">during</span><span class="o">(</span><span class="s">"subsystem"</span><span class="o">,</span><span class="s">"db"</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="s">"msg2"</span><span class="o">)</span>
@@ -350,7 +350,7 @@ methods.  The <code class="highlighter-rouge">pop()</code> method requires that 
 help prevent errors in push/pop asymmetry.  Trying to pop the wrong values from the stacks will result in a runtime
 exception being thrown.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="n">enter</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="n">enter</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
   <span class="nc">ThreadAttributes</span><span class="o">.</span><span class="n">push</span><span class="o">(</span><span class="s">"subsystem"</span><span class="o">,</span><span class="s">"db"</span><span class="o">)</span>
 <span class="o">}</span>
 

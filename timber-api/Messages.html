@@ -343,7 +343,7 @@ Timber will compute the string value exactly once the first time that it’s req
 which means that even though it may look like you’re wasting cycles generating a string when it’s not being logged,
 you’re not.  Scala makes it so that no work is done unless it’s required.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="c1">// A simple String literal
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// A simple String literal
 </span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="s">"my simple message"</span><span class="o">)</span>
 
 <span class="c1">// A simple String expression
@@ -374,7 +374,7 @@ handling for throwables in log entries.  As far as timber is concerned, stack tr
 for an entry and that’s all.  If all the text that you want to log is the stack trace of a throwable, you can just use
 the throwable directly as your message and it will be converted into a message containing its stack trace.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">try</span> <span class="o">{</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">try</span> <span class="o">{</span>
   <span class="k">throw</span> <span class="k">new</span> <span class="nc">Exception</span><span class="o">(</span><span class="s">"boom!"</span><span class="o">)</span>
 <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
   <span class="k">case</span> <span class="n">ex</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span> <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="n">ex</span><span class="o">)</span>
@@ -390,7 +390,7 @@ the throwable directly as your message and it will be converted into a message c
 including both a message <em>and</em> a throwable in the logging call.  With timber, there is a tuple conversion that allows
 you to do the same thing.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">try</span> <span class="o">{</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">try</span> <span class="o">{</span>
   <span class="k">throw</span> <span class="k">new</span> <span class="nc">Exception</span><span class="o">(</span><span class="s">"boom!"</span><span class="o">)</span>
 <span class="o">}</span> <span class="k">catch</span> <span class="o">{</span>
   <span class="k">case</span> <span class="n">ex</span><span class="k">:</span> <span class="kt">Exception</span> <span class="o">=&gt;</span> <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="s">"I caught an exception!"</span><span class="o">,</span><span class="n">ex</span><span class="o">)</span>
@@ -410,7 +410,7 @@ files (for rolling configurations) or broken up by another thread’s entry.</p>
 
 <p>This can be broken up because it generates eleven entries.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">nums</span> <span class="k">=</span> <span class="nc">Stream</span><span class="o">.</span><span class="n">from</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">nums</span> <span class="k">=</span> <span class="nc">Stream</span><span class="o">.</span><span class="n">from</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
 
 <span class="n">pw</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="s">"Some kind of heading:"</span><span class="o">)</span>
 <span class="n">nums</span> <span class="n">foreach</span> <span class="o">{</span> <span class="n">n</span> <span class="k">=&gt;</span>
@@ -421,7 +421,7 @@ files (for rolling configurations) or broken up by another thread’s entry.</p>
 
 <p>This is better style (timber-wise) because it produces one multi-line entry.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">nums</span> <span class="k">=</span> <span class="nc">Stream</span><span class="o">.</span><span class="n">from</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">nums</span> <span class="k">=</span> <span class="nc">Stream</span><span class="o">.</span><span class="n">from</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="n">take</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
 
 <span class="n">log</span><span class="o">.</span><span class="n">debug</span> <span class="o">{</span> <span class="n">pw</span><span class="k">:</span><span class="kt">PrintWriter</span> <span class="o">=&gt;</span>
   <span class="n">pw</span><span class="o">.</span><span class="n">println</span><span class="o">(</span><span class="s">"Some kind of heading:"</span><span class="o">)</span>
@@ -445,7 +445,7 @@ logging. You can indicate this to a logger by adding the <code class="highlighte
 tag that has any significance to timber.)  It tells the logger to calculate the message text synchronously during the
 logging call.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">var</span> <span class="n">name</span> <span class="k">=</span> <span class="s">"alice"</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">var</span> <span class="n">name</span> <span class="k">=</span> <span class="s">"alice"</span>
 <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="nc">Set</span><span class="o">(</span><span class="nc">ImmediateMessage</span><span class="o">))(</span><span class="n">s</span><span class="s">"sending to $name"</span><span class="o">)</span>
 <span class="n">name</span> <span class="k">=</span> <span class="s">"bob"</span>
 </code></pre>

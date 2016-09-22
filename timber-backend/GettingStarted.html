@@ -328,7 +328,7 @@
   <li>
     <p>Add the following dependency (and resolver, if necessary) to your sbt build:</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">resolvers</span> <span class="o">+=</span> <span class="s">"sonatype-oss-snapshots"</span> <span class="n">at</span> <span class="s">"http://oss.sonatype.org/content/repositories/snapshots/"</span>
+    <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">resolvers</span> <span class="o">+=</span> <span class="s">"sonatype-oss-snapshots"</span> <span class="n">at</span> <span class="s">"http://oss.sonatype.org/content/repositories/snapshots/"</span>
 
 <span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"org.scalawag.timber"</span> <span class="o">%%</span> <span class="s">"timber-backend"</span> <span class="o">%</span> <span class="s">"0.6.0-SNAPSHOT"</span>
 </code></pre>
@@ -337,7 +337,7 @@
   <li>
     <p>Create a logger and log away!</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+    <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
 
 <span class="k">object</span> <span class="nc">Main</span> <span class="o">{</span>
   <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span><span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
@@ -356,7 +356,7 @@
 more complex) configuration just to give you a taste.  For more detail, you should read the section on the timber
 <a href="DSL">DSL</a>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.Configuration</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 

@@ -414,7 +414,7 @@ resource won’t reset the <code class="highlighter-rouge">PeriodicFlushing</cod
 
 <h3 id="examples">Examples</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.io.FileWriter</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.io.FileWriter</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.buffering._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.concurrency._</span>
@@ -432,7 +432,7 @@ resource won’t reset the <code class="highlighter-rouge">PeriodicFlushing</cod
 Since you aren’t using constructors, you can’t mix in the policy traits.  The DSL functions still allow you to take
 advantage of them as parameters, though.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.buffering._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.concurrency._</span>
 <span class="k">import</span> <span class="nn">scala.concurrent.duration._</span>
@@ -484,7 +484,7 @@ moved or deleted.  One of the preferred ways to provide this notification is thr
 to a signal handler so that your receivers can close and reopen when the signal is received.  This example ties the
 receiver to the <code class="highlighter-rouge">SIGHUP</code> signal (a common choice).</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver._</span>
 
 <span class="k">val</span> <span class="n">r</span> <span class="k">=</span> <span class="n">file</span><span class="o">(</span><span class="s">"application.log"</span><span class="o">)</span>

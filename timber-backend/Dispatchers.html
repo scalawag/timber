@@ -351,7 +351,7 @@ to <code class="highlighter-rouge">stderr</code>, you’ll need to configure the
 
 <p>Here’s an example that limits the entries written to only those with a level of INFO or higher.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Logger</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Logger</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level.INFO</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.DefaultDispatcher</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.Dispatcher</span>
@@ -403,7 +403,7 @@ the configuration is largely a matter of style.</p>
 
 <p>All three of the following dispatchers have effectively the same configuration.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level.INFO</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level.INFO</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
@@ -437,7 +437,7 @@ all over the place.</p>
 <p>Instead of trying to use a specific attribute or tag to identify the request log entries, it probably makes sense to
 just keep the two streams separate.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.DefaultDispatcher</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.Dispatcher</span>
@@ -487,7 +487,7 @@ in the configuration graph or else you’ll waste memory caching the same config
 
 <p>For example, given the (ridiculously bad) configuration graph:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">choose</span> <span class="o">(</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">choose</span> <span class="o">(</span>
   <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">ERROR</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">tagged</span> <span class="nc">MyTag</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">r1</span><span class="o">,</span>
   <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">WARN</span> <span class="o">)</span>  <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">tagged</span> <span class="nc">MyTag</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">r2</span><span class="o">,</span>
   <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span> <span class="o">)</span>  <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">tagged</span> <span class="nc">MyTag</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">r3</span><span class="o">,</span>
@@ -511,7 +511,7 @@ constrained graph.</p>
   <li>
     <p><code class="highlighter-rouge">EntryFacets(tags = Some(Set(MyTag)))</code></p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">choose</span> <span class="o">(</span>
+    <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">choose</span> <span class="o">(</span>
   <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">ERROR</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">r1</span><span class="o">,</span>
   <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">WARN</span> <span class="o">)</span>  <span class="o">~&gt;</span> <span class="n">r2</span><span class="o">,</span>
   <span class="n">when</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span> <span class="o">)</span>  <span class="o">~&gt;</span> <span class="n">r3</span><span class="o">,</span>
@@ -523,7 +523,7 @@ constrained graph.</p>
   <li>
     <p><code class="highlighter-rouge">EntryFacets(tags = Some(Set()))</code></p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">r4</span>
+    <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">r4</span>
 </code></pre>
     </div>
   </li>
@@ -539,7 +539,7 @@ will not have the <code class="highlighter-rouge">MyTag</code> tag, this is a bi
 ones.  You just need to specify the entry attributes that you want to key off of and it will generate the extractor.
 Here’s an example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.EntryDispatcher._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.EntryDispatcher._</span>
 
 <span class="k">val</span> <span class="n">extractor</span> <span class="k">=</span> <span class="nc">CacheKeyExtractor</span><span class="o">(</span><span class="nc">Attribute</span><span class="o">.</span><span class="nc">Tags</span><span class="o">)</span>
 </code></pre>
@@ -548,7 +548,7 @@ Here’s an example:</p>
 <p>This code generates the cache key extractor from the previous section, where only the <code class="highlighter-rouge">tags</code> are significant for
 caching.  If you want to use a more complex key, you can specify multiple attributes.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.EntryDispatcher._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.EntryDispatcher._</span>
 
 <span class="k">val</span> <span class="n">extractor</span> <span class="k">=</span> <span class="nc">CacheKeyExtractor</span><span class="o">(</span><span class="nc">Attribute</span><span class="o">.</span><span class="nc">CallingClass</span><span class="o">,</span><span class="nc">Attribute</span><span class="o">.</span><span class="nc">Level</span><span class="o">)</span>
 </code></pre>
@@ -565,7 +565,7 @@ are received. If there are too many calling classes, though, this might use up t
 cache the configuration for every combination of tags present on any entry.  In this scenario, you can create a
 custom cache key extractor that only distinguishes between empty <code class="highlighter-rouge">tags</code> and non-empty <code class="highlighter-rouge">tags</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Tag</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Tag</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.api.impl.Entry</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.PartialEntry</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.EntryDispatcher.CacheKeyExtractor</span>

@@ -351,7 +351,7 @@ receiver still only receives the entry once.</p>
 <p>The best way to learn the DSL is to look at some examples.  Here’s a simple graph that logs to stderr only entries
 that have a level of <code class="highlighter-rouge">INFO</code> or higher.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
@@ -365,7 +365,7 @@ that have a level of <code class="highlighter-rouge">INFO</code> or higher.</p>
 <p>Here’s another that prints <em>anything</em> logged from the timber package but only <code class="highlighter-rouge">ERROR</code> messages otherwise.  It
 demonstrates that, to achieve an “or”, you can wire up two conditions in parallel.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="k">val</span> <span class="n">in</span> <span class="k">=</span> <span class="nc">Condition</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
@@ -383,7 +383,7 @@ to attach multiple edges to.  It’s basically just an aggregation or distributi
 
 <p>You can also use logical operations on conditions, if you prefer.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="o">(</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">ERROR</span> <span class="o">)</span> <span class="o">||</span> <span class="o">(</span> <span class="n">loggingClass</span> <span class="n">startsWith</span> <span class="s">"org.scalawag.timber"</span> <span class="o">)</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
@@ -396,7 +396,7 @@ to attach multiple edges to.  It’s basically just an aggregation or distributi
 
 <p>To achieve “and”-like behavior, you can either wire up two conditions in series.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">ERROR</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">loggingClass</span> <span class="n">startsWith</span> <span class="s">"org.scalawag.timber"</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
@@ -407,7 +407,7 @@ to attach multiple edges to.  It’s basically just an aggregation or distributi
 
 <p>Similar to the “or” case above, you can use an “and” logical operation instead.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="o">(</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">ERROR</span> <span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span> <span class="n">loggingClass</span> <span class="n">startsWith</span> <span class="s">"org.scalawag.timber"</span> <span class="o">)</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
@@ -418,7 +418,7 @@ to attach multiple edges to.  It’s basically just an aggregation or distributi
 
 <p>Some patterns are common enough that they have a shortcuts.  When you want to add a bunch of edges in parallel, use the <code class="highlighter-rouge">fanout</code> function.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="n">fanout</span> <span class="o">(</span>
@@ -434,7 +434,7 @@ to attach multiple edges to.  It’s basically just an aggregation or distributi
 
 <p>If you want to create a structure where exactly one of a set of conditions determines the accepted path, use the <code class="highlighter-rouge">choose</code> function.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
@@ -456,7 +456,7 @@ to attach multiple edges to.  It’s basically just an aggregation or distributi
 
 <p>You can fan-in after a <code class="highlighter-rouge">choose</code> just like <code class="highlighter-rouge">fanout</code>.  This will add an edge to each subgraph resulting from the choose.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="n">choose</span> <span class="o">(</span>
@@ -473,7 +473,7 @@ to attach multiple edges to.  It’s basically just an aggregation or distributi
 
 <p>Of course, your graph may not have anything to do with entry levels and your receivers may not all be writing to log files.  This graph writes everything to stderr and send any entry tagged with <code class="highlighter-rouge">Alert</code> to the <code class="highlighter-rouge">alerter</code> receiver as well.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Tag</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Tag</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
@@ -521,7 +521,7 @@ the same vertex when it comes time to route entries.</p>
 <p>When you are taking advantage of the implicit conversions, some strange things may happen.  What does the
 following configuration do?</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="k">val</span> <span class="n">cfg</span> <span class="k">=</span> <span class="nc">Configuration</span> <span class="o">{</span>
@@ -542,7 +542,7 @@ penultimate line is completely ignored!</p>
 <p>A valid way to write this is in the first example above where <code class="highlighter-rouge">in</code> is forced to be a subgraph with a call to
 <code class="highlighter-rouge">Condition(Boolean)</code>.  Another way would be to use <code class="highlighter-rouge">fanout</code>.  Then, you don’t need <code class="highlighter-rouge">in</code> in the first place.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="k">val</span> <span class="n">cfg</span> <span class="k">=</span> <span class="nc">Configuration</span> <span class="o">{</span>
@@ -578,7 +578,7 @@ to generate a visual representation.  This is what the <code class="highlighter-
 
 <p>The diagrams of the example graphs above were generated using <code class="highlighter-rouge">DotDumper</code> and <code class="highlighter-rouge">dot</code> from the graphviz suite.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>dot -T svg graph.dot &gt; graph.svg
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>dot -T svg graph.dot &gt; graph.svg
 </code></pre>
 </div>
 
@@ -593,7 +593,7 @@ are ignorant of each others’ presence.</p>
 
 <p>This creates two unnamed receivers that both eventually write to the same file descriptor.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nc">IN</span> <span class="o">::</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="mi">8</span> <span class="o">)</span> <span class="o">::</span> <span class="n">stderr</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">IN</span> <span class="o">::</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="mi">8</span> <span class="o">)</span> <span class="o">::</span> <span class="n">stderr</span>
 <span class="nc">IN</span> <span class="o">::</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&lt;=</span> <span class="mi">4</span> <span class="o">)</span> <span class="o">::</span> <span class="n">stderr</span>
 </code></pre>
 </div>
@@ -601,7 +601,7 @@ are ignorant of each others’ presence.</p>
 <p>This actually does what you want it to do and makes sure that any locking that’s happening is done in a single place
 for the <code class="highlighter-rouge">stderr</code> file descriptor.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">console</span> <span class="k">=</span> <span class="n">stderr</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">console</span> <span class="k">=</span> <span class="n">stderr</span>
 <span class="nc">IN</span> <span class="o">::</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="mi">8</span> <span class="o">)</span> <span class="o">::</span> <span class="n">console</span>
 <span class="nc">IN</span> <span class="o">::</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&lt;=</span> <span class="mi">4</span> <span class="o">)</span> <span class="o">::</span> <span class="n">console</span>
 </code></pre>

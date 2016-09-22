@@ -374,7 +374,7 @@ ignored.</p>
 
 <h4 id="examples">Examples</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.level.Level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="n">level</span> <span class="o">&gt;</span> <span class="mi">5</span>
@@ -414,7 +414,7 @@ value for a given entry, all conditions will <em>abstain</em> when evaluating th
 
 <h4 id="examples-1">Examples</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="n">loggingClass</span> <span class="n">startsWith</span> <span class="s">"org.scalawag.timber"</span>
 <span class="n">message</span> <span class="n">contains</span> <span class="s">"[Ee][Rr][Rr][Oo][Rr]"</span><span class="o">.</span><span class="n">r</span>
@@ -431,7 +431,7 @@ has been tagged with a specific Tag.</p>
 
 <h4 id="example">Example</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="k">object</span> <span class="nc">MyTag</span> <span class="k">extends</span> <span class="nc">Tag</span>
 
@@ -457,7 +457,7 @@ operator precedence may also help you decide on one versus the other, as the rul
 
 <h4 id="examples-2">Examples</h4>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
 
 <span class="k">object</span> <span class="nc">AlertTag</span> <span class="k">extends</span> <span class="nc">Tag</span>
 
@@ -473,7 +473,7 @@ operator precedence may also help you decide on one versus the other, as the rul
 <p>Conditions are represented by the <code class="highlighter-rouge">org.scalawag.timber.backend.dispatcher.configuration.dsl.Condition</code> trait.
 The single abstract method it declares is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="n">accepts</span><span class="o">(</span><span class="n">entry</span><span class="k">:</span><span class="kt">EntryFacets</span><span class="o">)</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">]</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="n">accepts</span><span class="o">(</span><span class="n">entry</span><span class="k">:</span><span class="kt">EntryFacets</span><span class="o">)</span><span class="k">:</span><span class="kt">Option</span><span class="o">[</span><span class="kt">Boolean</span><span class="o">]</span>
 </code></pre>
 </div>
 
@@ -498,7 +498,7 @@ it behaves the same as other timber condition fields of the same type (i.e., sup
 <p>Here’s an example of using timber’s <code class="highlighter-rouge">IntConditionFactory</code> to create a new field that contains the depth of a
 thread attribute stack.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">loggerAttributeCount</span> <span class="k">=</span> <span class="nc">IntConditionFactory</span><span class="o">(</span><span class="s">"loggerAttributeCount"</span><span class="o">)</span> <span class="o">{</span> <span class="n">entry</span> <span class="k">=&gt;</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">loggerAttributeCount</span> <span class="k">=</span> <span class="nc">IntConditionFactory</span><span class="o">(</span><span class="s">"loggerAttributeCount"</span><span class="o">)</span> <span class="o">{</span> <span class="n">entry</span> <span class="k">=&gt;</span>
   <span class="n">entry</span><span class="o">.</span><span class="n">loggerAttributes</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">size</span><span class="o">)</span>
 <span class="o">}</span>
 </code></pre>

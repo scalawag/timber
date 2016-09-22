@@ -328,7 +328,7 @@ features. It’s not a wrapper for an existing Java logging library.</p>
 <p>Configuration is done through an [internal DSL](timber-backend/ConfigurationDSL], allowing you to use the full 
 power of Scala to configure your logging system.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">dispatcher</span><span class="o">.</span><span class="n">configure</span> <span class="o">{</span> <span class="nc">IN</span> <span class="k">=&gt;</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">dispatcher</span><span class="o">.</span><span class="n">configure</span> <span class="o">{</span> <span class="nc">IN</span> <span class="k">=&gt;</span>
   <span class="nc">IN</span> <span class="o">~&gt;</span> <span class="n">fanout</span> <span class="o">(</span>
     <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">DEBUG</span> <span class="o">),</span>
     <span class="o">(</span> <span class="n">loggingClass</span> <span class="n">startsWith</span> <span class="s">"com.example"</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">WARN</span> <span class="o">)</span>
@@ -340,7 +340,7 @@ power of Scala to configure your logging system.</p>
 <p>It takes advantage of Scala’s by-name parameters and function literals to provide lazy message evaluation. That
 prevents doing work that doesn’t need to be done without requiring “isEnabled” conditionals.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="n">s</span><span class="s">"n = $n"</span><span class="o">)</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="o">(</span><span class="n">s</span><span class="s">"n = $n"</span><span class="o">)</span>
 
 <span class="n">log</span><span class="o">.</span><span class="n">debug</span> <span class="o">{</span> <span class="n">pw</span><span class="k">:</span> <span class="kt">PrintWriter</span> <span class="o">=&gt;</span>
   <span class="n">pw</span><span class="o">.</span><span class="n">print</span><span class="o">(</span><span class="s">"Here's a multi-line log entry that"</span><span class="o">)</span>

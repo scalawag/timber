@@ -327,7 +327,7 @@
 <p>If the built-in level mixins don’t satisfy your need to be different, you can create your own traits similar to the
 included ones.  Here’s an example of creating a super low-level method called <code class="highlighter-rouge">whisper</code>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.api.level._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.api.BaseLogger._</span>
 
@@ -346,7 +346,7 @@ included ones.  Here’s an example of creating a super low-level method called 
 mixin level traits.  It also allows you to mix in other built-in traits as well.  You could just as easily subclass
 <code class="highlighter-rouge">BaseLogger</code> and add whatever methods you want, ignoring the above pattern altogether.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
 
 <span class="k">class</span> <span class="nc">MyLogger</span> <span class="k">extends</span> <span class="nc">BaseLogger</span> <span class="o">{</span>
   <span class="k">def</span> <span class="n">scream</span><span class="o">()</span> <span class="k">=</span> <span class="n">log</span><span class="o">(</span><span class="mi">10000</span><span class="o">)(</span><span class="s">"AAAARGH!"</span><span class="o">)</span>

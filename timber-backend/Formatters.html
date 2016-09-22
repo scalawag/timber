@@ -336,7 +336,7 @@ It can usually either be supplied explicitly or implicitly.</p>
 with your entries.  The default entry formatter used by timber dispatchers if you don’t specify another one is
 actually just a configuration of a <code class="highlighter-rouge">ProgrammableEntryFormatter</code>.  Here’s an example of creating one.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.ProgrammableEntryFormatter</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.ProgrammableEntryFormatter</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.ProgrammableEntryFormatter._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.timestamp._</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.level._</span>
@@ -375,7 +375,7 @@ seen in the example above.</p>
   <li><code class="highlighter-rouge">threadAttribute(</code><em><code class="highlighter-rouge">name</code></em><code class="highlighter-rouge">)</code> – the thread attribute with the specified name associated with the entry (if available)</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">new</span> <span class="nc">ProgrammableEntryFormatter</span><span class="o">(</span><span class="nc">Seq</span><span class="o">(</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">new</span> <span class="nc">ProgrammableEntryFormatter</span><span class="o">(</span><span class="nc">Seq</span><span class="o">(</span>
   <span class="n">entry</span><span class="o">.</span><span class="n">threadName</span><span class="o">,</span>
   <span class="n">entry</span><span class="o">.</span><span class="n">loggingClass</span>
 <span class="o">))</span>
@@ -384,7 +384,7 @@ seen in the example above.</p>
 
 <p>You can also specify Strings to be included literally.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">new</span> <span class="nc">ProgrammableEntryFormatter</span><span class="o">(</span><span class="nc">Seq</span><span class="o">(</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">new</span> <span class="nc">ProgrammableEntryFormatter</span><span class="o">(</span><span class="nc">Seq</span><span class="o">(</span>
   <span class="s">"literal"</span><span class="o">,</span>
   <span class="n">entry</span><span class="o">.</span><span class="n">loggingClass</span>
 <span class="o">))</span>
@@ -412,7 +412,7 @@ formatters for any <code class="highlighter-rouge">Iterable</code>s that may be 
   <li><code class="highlighter-rouge">CommasAndEquals</code> - formats Maps as equals-separated pairs separated by commas (e.g., <code class="highlighter-rouge">k1=v1,k2=v2</code>)</li>
 </ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">entry</span><span class="o">.</span><span class="n">timestamp</span> <span class="n">formattedWith</span> <span class="nc">HumanReadableTimestampFormatter</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">entry</span><span class="o">.</span><span class="n">timestamp</span> <span class="n">formattedWith</span> <span class="nc">HumanReadableTimestampFormatter</span>
 <span class="n">entry</span><span class="o">.</span><span class="n">timestamp</span> <span class="n">formattedWith</span> <span class="nc">SimpleDateFormatTimestampFormatter</span><span class="o">(</span><span class="s">"yyyy/MM/dd"</span><span class="o">)</span>
 <span class="n">entry</span><span class="o">.</span><span class="n">threadName</span> <span class="n">map</span> <span class="o">{</span> <span class="n">name</span> <span class="k">=&gt;</span> <span class="n">name</span><span class="o">.</span><span class="n">length</span> <span class="o">}</span>
 <span class="n">entry</span><span class="o">.</span><span class="n">loggerAttributes</span> <span class="n">without</span> <span class="s">"name"</span> <span class="n">formattedWith</span> <span class="nc">CommasAndEquals</span>
@@ -422,7 +422,7 @@ formatters for any <code class="highlighter-rouge">Iterable</code>s that may be 
 <p>For the metadata that may not be present (indicated with “if available” above), you can specify a fallback to use when it’s absent with <code class="highlighter-rouge">orElse</code>.
 You can’t use <code class="highlighter-rouge">orElse</code> after a metadata provider that will definitely return something.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">entry</span><span class="o">.</span><span class="n">loggingClass</span> <span class="n">orElse</span> <span class="n">entry</span><span class="o">.</span><span class="n">loggerAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">)</span> <span class="n">orElse</span> <span class="s">"unknown"</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="n">entry</span><span class="o">.</span><span class="n">loggingClass</span> <span class="n">orElse</span> <span class="n">entry</span><span class="o">.</span><span class="n">loggerAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">)</span> <span class="n">orElse</span> <span class="s">"unknown"</span>
 </code></pre>
 </div>
 
@@ -437,7 +437,7 @@ have a reference to it and can change its configuration. Here’s an example ver
 <a href="GettingStarted">Getting Started</a> except that this changes the formatter used by the default dispatcher to include
 only the timestamp as metadata with the logged message.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Logger</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Logger</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level.INFO</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.DefaultDispatcher</span>
 <span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.Dispatcher</span>
