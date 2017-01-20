@@ -326,5 +326,5 @@ valve or has to have this name.  It simply makes it easier to add paths later an
 
 ## Next Steps
 
-* Learn about the [conditions](Conditions] that you can use in your DAG.
+* Learn about the [conditions](Conditions) that you can use in your DAG.
 * Learn how to create more advanced [receivers](Receivers).
