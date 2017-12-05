@@ -95,7 +95,9 @@ private[backend] object PeriodicFlushingBehavior {
   private val executor = {
     val threadFactory = new ThreadFactory {
       override def newThread(r:Runnable) = {
-        new Thread(r,"Timber-PeriodicFlusher")
+        val t = new Thread(r,"Timber-PeriodicFlusher")
+        t.setDaemon(true)
+        t
       }
     }
     Executors.newScheduledThreadPool(1,threadFactory)
