@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-pgp" % "0.8")
+addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.1.2")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-osgi" % "0.7.0")
+//addSbtPlugin("com.typesafe.sbt" % "sbt-osgi" % "0.9.6")
 
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.3")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
 
-addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.0.3")
+addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.7")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "0.8.2")
+//addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "1.4.1")
 
-resolvers += "jgit-repo" at "http://download.eclipse.org/jgit/maven"
+//resolvers += "jgit-repo" at "https://download.eclipse.org/jgit/maven"
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-ghpages" % "0.5.4")
+addSbtPlugin("com.typesafe.sbt" % "sbt-ghpages" % "0.6.3")
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-addSbtPlugin("org.scalawag.sbt.gitflow" %% "sbt-gitflow" % "2.0.0-SNAPSHOT")
+//addSbtPlugin("org.scalawag.sbt.gitflow" %% "sbt-gitflow" % "2.0.0-SNAPSHOT")
