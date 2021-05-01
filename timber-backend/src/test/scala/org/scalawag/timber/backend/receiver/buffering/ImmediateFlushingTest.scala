@@ -41,7 +41,7 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
       (pw.flush _).expects().once
     }
 
-    val receiver = ImmediateFlushing(new WriterBasedStackableReceiver(pw))
+    val receiver = new WriterBasedStackableReceiver(pw).flushImmediately
     receiver.receive(oneLineEntry)
   }
 

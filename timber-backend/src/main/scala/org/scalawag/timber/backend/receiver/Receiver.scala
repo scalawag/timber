@@ -16,7 +16,11 @@ package org.scalawag.timber.backend.receiver
 
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.InternalLogger
-import sun.misc.{SignalHandler, Signal}
+import org.scalawag.timber.backend.receiver.buffering.{ImmediateFlushing, PeriodicFlushing}
+import org.scalawag.timber.backend.receiver.concurrency.{Locking, Queueing}
+import sun.misc.{Signal, SignalHandler}
+
+import scala.concurrent.duration.FiniteDuration
 
 /** Marks a class that is capable of receiving [[Entry entries]] and doing something interesting with them. What
   * exactly it does is up to the implementation, but common behaviors are writing to a local log file or sending
@@ -45,6 +49,12 @@ trait Receiver {
     * necessarily call `flush()` before `close()`.
     */
   def close(): Unit
+
+  def flushImmediately: Receiver = ImmediateFlushing(this)
+  def flushAtLeastEvery(duration: FiniteDuration): Receiver = PeriodicFlushing(this, duration)
+
+  def withLocking: Receiver = Locking(this)
+  def withQueueing: Receiver = Queueing(this)
 }
 
 /** Provides methods for telling timber how to manage your Receivers. */
