@@ -118,7 +118,7 @@ object Receiver {
       Signal.handle(
         new Signal(signal),
         new SignalHandler {
-          override def handle(s: Signal) = {
+          override def handle(s: Signal): Unit = {
             closeOnSignalReceivers(signal) foreach { er =>
               try {
                 er.close()
