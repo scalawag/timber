@@ -79,7 +79,7 @@ In addition to the providers above, you can specify some modifiers to tweak them
 
 * `formattedWith` -- allows you to choose how the metadata is formatted (and must match the type of the metadata)
 * `map` -- allows you to apply an arbitrary mapping function to the metadata before inclusion
-* `without` -- allows you to remove keys from a map before inclusion (e.g., if you already included on of the
+* `without` -- allows you to remove keys from a map before inclusion (e.g., if you already included one of the
 keys specifically)
 
 If you don't specify a formatter, the `toString` method of the object will be used. There are some built-in

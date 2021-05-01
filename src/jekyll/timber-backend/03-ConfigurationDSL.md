@@ -289,8 +289,8 @@ are ignorant of each others' presence.
 This creates two unnamed receivers that both eventually write to the same file descriptor.
 
 ~~~~
-IN :: ( level >= 8 ) :: stderr
-IN :: ( level <= 4 ) :: stderr
+IN ~> ( level >= 8 ) ~> stderr
+IN ~> ( level <= 4 ) ~> stderr
 ~~~~
 {: .language-scala}
 
@@ -299,8 +299,8 @@ for the `stderr` file descriptor.
 
 ~~~~
 val console = stderr
-IN :: ( level >= 8 ) :: console
-IN :: ( level <= 4 ) :: console
+IN ~> ( level >= 8 ) ~> console
+IN ~> ( level <= 4 ) ~> console
 ~~~~
 {: .language-scala}
 
@@ -317,7 +317,7 @@ Of course, you don't have to do this if you understand what you're doing and onl
 * The root of a configuration is not special in any way before it's given to the configuration.  It only becomes
 special once you've given it to the dispatcher and, even then, it's only special to that dispatcher.  You could
 have a single DAG and pass different vertices within it to different dispatchers as their root.  I can't think of
-a reason why you would do this but you can.
+a reason why you would do this, but you can.
 
 * By convention, the input to all DAGs in the examples is an accept-all condition vertex named `IN`.  When configuring
 a dispatcher, it needs to be given the root vertex into the DAG.  There's no reason that it _has_ to be a

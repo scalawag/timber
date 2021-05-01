@@ -73,7 +73,7 @@ The following table lists the jars that you need to include to gather entries ge
 |timber|jcl|`jcl-over-slf4j`, `slf4j-over-timber`|
 |timber|log4j|`log4j-over-slf4j`, `slf4j-over-timber`|
 
-Depending on the number of libraries you're using, your application may match mutiple rows in the table above with
+Depending on the number of libraries you're using, your application may match multiple rows in the table above with
 the same backend. In that case, you'll need to add the jars from all the rows.
 
 ### Bridging from timber

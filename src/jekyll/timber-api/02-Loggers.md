@@ -88,7 +88,7 @@ def handleRequest(clientIp:String) {
 
 ## Logging Methods
 
-In addition to the generic `log()` method available on timbers `BaseLogger`, loggers may also provide level-specific
+In addition to the generic `log()` method available on timber's `BaseLogger`, loggers may also provide level-specific
 logging methods.  If you don't like the particular set of methods supported by a logger, you can roll your own,
 using the built in level mixins.
 

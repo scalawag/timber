@@ -12,7 +12,7 @@ Conditions are objects that evaluate [entries](Entries) for acceptance.  They ar
  - __reject__ - The condition does not hold true for the entry.
  - __abstain__ - There's not enough information in the entry to know whether the condition holds true or not.
 
-You can either take advantage of the built-in conditions, which will probably meet most of your needs, or create
+You can either take advantage of the built-in conditions, which will probably meet most of your needs or create
 your own.
 
 ## Built-in Conditions
@@ -95,7 +95,7 @@ loggingClass startsWith "org.scalawag.timber"
 message contains "[Ee][Rr][Rr][Oo][Rr]".r
 logger("clientIpAddress") is "127.0.0.1"
 thread.name endsWith "-test"
-thread("subsystem").any is "db
+thread("subsystem").any is "db"
 ~~~~
 {: .language-scala}
 

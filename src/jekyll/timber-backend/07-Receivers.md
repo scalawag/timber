@@ -5,7 +5,7 @@ permalink: timber-backend/Receivers
 group: "timber-backend"
 ---
 
-Receivers do something interesting with [entries](Entries).  What they do is entirely up to them and dependent on
+Receivers do something interesting with [entries](Entries).  What they do is entirely up to them and is dependent on
 their code and configuration.  They are the final destination for entries.  Indeed, they provide the reason that you
 bother to create entries in the first place.
 
@@ -120,11 +120,11 @@ strategy should cover most normal cases, though.
 
 If you want to integrate with an external service like [logrotate](https://github.com/logrotate/logrotate), you'll
 need a way for that service to inform your receivers when they need to close and reopen their file handles.
-Otherwise, your receiver will keep its existing filehandle and continue writing to the old file even if it has been
+Otherwise, your receiver will keep its existing file handle and continue writing to the old file even if it has been
 moved or deleted.  One of the preferred ways to provide this notification is through
 [UNIX signals](https://en.wikipedia.org/wiki/Unix_signal).
 
-Similar to the way timber provide close-on-shutdown, it also provides the ability to easily wire your receivers up
+Similar to the way timber provides close-on-shutdown, it also provides the ability to easily wire your receivers up
 to a signal handler so that your receivers can close and reopen when the signal is received.  This example ties the
 receiver to the `SIGHUP` signal (a common choice).
 

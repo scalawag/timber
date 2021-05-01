@@ -13,8 +13,8 @@ Internally, each message is an object that produces the text (as a `String`) laz
 the message isn't performed until it's needed, either because the filtering rules require it or because it's being
 sent to a log file or bridged to another logging system.  As a user of the timber API, you will hopefully remain
 blissfully unaware of the existence of the `Message` class. You normally won't create one explicitly but will use
-one of the implicit conversions in the `Message` companion object.  This is now known as the
-[Magnet Pattern](http://spray.io/blog/2012-12-13-the-magnet-pattern/).
+one of the implicit conversions in the `Message` companion object
+(see [Magnet Pattern](http://spray.io/blog/2012-12-13-the-magnet-pattern/)).
 
 Because of the lazy nature of messages, timber loggers don't support the `isEnabled()` style methods common to most
 JVM logging systems.  That's because you don't need to guard against unnecessary and expensive string-building code.
