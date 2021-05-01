@@ -18,40 +18,40 @@ package org.scalawag.timber.api
   * This object also provides implicit conversions for levels to and from integers.
   */
 object Level {
-  val FINEST = Level(10, "FINEST")
+  val FINEST: Level = Level(10, "FINEST")
 
-  val TRACE = Level(20, "TRACE")
-  val FINER = Level(20, "FINER")
+  val TRACE: Level = Level(20, "TRACE")
+  val FINER: Level = Level(20, "FINER")
 
-  val DEBUG = Level(30, "DEBUG")
-  val FINE = Level(30, "FINE")
+  val DEBUG: Level = Level(30, "DEBUG")
+  val FINE: Level = Level(30, "FINE")
 
-  val CONFIG = Level(40, "CONFIG")
+  val CONFIG: Level = Level(40, "CONFIG")
 
-  val INFO = Level(50, "INFO")
+  val INFO: Level = Level(50, "INFO")
 
-  val NOTICE = Level(60, "NOTICE")
+  val NOTICE: Level = Level(60, "NOTICE")
 
-  val WARN = Level(70, "WARN")
-  val WARNING = Level(70, "WARNING")
+  val WARN: Level = Level(70, "WARN")
+  val WARNING: Level = Level(70, "WARNING")
 
-  val ERROR = Level(80, "ERROR")
-  val SEVERE = Level(80, "SEVERE")
+  val ERROR: Level = Level(80, "ERROR")
+  val SEVERE: Level = Level(80, "SEVERE")
 
-  val FATAL = Level(90, "FATAL")
-  val CRITICAL = Level(90, "CRITICAL")
+  val FATAL: Level = Level(90, "FATAL")
+  val CRITICAL: Level = Level(90, "CRITICAL")
 
-  val ALERT = Level(100, "ALERT")
+  val ALERT: Level = Level(100, "ALERT")
 
-  val EMERGENCY = Level(110, "EMERGENCY")
+  val EMERGENCY: Level = Level(110, "EMERGENCY")
 
   def apply(severity: Int, name: String): Level = apply(severity, Some(name))
 
   /** Creates an anonymous [[Level]] representing a numeric log intValue. */
-  implicit def intToLevel(level: Int) = apply(level)
+  implicit def intToLevel(level: Int): Level = apply(level)
 
   /** Allows a [[Level]] to be specified anywhere an Int is expected. The intValue's integer value is used. */
-  implicit def levelToInt(level: Level) = level.intValue
+  implicit def levelToInt(level: Level): Level = level.intValue
 }
 
 /** Represents a log level of an [[Entry]] (sometimes known in other systems as "severity").  Levels are always
@@ -67,5 +67,5 @@ object Level {
   */
 case class Level(intValue: Int, name: Option[String] = None) extends Ordered[Level] {
   override def compare(that: Level): Int = this.intValue.compareTo(that.intValue)
-  override lazy val toString = name.getOrElse(intValue.toString)
+  override lazy val toString: String = name.getOrElse(intValue.toString)
 }

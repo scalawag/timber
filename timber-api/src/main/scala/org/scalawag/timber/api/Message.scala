@@ -20,8 +20,6 @@ import java.io.{StringWriter, PrintWriter}
 /** Represents the textual content of an [[Entry entry]].  You normally won't create a
   * message object explicitly but will use one of the implicit conversions in the companion object (see the
   * [[http://spray.io/blog/2012-12-13-the-magnet-pattern/ magnet pattern]]).
-You don't normally need to create instances of this class
-  * directly but can use the implicits defined in the Logging object.
   */
 
 class Message(fn: => String) {

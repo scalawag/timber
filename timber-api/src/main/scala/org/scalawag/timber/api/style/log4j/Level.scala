@@ -14,15 +14,15 @@
 
 package org.scalawag.timber.api.style.log4j
 
-import org.scalawag.timber.api.{Level => std}
+import org.scalawag.timber.api.{Level => StdLevel}
 
 object Level {
-  val TRACE = std.TRACE
-  val DEBUG = std.DEBUG
-  val INFO = std.INFO
-  val WARN = std.WARN
-  val ERROR = std.ERROR
-  val FATAL = std.FATAL
+  val TRACE: StdLevel = StdLevel.TRACE
+  val DEBUG: StdLevel = StdLevel.DEBUG
+  val INFO: StdLevel = StdLevel.INFO
+  val WARN: StdLevel = StdLevel.WARN
+  val ERROR: StdLevel = StdLevel.ERROR
+  val FATAL: StdLevel = StdLevel.FATAL
 
   val values = Iterable(TRACE, DEBUG, INFO, WARN, ERROR, FATAL)
 }

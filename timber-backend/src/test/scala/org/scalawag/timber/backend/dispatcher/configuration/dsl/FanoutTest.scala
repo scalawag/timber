@@ -19,7 +19,6 @@ import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.{Level, Entry}
 import org.scalawag.timber.backend.dispatcher.configuration.Configuration
-import org.scalawag.timber.backend.dispatcher.configuration.debug.DotDumper
 import org.scalawag.timber.backend.receiver.Receiver
 
 class FanoutTest extends AnyFunSpec with MockFactory with Matchers {
@@ -79,10 +78,11 @@ class FanoutTest extends AnyFunSpec with MockFactory with Matchers {
   }
 
   it("should allow all chains to be fanned back in") {
+
     val cfg = Configuration {
       fanout(
-        (level < Level.INFO) ~> true,
-        (level > Level.INFO) ~> true
+        (level < Level.INFO.intValue) ~> true,
+        (level > Level.INFO.intValue) ~> true
       ) ~> ra
     }
 

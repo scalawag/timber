@@ -14,14 +14,14 @@
 
 package org.scalawag.timber.api.style.slf4j
 
-import org.scalawag.timber.api.{Level => std}
+import org.scalawag.timber.api.{Level => StdLevel}
 
 object Level {
-  val TRACE = std.TRACE
-  val DEBUG = std.DEBUG
-  val INFO = std.INFO
-  val WARN = std.WARN
-  val ERROR = std.ERROR
+  val TRACE: StdLevel = StdLevel.TRACE
+  val DEBUG: StdLevel = StdLevel.DEBUG
+  val INFO: StdLevel = StdLevel.INFO
+  val WARN: StdLevel = StdLevel.WARN
+  val ERROR: StdLevel = StdLevel.ERROR
 
   val values = Iterable(TRACE, DEBUG, INFO, WARN, ERROR)
 }

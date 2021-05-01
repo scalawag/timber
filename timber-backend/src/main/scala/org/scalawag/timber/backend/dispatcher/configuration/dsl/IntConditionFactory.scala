@@ -33,34 +33,34 @@ class IntConditionFactory(
 
   case class IntGreaterThanOrEqualCondition private[dsl] (val operation: String, val threshold: Int)
       extends IntCondition {
-    override protected def acceptsValue(value: Iterable[Int]) = value.map(_ >= threshold).headOption
+    override protected def acceptsValue(value: Iterable[Int]): Option[Boolean] = value.map(_ >= threshold).headOption
     override val toString = s"$extractionLabel $operation $threshold"
   }
 
   case class IntGreaterThanCondition private[dsl] (val operation: String, val threshold: Int) extends IntCondition {
-    override protected def acceptsValue(value: Iterable[Int]) = value.map(_ > threshold).headOption
+    override protected def acceptsValue(value: Iterable[Int]): Option[Boolean] = value.map(_ > threshold).headOption
     override val toString = s"$extractionLabel $operation $threshold"
   }
 
   case class IntLessThanOrEqualCondition private[dsl] (val operation: String, val threshold: Int) extends IntCondition {
-    override protected def acceptsValue(value: Iterable[Int]) = value.map(_ <= threshold).headOption
+    override protected def acceptsValue(value: Iterable[Int]): Option[Boolean] = value.map(_ <= threshold).headOption
     override val toString = s"$extractionLabel $operation $threshold"
   }
 
   case class IntLessThanCondition private[dsl] (val operation: String, val threshold: Int) extends IntCondition {
-    override protected def acceptsValue(value: Iterable[Int]) = value.map(_ < threshold).headOption
+    override protected def acceptsValue(value: Iterable[Int]): Option[Boolean] = value.map(_ < threshold).headOption
     override val toString = s"$extractionLabel $operation $threshold"
   }
 
   case class IntEqualsCondition private[dsl] (val operation: String, val target: Int) extends IntCondition {
-    override protected def acceptsValue(value: Iterable[Int]) = value.map(_ == target).headOption
+    override protected def acceptsValue(value: Iterable[Int]): Option[Boolean] = value.map(_ == target).headOption
     override val toString = s"$extractionLabel $operation $target"
   }
 
-  def <=(thresholdInt: Int) = IntLessThanOrEqualCondition("<=", thresholdInt)
-  def <(thresholdInt: Int) = IntLessThanCondition("<", thresholdInt)
-  def >=(thresholdInt: Int) = IntGreaterThanOrEqualCondition(">=", thresholdInt)
-  def >(thresholdInt: Int) = IntGreaterThanCondition(">", thresholdInt)
-  def ===(targetInt: Int) = IntEqualsCondition("===", targetInt)
-  def is(targetInt: Int) = IntEqualsCondition("is", targetInt)
+  def <=(thresholdInt: Int): IntLessThanOrEqualCondition = IntLessThanOrEqualCondition("<=", thresholdInt)
+  def <(thresholdInt: Int): IntLessThanCondition = IntLessThanCondition("<", thresholdInt)
+  def >=(thresholdInt: Int): IntGreaterThanOrEqualCondition = IntGreaterThanOrEqualCondition(">=", thresholdInt)
+  def >(thresholdInt: Int): IntGreaterThanCondition = IntGreaterThanCondition(">", thresholdInt)
+  def ===(targetInt: Int): IntEqualsCondition = IntEqualsCondition("===", targetInt)
+  def is(targetInt: Int): IntEqualsCondition = IntEqualsCondition("is", targetInt)
 }

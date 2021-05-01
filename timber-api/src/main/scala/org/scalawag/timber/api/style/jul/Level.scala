@@ -14,16 +14,16 @@
 
 package org.scalawag.timber.api.style.jul
 
-import org.scalawag.timber.api.{Level => std}
+import org.scalawag.timber.api.{Level => StdLevel}
 
 object Level {
-  val FINEST = std.FINEST
-  val FINER = std.FINER
-  val FINE = std.FINE
-  val CONFIG = std.CONFIG
-  val INFO = std.INFO
-  val WARNING = std.WARNING
-  val SEVERE = std.SEVERE
+  val FINEST: StdLevel = StdLevel.FINEST
+  val FINER: StdLevel = StdLevel.FINER
+  val FINE: StdLevel = StdLevel.FINE
+  val CONFIG: StdLevel = StdLevel.CONFIG
+  val INFO: StdLevel = StdLevel.INFO
+  val WARNING: StdLevel = StdLevel.WARNING
+  val SEVERE: StdLevel = StdLevel.SEVERE
 
   val values = Iterable(FINEST, FINER, FINE, CONFIG, INFO, WARNING, SEVERE)
 }

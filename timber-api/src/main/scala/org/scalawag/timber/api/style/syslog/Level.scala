@@ -14,17 +14,17 @@
 
 package org.scalawag.timber.api.style.syslog
 
-import org.scalawag.timber.api.{Level => std}
+import org.scalawag.timber.api.{Level => StdLevel}
 
 object Level {
-  val DEBUG = std.DEBUG
-  val INFO = std.INFO
-  val NOTICE = std.NOTICE
-  val WARNING = std.WARNING
-  val ERROR = std.ERROR
-  val CRITICAL = std.CRITICAL
-  val ALERT = std.ALERT
-  val EMERGENCY = std.EMERGENCY
+  val DEBUG: StdLevel = StdLevel.DEBUG
+  val INFO: StdLevel = StdLevel.INFO
+  val NOTICE: StdLevel = StdLevel.NOTICE
+  val WARNING: StdLevel = StdLevel.WARNING
+  val ERROR: StdLevel = StdLevel.ERROR
+  val CRITICAL: StdLevel = StdLevel.CRITICAL
+  val ALERT: StdLevel = StdLevel.ALERT
+  val EMERGENCY: StdLevel = StdLevel.EMERGENCY
 
   val values = Iterable(DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL, ALERT, EMERGENCY)
 }
