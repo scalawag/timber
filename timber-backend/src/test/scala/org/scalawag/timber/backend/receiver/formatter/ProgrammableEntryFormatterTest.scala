@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,7 +33,7 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
   private val threadName = "test"
 
   describe("headerComponents") {
-    val e = Entry(timestamp = time,threadName = threadName)
+    val e = Entry(timestamp = time, threadName = threadName)
 
     it("should use the default formatter (toString)") {
       val f = new ProgrammableEntryFormatter(Seq(entry.timestamp))
@@ -50,22 +50,22 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
   }
 
   describe("delimiter") {
-    val e = Entry(timestamp = time,threadName = threadName)
+    val e = Entry(timestamp = time, threadName = threadName)
 
     it("should use the default delimiter") {
-      val f = new ProgrammableEntryFormatter(Seq(entry.timestamp,entry.threadName))
+      val f = new ProgrammableEntryFormatter(Seq(entry.timestamp, entry.threadName))
       f.format(e) shouldBe "+72373200123|test\n"
     }
 
     it("should use the specified delimiter") {
-      val f = new ProgrammableEntryFormatter(Seq(entry.timestamp,entry.threadName),delimiter = "&&")
+      val f = new ProgrammableEntryFormatter(Seq(entry.timestamp, entry.threadName), delimiter = "&&")
       f.format(e) shouldBe "+72373200123&&test\n"
     }
 
   }
 
   describe("continuationHeader") {
-    val e = Entry(timestamp = time,threadName = threadName,message=Some("A\nB"))
+    val e = Entry(timestamp = time, threadName = threadName, message = Some("A\nB"))
 
     it("should use the default (NONE)") {
       val f = new ProgrammableEntryFormatter(Seq(entry.threadName))
@@ -73,23 +73,23 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
     }
 
     it("should use NONE as specified explicitly") {
-      val f = new ProgrammableEntryFormatter(Seq(entry.threadName),continuationHeader = ContinuationHeader.NONE)
+      val f = new ProgrammableEntryFormatter(Seq(entry.threadName), continuationHeader = ContinuationHeader.NONE)
       f.format(e) shouldBe "+test|A\n B\n"
     }
 
     it("should use METADATA as specified") {
-      val f = new ProgrammableEntryFormatter(Seq(entry.threadName),continuationHeader = ContinuationHeader.METADATA)
+      val f = new ProgrammableEntryFormatter(Seq(entry.threadName), continuationHeader = ContinuationHeader.METADATA)
       f.format(e) shouldBe "+test|A\n test|B\n"
     }
 
     it("should use INDENT as specified") {
-      val f = new ProgrammableEntryFormatter(Seq(entry.threadName),continuationHeader = ContinuationHeader.INDENT)
+      val f = new ProgrammableEntryFormatter(Seq(entry.threadName), continuationHeader = ContinuationHeader.INDENT)
       f.format(e) shouldBe "+test|A\n      B\n"
     }
   }
 
   describe("line prefixes") {
-    val e = Entry(timestamp = time,threadName = threadName,message=Some("A\nB"))
+    val e = Entry(timestamp = time, threadName = threadName, message = Some("A\nB"))
 
     it("should use the default prefixes") {
       val f = new ProgrammableEntryFormatter(Seq(entry.threadName))
@@ -97,13 +97,13 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
     }
 
     it("should use the specified prefixes") {
-      val f = new ProgrammableEntryFormatter(Seq(entry.threadName),firstLinePrefix = "$ ",continuationPrefix = "> ")
+      val f = new ProgrammableEntryFormatter(Seq(entry.threadName), firstLinePrefix = "$ ", continuationPrefix = "> ")
       f.format(e) shouldBe "$ test|A\n> B\n"
     }
   }
 
   describe("entry.level") {
-    val e = Entry(timestamp = time,threadName = threadName,level = Some(Level(29,"blah")))
+    val e = Entry(timestamp = time, threadName = threadName, level = Some(Level(29, "blah")))
 
     it("should use the default level formatter") {
       val f = new ProgrammableEntryFormatter(Seq(entry.level))
@@ -119,13 +119,13 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
   describe("entry.loggingClass") {
 
     it("should extract the logging class") {
-      val e = Entry(timestamp = time,threadName = threadName,loggingClass = Some("TestCase"))
+      val e = Entry(timestamp = time, threadName = threadName, loggingClass = Some("TestCase"))
       val f = new ProgrammableEntryFormatter(Seq(entry.loggingClass))
       f.format(e) shouldBe "+TestCase\n"
     }
 
     it("should not extract the missing logging class") {
-      val e = Entry(timestamp = time,threadName = threadName)
+      val e = Entry(timestamp = time, threadName = threadName)
       val f = new ProgrammableEntryFormatter(Seq(entry.loggingClass))
       f.format(e) shouldBe "+\n"
     }
@@ -135,13 +135,13 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
   describe("entry.loggingMethod") {
 
     it("should extract the logging method") {
-      val e = Entry(timestamp = time,threadName = threadName,loggingMethod = Some("doSomething"))
+      val e = Entry(timestamp = time, threadName = threadName, loggingMethod = Some("doSomething"))
       val f = new ProgrammableEntryFormatter(Seq(entry.loggingMethod))
       f.format(e) shouldBe "+doSomething\n"
     }
 
     it("should not extract the missing logging method") {
-      val e = Entry(timestamp = time,threadName = threadName)
+      val e = Entry(timestamp = time, threadName = threadName)
       val f = new ProgrammableEntryFormatter(Seq(entry.loggingMethod))
       f.format(e) shouldBe "+\n"
     }
@@ -157,7 +157,7 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
       override def toString = "TagB"
     }
 
-    val e = Entry(tags = Set(TagA,TagB))
+    val e = Entry(tags = Set(TagA, TagB))
 
     it("should use the default formatter") {
       val f = new ProgrammableEntryFormatter(Seq(entry.tags))
@@ -181,7 +181,7 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
   }
 
   describe("entry.loggerAttributes") {
-    val e = Entry(loggerAttributes = Map("a" -> 1,"b" -> 2,"c" -> 3))
+    val e = Entry(loggerAttributes = Map("a" -> 1, "b" -> 2, "c" -> 3))
 
     it("should use the default formatter") {
       val f = new ProgrammableEntryFormatter(Seq(entry.loggerAttributes))
@@ -195,42 +195,50 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
   }
 
   describe("entry.loggerAttribute") {
-    val e = Entry(loggerAttributes = Map("a" -> 1,"b" -> 4))
+    val e = Entry(loggerAttributes = Map("a" -> 1, "b" -> 4))
 
     it("should extract the right thing") {
-      val f = new ProgrammableEntryFormatter(Seq(
-        entry.loggerAttribute("a")
-      ))
+      val f = new ProgrammableEntryFormatter(
+        Seq(
+          entry.loggerAttribute("a")
+        )
+      )
       f.format(e) shouldBe "+1\n"
     }
 
   }
 
   describe("entry.threadAttribute") {
-    val e = Entry(threadAttributes = Map("a" -> List("1","2","3"),"b" -> List("4","5","6"),"c" -> List()))
+    val e = Entry(threadAttributes = Map("a" -> List("1", "2", "3"), "b" -> List("4", "5", "6"), "c" -> List()))
 
     it("should extract the right thing from stack") {
-      val f = new ProgrammableEntryFormatter(Seq(
-        entry.threadAttribute("a")
-      ))
+      val f = new ProgrammableEntryFormatter(
+        Seq(
+          entry.threadAttribute("a")
+        )
+      )
       f.format(e) shouldBe "+1\n"
     }
 
     it("should extract the right thing from empty stack") {
-      val f = new ProgrammableEntryFormatter(Seq(
-        entry.threadAttribute("c")
-      ))
+      val f = new ProgrammableEntryFormatter(
+        Seq(
+          entry.threadAttribute("c")
+        )
+      )
       f.format(e) shouldBe "+\n"
     }
   }
 
   describe("orElse optional") {
-    val f = new ProgrammableEntryFormatter(Seq(
-      entry.loggingClass orElse entry.loggerAttribute("name") orElse entry.sourceLocation
-    ))
+    val f = new ProgrammableEntryFormatter(
+      Seq(
+        entry.loggingClass orElse entry.loggerAttribute("name") orElse entry.sourceLocation
+      )
+    )
 
     it("should use the preferred header if present") {
-      val e = Entry(loggingClass = Some("UnitTest"),loggerAttributes = Map("name" -> "Fallback"))
+      val e = Entry(loggingClass = Some("UnitTest"), loggerAttributes = Map("name" -> "Fallback"))
       f.format(e) shouldBe "+UnitTest\n"
     }
 
@@ -240,7 +248,7 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
     }
 
     it("should use the second fallback header if the others are absent") {
-      val e = Entry(sourceLocation = Some(Entry.SourceLocation("Test.scala",12)))
+      val e = Entry(sourceLocation = Some(Entry.SourceLocation("Test.scala", 12)))
       f.format(e) shouldBe "+Test.scala:12\n"
     }
 
@@ -251,12 +259,14 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
   }
 
   describe("orElse required") {
-    val f = new ProgrammableEntryFormatter(Seq(
-      entry.loggingClass orElse entry.threadName
-    ))
+    val f = new ProgrammableEntryFormatter(
+      Seq(
+        entry.loggingClass orElse entry.threadName
+      )
+    )
 
     it("should use the preferred header if present") {
-      val e = Entry(loggingClass = Some("UnitTest"),threadName = "THREAD")
+      val e = Entry(loggingClass = Some("UnitTest"), threadName = "THREAD")
       f.format(e) shouldBe "+UnitTest\n"
     }
 
@@ -267,12 +277,15 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
   }
 
   describe("orElse required after orElse optional") {
-    val f = new ProgrammableEntryFormatter(Seq(
-      entry.loggingClass orElse entry.loggerAttribute("name") orElse entry.threadName
-    ))
+    val f = new ProgrammableEntryFormatter(
+      Seq(
+        entry.loggingClass orElse entry.loggerAttribute("name") orElse entry.threadName
+      )
+    )
 
     it("should use the preferred header if present") {
-      val e = Entry(loggingClass = Some("UnitTest"),loggerAttributes = Map("name" -> "Fallback"),threadName = "THREAD")
+      val e =
+        Entry(loggingClass = Some("UnitTest"), loggerAttributes = Map("name" -> "Fallback"), threadName = "THREAD")
       f.format(e) shouldBe "+UnitTest\n"
     }
 
@@ -288,68 +301,88 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
   }
 
   describe("without") {
-    val e = Entry(loggerAttributes = Map("a" -> 1,"b" -> 2,"c" -> 3))
+    val e = Entry(loggerAttributes = Map("a" -> 1, "b" -> 2, "c" -> 3))
 
     it("should drop a key with without(String)") {
-      val f = new ProgrammableEntryFormatter(Seq(
-        entry.loggerAttributes without "b" formattedWith CommasAndEquals
-      ))
+      val f = new ProgrammableEntryFormatter(
+        Seq(
+          entry.loggerAttributes without "b" formattedWith CommasAndEquals
+        )
+      )
 
       f.format(e) shouldBe "+a=1,c=3\n"
     }
 
     it("should drop a key with without(Set[String])") {
-      val f = new ProgrammableEntryFormatter(Seq(
-        entry.loggerAttributes without Set("b","c") formattedWith CommasAndEquals
-      ))
+      val f = new ProgrammableEntryFormatter(
+        Seq(
+          entry.loggerAttributes without Set("b", "c") formattedWith CommasAndEquals
+        )
+      )
 
       f.format(e) shouldBe "+a=1\n"
     }
 
     it("should drop multiple keys with multiple without(String) calls") {
-      val f = new ProgrammableEntryFormatter(Seq(
-        entry.loggerAttributes without "b" without "c" formattedWith CommasAndEquals
-      ))
+      val f = new ProgrammableEntryFormatter(
+        Seq(
+          entry.loggerAttributes without "b" without "c" formattedWith CommasAndEquals
+        )
+      )
 
       f.format(e) shouldBe "+a=1\n"
     }
   }
 
   describe("map") {
-    val e = Entry(loggerAttributes = Map("a" -> 1,"b" -> 2,"c" -> 3),loggingClass = Some("UnitTest"),threadName = "THREAD")
+    val e = Entry(
+      loggerAttributes = Map("a" -> 1, "b" -> 2, "c" -> 3),
+      loggingClass = Some("UnitTest"),
+      threadName = "THREAD"
+    )
 
     it("should map a Map") {
-      val f = new ProgrammableEntryFormatter(Seq(
-        entry.loggerAttributes map { m:Map[String,Any] => m.mapValues( n => s"$n$n" ).toMap } formattedWith CommasAndEquals
-      ))
+      val f = new ProgrammableEntryFormatter(
+        Seq(
+          entry.loggerAttributes map { m: Map[String, Any] =>
+            m.mapValues(n => s"$n$n").toMap
+          } formattedWith CommasAndEquals
+        )
+      )
 
       f.format(e) shouldBe "+a=11,b=22,c=33\n"
     }
 
     it("should map an optional header") {
-      val f = new ProgrammableEntryFormatter(Seq(
-        entry.loggingClass map (_.reverse)
-      ))
+      val f = new ProgrammableEntryFormatter(
+        Seq(
+          entry.loggingClass map (_.reverse)
+        )
+      )
 
       f.format(e) shouldBe "+tseTtinU\n"
     }
 
     it("should map a required header") {
-      val f = new ProgrammableEntryFormatter(Seq(
-        entry.threadName map (_.reverse)
-      ))
+      val f = new ProgrammableEntryFormatter(
+        Seq(
+          entry.threadName map (_.reverse)
+        )
+      )
 
       f.format(e) shouldBe "+DAERHT\n"
     }
   }
 
   describe("TopsOnly") {
-    val e = Entry(threadAttributes = Map("a" -> List("1","2","3"),"b" -> List("4","5","6"),"c" -> List()))
+    val e = Entry(threadAttributes = Map("a" -> List("1", "2", "3"), "b" -> List("4", "5", "6"), "c" -> List()))
 
     it("should map thread attributes to only the top of the stack") {
-      val f = new ProgrammableEntryFormatter(Seq(
-        entry.threadAttributes map TopsOnly formattedWith CommasAndEquals
-      ))
+      val f = new ProgrammableEntryFormatter(
+        Seq(
+          entry.threadAttributes map TopsOnly formattedWith CommasAndEquals
+        )
+      )
 
       f.format(e) shouldBe "+a=1,b=4\n"
     }

@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,32 +23,32 @@ import java.io.{StringReader, BufferedReader, PrintWriter}
 class MessageTest extends AnyFunSpec with Matchers {
 
   // A function that does nothing except check that the implicit conversion to Message works in method calls.
-  private def convert(m:Message):Message = m
+  private def convert(m: Message): Message = m
 
   describe("implicit conversions") {
 
     it("should convert from a String") {
       val msg = convert("blah")
-      msg.text should include ("blah")
+      msg.text should include("blah")
     }
 
     it("should convert from a Throwable") {
       val msg = convert(new Throwable("blah"))
-      msg.lines.head should include ("blah")
-      msg.lines.size shouldBe >= (1)
-      msg.text should include (this.getClass.getName)
+      msg.lines.head should include("blah")
+      msg.lines.size shouldBe >=(1)
+      msg.text should include(this.getClass.getName)
     }
 
     it("should convert from a String and a Throwable") {
-      val msg = convert("foo",new Exception("bar"))
-      msg.lines.head should include ("foo")
-      msg.lines.tail.head should include ("bar")
-      msg.lines.size shouldBe >= (2)
-      msg.text should include (this.getClass.getName)
+      val msg = convert("foo", new Exception("bar"))
+      msg.lines.head should include("foo")
+      msg.lines.tail.head should include("bar")
+      msg.lines.size shouldBe >=(2)
+      msg.text should include(this.getClass.getName)
     }
 
     it("should convert from a gatherer function") {
-      val msg = convert { pw:PrintWriter =>
+      val msg = convert { pw: PrintWriter =>
         pw.print("blah")
       }
 
@@ -71,14 +71,14 @@ class MessageTest extends AnyFunSpec with Matchers {
     } text
 
     // This is the method used in the code
-    def getLinesWithSource(text:String) = scala.io.Source.fromString(text).getLines.toIterable
+    def getLinesWithSource(text: String) = scala.io.Source.fromString(text).getLines.toIterable
 
     // This is an alternate algorithm
     def getLinesWithBufferedReader(text: String) = {
       val br = new BufferedReader(new StringReader(text))
       val lines = scala.collection.mutable.Buffer[String]()
       var line = br.readLine
-      while ( line != null ) {
+      while (line != null) {
         lines += line
         line = br.readLine
       }
@@ -97,8 +97,8 @@ class MessageTest extends AnyFunSpec with Matchers {
 
     ignore("should be faster than getLinesWithBufferedReader") {
       val iterations = 10000
-      val withBufferedReaderTime = time(getLinesWithBufferedReader(text),iterations)
-      val withSourceTime = time(getLinesWithSource(text),iterations)
+      val withBufferedReaderTime = time(getLinesWithBufferedReader(text), iterations)
+      val withSourceTime = time(getLinesWithSource(text), iterations)
 
       withSourceTime should be <= (withBufferedReaderTime)
     }
@@ -109,17 +109,16 @@ class MessageTest extends AnyFunSpec with Matchers {
 
     it("should be faster than getLinesWithRegex") {
       val iterations = 10000
-      val withRegexTime = time(getLinesWithRegex(text),iterations)
-      val withSourceTime = time(getLinesWithSource(text),iterations)
+      val withRegexTime = time(getLinesWithRegex(text), iterations)
+      val withSourceTime = time(getLinesWithSource(text), iterations)
 
       withSourceTime should be <= (withRegexTime)
     }
 
-    def time(fn: => Unit,iterations:Int):Long = {
+    def time(fn: => Unit, iterations: Int): Long = {
       val start = System.currentTimeMillis
-      (0 until iterations).foreach( _ => fn )
+      (0 until iterations).foreach(_ => fn)
       System.currentTimeMillis - start
     }
   }
 }
-

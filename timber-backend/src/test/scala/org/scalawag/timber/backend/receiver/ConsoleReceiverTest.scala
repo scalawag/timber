@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,7 @@ class ConsoleReceiverTest extends AnyFunSpec with Matchers with MockFactory {
     override def format(entry: Entry) = entry.message.get.text
   }
 
-  def entry(msg:String) = new Entry(message = Some(msg))
+  def entry(msg: String) = new Entry(message = Some(msg))
 
   describe("OutputStreamReceiver") {
 
@@ -69,14 +69,14 @@ class ConsoleReceiverTest extends AnyFunSpec with Matchers with MockFactory {
     it("should allow a non-default character encoding for an OutputStream") {
       val msg = "一二三"
       val baos = new ByteArrayOutputStream
-      val r = new ConsoleReceiver(messageOnlyFormatter,Some("GB2312")) {
+      val r = new ConsoleReceiver(messageOnlyFormatter, Some("GB2312")) {
         override protected def stream = baos
       }
 
       r.receive(entry(msg))
       r.flush()
 
-      new String(baos.toByteArray,"GB2312") shouldBe msg
+      new String(baos.toByteArray, "GB2312") shouldBe msg
     }
 
   }
@@ -108,7 +108,7 @@ class ConsoleReceiverTest extends AnyFunSpec with Matchers with MockFactory {
         r.close()
       }
 
-      new String(baos.toByteArray) shouldBe ( msg + msg )
+      new String(baos.toByteArray) shouldBe (msg + msg)
     }
 
   }
@@ -140,7 +140,7 @@ class ConsoleReceiverTest extends AnyFunSpec with Matchers with MockFactory {
         r.close()
       }
 
-      new String(baos.toByteArray) shouldBe ( msg + msg )
+      new String(baos.toByteArray) shouldBe (msg + msg)
     }
 
   }

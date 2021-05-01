@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,10 +21,12 @@ import ch.qos.logback.core.rolling._
 
 package object logback {
 
-  def file(filename:String,
-           name:Option[String] = None,
-           append:Option[Boolean] = None,
-           prudent:Option[Boolean] = None)(implicit formatter:EntryFormatter,context:LogbackContext) = {
+  def file(
+      filename: String,
+      name: Option[String] = None,
+      append: Option[Boolean] = None,
+      prudent: Option[Boolean] = None
+  )(implicit formatter: EntryFormatter, context: LogbackContext) = {
     val encoder = new EncoderAdapter(formatter)
     encoder.setContext(context)
     context.add(encoder)
@@ -40,12 +42,14 @@ package object logback {
     appender
   }
 
-  def rollingFile(filename:String,
-                  rollingPolicy:RollingPolicy,
-                  triggeringPolicy:Option[TriggeringPolicy[Entry]] = None,
-                  name:Option[String] = None,
-                  append:Option[Boolean] = None,
-                  prudent:Option[Boolean] = None)(implicit formatter:EntryFormatter,context:LogbackContext) = {
+  def rollingFile(
+      filename: String,
+      rollingPolicy: RollingPolicy,
+      triggeringPolicy: Option[TriggeringPolicy[Entry]] = None,
+      name: Option[String] = None,
+      append: Option[Boolean] = None,
+      prudent: Option[Boolean] = None
+  )(implicit formatter: EntryFormatter, context: LogbackContext) = {
     val encoder = new EncoderAdapter(formatter)
     encoder.setContext(context)
     context.add(encoder)
@@ -64,9 +68,11 @@ package object logback {
     appender
   }
 
-  def timeBasedRollingPolicy(fileNamePattern:String,
-                             maxHistory:Option[Int] = None,
-                             cleanHistoryOnStart:Option[Boolean] = None)(implicit context:LogbackContext) = {
+  def timeBasedRollingPolicy(
+      fileNamePattern: String,
+      maxHistory: Option[Int] = None,
+      cleanHistoryOnStart: Option[Boolean] = None
+  )(implicit context: LogbackContext) = {
     val policy = new TimeBasedRollingPolicy[Entry]
     policy.setContext(context)
     policy.setFileNamePattern(fileNamePattern)
@@ -76,9 +82,9 @@ package object logback {
     policy
   }
 
-  def fixedWindowRollingPolicy(fileNamePattern:String,
-                               minIndex:Option[Int] = None,
-                               maxIndex:Option[Int] = None)(implicit context:LogbackContext) = {
+  def fixedWindowRollingPolicy(fileNamePattern: String, minIndex: Option[Int] = None, maxIndex: Option[Int] = None)(
+      implicit context: LogbackContext
+  ) = {
     val policy = new FixedWindowRollingPolicy
     policy.setContext(context)
     policy.setFileNamePattern(fileNamePattern)
@@ -88,7 +94,7 @@ package object logback {
     policy
   }
 
-  def sizeBasedTriggeringPolicy(maxFileSize:Option[String] = None)(implicit context:LogbackContext) = {
+  def sizeBasedTriggeringPolicy(maxFileSize: Option[String] = None)(implicit context: LogbackContext) = {
     val policy = new SizeBasedTriggeringPolicy[Entry]
     policy.setContext(context)
     maxFileSize.foreach(policy.setMaxFileSize)
@@ -96,4 +102,3 @@ package object logback {
     policy
   }
 }
-

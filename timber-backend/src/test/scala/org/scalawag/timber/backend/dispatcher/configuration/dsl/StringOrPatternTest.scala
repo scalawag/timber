@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,17 +23,17 @@ class StringOrPatternTest extends AnyFunSpec with Matchers {
   describe("implicit conversions") {
 
     it("should convert from a String") {
-      val sop:StringOrPattern = "literal"
+      val sop: StringOrPattern = "literal"
       sop shouldBe StringOrPattern(Left("literal"))
     }
 
     it("should convert from a Scala Regex") {
-      val sop:StringOrPattern = "literal".r
+      val sop: StringOrPattern = "literal".r
       sop shouldBe StringOrPattern(Right(Pattern.compile("literal")))
     }
 
     it("should convert from a Java Pattern") {
-      val sop:StringOrPattern = Pattern.compile("literal")
+      val sop: StringOrPattern = Pattern.compile("literal")
       sop shouldBe StringOrPattern(Right(Pattern.compile("literal")))
     }
 
@@ -47,7 +47,7 @@ class StringOrPatternTest extends AnyFunSpec with Matchers {
     declareTests(StringOrPattern(Right(Pattern.compile("[Aa]"))))
   }
 
-  private def declareTests(sop:StringOrPattern): Unit = {
+  private def declareTests(sop: StringOrPattern): Unit = {
     describe("matches") {
 
       it("should match full string") {
@@ -61,11 +61,11 @@ class StringOrPatternTest extends AnyFunSpec with Matchers {
       it("should not match partial string at end") {
         sop.matches("ba") shouldBe false
       }
-  
+
     }
 
     describe("isContainedIn") {
-  
+
       it("should match full string") {
         sop.isContainedIn("a") shouldBe true
       }
@@ -77,11 +77,11 @@ class StringOrPatternTest extends AnyFunSpec with Matchers {
       it("should match partial string at end") {
         sop.isContainedIn("ba") shouldBe true
       }
-  
+
     }
-  
+
     describe("starts") {
-  
+
       it("should match full string") {
         sop.starts("a") shouldBe true
       }
@@ -93,7 +93,7 @@ class StringOrPatternTest extends AnyFunSpec with Matchers {
       it("should not match partial string at end") {
         sop.starts("ba") shouldBe false
       }
-  
+
     }
 
     describe("ends") {

@@ -16,40 +16,25 @@ package org.scalawag.timber.bridge.slf4j
 
 import org.slf4j.spi.MDCAdapter
 import org.scalawag.timber.api.ThreadAttributes
+import scala.collection.JavaConverters._
 
 private[slf4j] class Slf4jBridgeMDCAdapter extends MDCAdapter {
 
-  override def put(key: String, value: String) {
+  override def put(key: String, value: String): Unit =
     ThreadAttributes.push(key, value)
-  }
 
-  override def get(key: String): String = {
-    ThreadAttributes.get.get(key).flatMap(_.headOption).getOrElse(null)
-  }
+  override def get(key: String): String =
+    ThreadAttributes.get.get(key).flatMap(_.headOption).orNull
 
-  override def remove(key: String): Unit = {
+  override def remove(key: String): Unit =
     ThreadAttributes.pop(key, get(key))
-  }
 
-  override def clear(): Unit = {
+  override def clear(): Unit =
     ThreadAttributes.clear
-  }
 
-  override def getCopyOfContextMap: java.util.Map[String, String] = {
-    // Java bridging...
-    ThreadAttributes.getTopmost.foldLeft(new java.util.HashMap[String, String](8)) {
-      case (acc, (k, v)) =>
-        acc.put(k, v)
-        acc
-    }
-  }
+  override def getCopyOfContextMap: java.util.Map[String, String] =
+    ThreadAttributes.getTopmost.asJava
 
-  override def setContextMap(contextMap: java.util.Map[_, _]) {
-    // Java bridging...
-    var m: Map[String, String] = Map.empty
-    contextMap.forEach(new java.util.function.BiConsumer[Any, Any] {
-      override def accept(k: Any, v: Any): Unit = k.toString -> v.toString
-    })
-    ThreadAttributes.push(m)
-  }
+  override def setContextMap(contextMap: java.util.Map[_, _]): Unit =
+    ThreadAttributes.push(contextMap.asScala.map { case (k, v) => k.toString -> v.toString }.toMap)
 }

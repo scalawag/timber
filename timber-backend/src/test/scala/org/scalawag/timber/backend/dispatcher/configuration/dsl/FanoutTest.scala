@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,41 +48,41 @@ class FanoutTest extends AnyFunSpec with MockFactory with Matchers {
 
   it("should pass all entries to all chains") {
     val cfg = Configuration {
-      fanout(ra,rb,rc)
+      fanout(ra, rb, rc)
     }
 
-    cfg.findReceivers(e1) shouldBe Set(ra,rb,rc)
+    cfg.findReceivers(e1) shouldBe Set(ra, rb, rc)
   }
 
   it("should support chains as arguments") {
     val cfg = Configuration {
-      fanout (
+      fanout(
         true ~> ra,
         true ~> rb,
         true ~> rc
       )
     }
 
-    cfg.findReceivers(e1) shouldBe Set(ra,rb,rc)
+    cfg.findReceivers(e1) shouldBe Set(ra, rb, rc)
   }
 
   it("should support long chains as arguments") {
     val cfg = Configuration {
-      fanout (
+      fanout(
         true ~> true ~> ra,
         true ~> true ~> rb,
         true ~> true ~> rc
       )
     }
 
-    cfg.findReceivers(e1) shouldBe Set(ra,rb,rc)
+    cfg.findReceivers(e1) shouldBe Set(ra, rb, rc)
   }
 
   it("should allow all chains to be fanned back in") {
     val cfg = Configuration {
-      fanout (
-        ( level < Level.INFO ) ~> true,
-        ( level > Level.INFO ) ~> true
+      fanout(
+        (level < Level.INFO) ~> true,
+        (level > Level.INFO) ~> true
       ) ~> ra
     }
 

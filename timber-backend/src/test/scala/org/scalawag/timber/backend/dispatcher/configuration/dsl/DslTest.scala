@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -195,7 +195,9 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
     }
 
     it("should extract correctly from full EntryFacets with loggingClass") {
-      scf.extractFrom(EntryFacets(loggingClass = Some(Some("TimberTest")))) shouldContainSameItemsAs Some(Iterable("TimberTest"))
+      scf.extractFrom(EntryFacets(loggingClass = Some(Some("TimberTest")))) shouldContainSameItemsAs Some(
+        Iterable("TimberTest")
+      )
     }
   }
 
@@ -227,7 +229,9 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
     }
 
     it("should extract correctly from full EntryFacets with message") {
-      scf.extractFrom(EntryFacets(message = Some(Some("foo bar baz": Message)))) shouldContainSameItemsAs Some(Iterable("foo bar baz"))
+      scf.extractFrom(EntryFacets(message = Some(Some("foo bar baz": Message)))) shouldContainSameItemsAs Some(
+        Iterable("foo bar baz")
+      )
     }
   }
 
@@ -243,7 +247,9 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
     }
 
     it("should extract correctly from full EntryFacets with sourceFile") {
-      scf.extractFrom(EntryFacets(sourceFile = Some(Some("TimberTest.scala")))) shouldContainSameItemsAs Some(Iterable("TimberTest.scala"))
+      scf.extractFrom(EntryFacets(sourceFile = Some(Some("TimberTest.scala")))) shouldContainSameItemsAs Some(
+        Iterable("TimberTest.scala")
+      )
     }
   }
 
@@ -277,7 +283,9 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
     }
 
     it("should extract correctly from EntryFacets with the key") {
-      scf.extractFrom(EntryFacets(threadAttributes = Some(Map("name" -> List("sam", "chester"))))) shouldBe Some(Iterable("sam", "chester"))
+      scf.extractFrom(EntryFacets(threadAttributes = Some(Map("name" -> List("sam", "chester"))))) shouldBe Some(
+        Iterable("sam", "chester")
+      )
     }
   }
 
@@ -295,7 +303,9 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
     }
 
     it("should extract correctly from EntryFacets with the key") {
-      scf.extractFrom(EntryFacets(threadAttributes = Some(Map("name" -> List("sam", "chester"))))) shouldContainSameItemsAs Some(Iterable("sam"))
+      scf.extractFrom(
+        EntryFacets(threadAttributes = Some(Map("name" -> List("sam", "chester"))))
+      ) shouldContainSameItemsAs Some(Iterable("sam"))
     }
   }
 

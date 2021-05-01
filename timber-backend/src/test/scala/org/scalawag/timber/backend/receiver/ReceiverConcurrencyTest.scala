@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,9 +33,9 @@ class ReceiverConcurrencyTest extends AnyFunSpec with Matchers with Eventually {
 
   // Just useful for telling when two write() calls overlap in time.
 
-  override implicit def patienceConfig: PatienceConfig = PatienceConfig(Span(5,Seconds),Span(1,Second))
+  override implicit def patienceConfig: PatienceConfig = PatienceConfig(Span(5, Seconds), Span(1, Second))
 
-  case class Call(method:String,start:Long,end:Long,result:Try[Int])
+  case class Call(method: String, start: Long, end: Long, result: Try[Int])
 
   private class TestReceiver extends Receiver {
     var calls = Seq.empty[Call]
@@ -44,41 +44,40 @@ class ReceiverConcurrencyTest extends AnyFunSpec with Matchers with Eventually {
     // the test) it should fail in a way that lets us know that concurrency was attempted.
     private val barrier = new CyclicBarrier(3)
 
-    private def doMethodCall(method:String) = {
+    private def doMethodCall(method: String) = {
       val start = System.nanoTime
-      val result = Try(barrier.await(1,TimeUnit.SECONDS))
+      val result = Try(barrier.await(1, TimeUnit.SECONDS))
       val end = System.nanoTime
 
       calls.synchronized {
-        calls :+= Call(method,start,end,result)
+        calls :+= Call(method, start, end, result)
       }
     }
 
-    override def receive(entry:Entry) = doMethodCall("receive")
+    override def receive(entry: Entry) = doMethodCall("receive")
     override def flush() = doMethodCall("flush")
     override def close() = doMethodCall("close")
 
-    def hasOverlappingCalls:Boolean = {
+    def hasOverlappingCalls: Boolean = {
       @tailrec
-      def existsPair[A](items: Iterable[A])(fn: (A,A) => Boolean): Boolean = {
+      def existsPair[A](items: Iterable[A])(fn: (A, A) => Boolean): Boolean = {
         @tailrec
-        def existsPairHelper[A](first:A,rest:Iterable[A])(fn: (A,A) => Boolean): Boolean =
-          if ( rest.size > 0 )
-            fn(first,rest.head) || existsPairHelper(first,rest.tail)(fn)
+        def existsPairHelper[A](first: A, rest: Iterable[A])(fn: (A, A) => Boolean): Boolean =
+          if (rest.size > 0)
+            fn(first, rest.head) || existsPairHelper(first, rest.tail)(fn)
           else
             false
 
-        if ( items.isEmpty )
+        if (items.isEmpty)
           false
         else
-          existsPairHelper(items.head,items.tail)(fn) || existsPair(items.tail)(fn)
+          existsPairHelper(items.head, items.tail)(fn) || existsPair(items.tail)(fn)
       }
 
-
-      def overlaps(l:Call,r:Call):Boolean =
-        if ( l.start < r.start )
+      def overlaps(l: Call, r: Call): Boolean =
+        if (l.start < r.start)
           l.end >= r.start
-        else if ( r.start < l.start )
+        else if (r.start < l.start)
           r.end >= l.start
         else
           true
@@ -97,36 +96,36 @@ class ReceiverConcurrencyTest extends AnyFunSpec with Matchers with Eventually {
   it("should not protect Receiver with no concurrency wrapper mixed in (control case)") {
     val r = new TestReceiver
 
-    verifyConcurrencyAllowed(r,r)
+    verifyConcurrencyAllowed(r, r)
   }
 
   it("should protect Receiver with Locking") {
     val r = new TestReceiver
     val lr = Locking(r)
 
-    verifyConcurrencyDisallowed(r,lr)
+    verifyConcurrencyDisallowed(r, lr)
   }
 
   it("should protect Receiver with Queueing") {
     val r = new TestReceiver
     val qr = Queueing(r)
 
-    verifyConcurrencyDisallowed(r,qr)
+    verifyConcurrencyDisallowed(r, qr)
   }
 
-  private def verifyConcurrencyAllowed(testReceiver:TestReceiver,concurrentReceiver:Receiver): Unit = {
+  private def verifyConcurrencyAllowed(testReceiver: TestReceiver, concurrentReceiver: Receiver): Unit = {
     val result1 = Future(concurrentReceiver.receive(entry))
     val result2 = Future(concurrentReceiver.flush())
     val result3 = Future(concurrentReceiver.close())
 
-    ready(sequence(Seq(result1,result2,result3)),Duration.Inf)
+    ready(sequence(Seq(result1, result2, result3)), Duration.Inf)
 
     eventually {
       testReceiver.calls.size shouldBe 3
 
       // We should have gotten one of each call (regardless of the order).
 
-      testReceiver.calls.map(_.method).toSet shouldBe Set("receive","flush","close")
+      testReceiver.calls.map(_.method).toSet shouldBe Set("receive", "flush", "close")
 
       // All calls should have succeeded because they all made it to the barrier in time.
 
@@ -138,19 +137,19 @@ class ReceiverConcurrencyTest extends AnyFunSpec with Matchers with Eventually {
     }
   }
 
-  private def verifyConcurrencyDisallowed(testReceiver:TestReceiver,concurrentReceiver:Receiver): Unit = {
+  private def verifyConcurrencyDisallowed(testReceiver: TestReceiver, concurrentReceiver: Receiver): Unit = {
     val result1 = Future(concurrentReceiver.receive(entry))
     val result2 = Future(concurrentReceiver.flush())
     val result3 = Future(concurrentReceiver.close())
 
-    ready(sequence(Seq(result1,result2,result3)),Duration.Inf)
+    ready(sequence(Seq(result1, result2, result3)), Duration.Inf)
 
     eventually {
       testReceiver.calls.size shouldBe 3
 
       // We should have gotten one of each call (regardless of the order).
 
-      testReceiver.calls.map(_.method).toSet shouldBe Set("receive","flush","close")
+      testReceiver.calls.map(_.method).toSet shouldBe Set("receive", "flush", "close")
 
       // The first call should have timed out.  The last two should have run into the broken (timed out) barrier.
 
@@ -169,4 +168,3 @@ class ReceiverConcurrencyTest extends AnyFunSpec with Matchers with Eventually {
     }
   }
 }
-

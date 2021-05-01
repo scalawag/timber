@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,7 +32,7 @@ class ImmutableVertexTest extends AnyFunSpec with Matchers with MockFactory {
         override def toString = "blazz"
       }
 
-      val v = new ImmutableConditionVertex(c,Set.empty)
+      val v = new ImmutableConditionVertex(c, Set.empty)
 
       v.toString shouldBe "blazz"
     }
@@ -84,14 +84,15 @@ class ImmutableVertexTest extends AnyFunSpec with Matchers with MockFactory {
       val c2 = Subgraph(level > 2)
       var r1 = Subgraph(mock[Receiver])
 
-      val g = b1 ~> fanout(c1,c2) ~> r1
+      val g = b1 ~> fanout(c1, c2) ~> r1
 
       val ie = ImmutableVertex(g.root)
 
-      def findleaves(v:ImmutableVertex):Set[ImmutableVertex] = v match {
-        case ImmutableConditionVertex(_,nexts) => nexts.flatMap(findleaves)
-        case ImmutableReceiverVertex(_) => Set(v)
-      }
+      def findleaves(v: ImmutableVertex): Set[ImmutableVertex] =
+        v match {
+          case ImmutableConditionVertex(_, nexts) => nexts.flatMap(findleaves)
+          case ImmutableReceiverVertex(_)         => Set(v)
+        }
 
       findleaves(ie).size shouldBe 1
     }
@@ -99,4 +100,3 @@ class ImmutableVertexTest extends AnyFunSpec with Matchers with MockFactory {
   }
 
 }
-

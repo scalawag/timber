@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,12 +24,12 @@ import org.scalawag.timber.backend.receiver.formatter.DefaultEntryFormatter
 
 class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
   private class MockablePrintWriter extends PrintWriter(new StringWriter)
-  private val pw:PrintWriter = mock[MockablePrintWriter]
+  private val pw: PrintWriter = mock[MockablePrintWriter]
   private val oneLineEntry = new Entry(message = Some("foo"))
   private val twoLineEntry = new Entry(message = Some("foo\nbar"))
 
   it("should not flush on receive without ImmediateFlushing") {
-    (pw.write(_:String)).expects(*).once
+    (pw.write(_: String)).expects(*).once
 
     val receiver = new WriterBasedStackableReceiver(pw)
     receiver.receive(oneLineEntry)
@@ -37,7 +37,7 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
 
   it("should flush on receive with ImmediateFlushing") {
     inSequence {
-      (pw.write(_:String)).expects(*).once
+      (pw.write(_: String)).expects(*).once
       (pw.flush _).expects().once
     }
 
@@ -47,7 +47,7 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
 
   it("should flush once on multi-line receive with ImmediateFlushing") {
     inSequence {
-      (pw.write(_:String)).expects(*).once
+      (pw.write(_: String)).expects(*).once
       (pw.flush _).expects().once
     }
 
@@ -57,11 +57,11 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
 
   it("should flush once per receive with ImmediateFlushing") {
     inSequence {
-      (pw.write(_:String)).expects(*).once
+      (pw.write(_: String)).expects(*).once
       (pw.flush _).expects().once
-      (pw.write(_:String)).expects(*).once
+      (pw.write(_: String)).expects(*).once
       (pw.flush _).expects().once
-      (pw.write(_:String)).expects(*).once
+      (pw.write(_: String)).expects(*).once
       (pw.flush _).expects().once
     }
 
@@ -71,4 +71,3 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
     receiver.receive(oneLineEntry)
   }
 }
-

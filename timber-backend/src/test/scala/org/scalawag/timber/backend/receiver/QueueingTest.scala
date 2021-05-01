@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.OneInstancePerTest
 
 class QueueingTest extends AnyFunSpec with Matchers with OneInstancePerTest with Eventually {
-  override implicit def patienceConfig= (PatienceConfig(Span(5,Seconds),Span(1,Second)))
+  override implicit def patienceConfig = (PatienceConfig(Span(5, Seconds), Span(1, Second)))
 
   private val delay = 50L
   private val entry = new Entry()
@@ -52,7 +52,7 @@ class QueueingTest extends AnyFunSpec with Matchers with OneInstancePerTest with
       qr.receive(entry)
     }
 
-    time should be < ( delay )
+    time should be < (delay)
     r.calls should be < 10
 
     eventually {
@@ -60,10 +60,9 @@ class QueueingTest extends AnyFunSpec with Matchers with OneInstancePerTest with
     }
   }
 
-  def timer(iters:Int)(fn: => Unit) = {
+  def timer(iters: Int)(fn: => Unit) = {
     val start = System.currentTimeMillis
     (1 to iters).foreach(_ => fn)
-    ( ( System.currentTimeMillis - start ).toDouble / 1000.0 / iters ).toLong
+    ((System.currentTimeMillis - start).toDouble / 1000.0 / iters).toLong
   }
 }
-

@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.backend.dispatcher.EntryFacets
 
 class StringConditionFactoryTest extends AnyFunSpec with Matchers with MockFactory {
-  val extractFn = mockFunction[EntryFacets,Option[Iterable[String]]]("extractFn")
+  val extractFn = mockFunction[EntryFacets, Option[Iterable[String]]]("extractFn")
   val entry = mock[EntryFacets]
   val scf = StringConditionFactory("testLabel")(extractFn)
 
@@ -55,12 +55,12 @@ class StringConditionFactoryTest extends AnyFunSpec with Matchers with MockFacto
       describe("===") {
         val condition = scf === pattern
 
-        declareTest("is the pattern",condition,Some(Iterable("Test")),Some(true))
-        declareTest("starts with the pattern",condition,Some(Iterable("TestCase")),Some(false))
-        declareTest("ends with the pattern",condition,Some(Iterable("UnitTest")),Some(false))
-        declareTest("contains the pattern",condition,Some(Iterable("BetaTester")),Some(false))
-        declareTest("is empty",condition,Some(Iterable.empty),Some(false))
-        declareTest("is absent",condition,None,None)
+        declareTest("is the pattern", condition, Some(Iterable("Test")), Some(true))
+        declareTest("starts with the pattern", condition, Some(Iterable("TestCase")), Some(false))
+        declareTest("ends with the pattern", condition, Some(Iterable("UnitTest")), Some(false))
+        declareTest("contains the pattern", condition, Some(Iterable("BetaTester")), Some(false))
+        declareTest("is empty", condition, Some(Iterable.empty), Some(false))
+        declareTest("is absent", condition, None, None)
 
         it("should have the right string representation") {
           condition.toString shouldBe s"""testLabel === $pattern"""
@@ -70,12 +70,12 @@ class StringConditionFactoryTest extends AnyFunSpec with Matchers with MockFacto
       describe("is") {
         val condition = scf is pattern
 
-        declareTest("is the pattern",condition,Some(Iterable("Test")),Some(true))
-        declareTest("starts with the pattern",condition,Some(Iterable("TestCase")),Some(false))
-        declareTest("ends with the pattern",condition,Some(Iterable("UnitTest")),Some(false))
-        declareTest("contains the pattern",condition,Some(Iterable("BetaTester")),Some(false))
-        declareTest("is empty",condition,Some(Iterable.empty),Some(false))
-        declareTest("is absent",condition,None,None)
+        declareTest("is the pattern", condition, Some(Iterable("Test")), Some(true))
+        declareTest("starts with the pattern", condition, Some(Iterable("TestCase")), Some(false))
+        declareTest("ends with the pattern", condition, Some(Iterable("UnitTest")), Some(false))
+        declareTest("contains the pattern", condition, Some(Iterable("BetaTester")), Some(false))
+        declareTest("is empty", condition, Some(Iterable.empty), Some(false))
+        declareTest("is absent", condition, None, None)
 
         it("should have the right string representation") {
           condition.toString shouldBe s"""testLabel is $pattern"""
@@ -85,12 +85,12 @@ class StringConditionFactoryTest extends AnyFunSpec with Matchers with MockFacto
       describe("matches") {
         val condition = scf matches pattern
 
-        declareTest("is the pattern",condition,Some(Iterable("Test")),Some(true))
-        declareTest("starts with the pattern",condition,Some(Iterable("TestCase")),Some(false))
-        declareTest("ends with the pattern",condition,Some(Iterable("UnitTest")),Some(false))
-        declareTest("contains the pattern",condition,Some(Iterable("BetaTester")),Some(false))
-        declareTest("is empty",condition,Some(Iterable.empty),Some(false))
-        declareTest("is absent",condition,None,None)
+        declareTest("is the pattern", condition, Some(Iterable("Test")), Some(true))
+        declareTest("starts with the pattern", condition, Some(Iterable("TestCase")), Some(false))
+        declareTest("ends with the pattern", condition, Some(Iterable("UnitTest")), Some(false))
+        declareTest("contains the pattern", condition, Some(Iterable("BetaTester")), Some(false))
+        declareTest("is empty", condition, Some(Iterable.empty), Some(false))
+        declareTest("is absent", condition, None, None)
 
         it("should have the right string representation") {
           condition.toString shouldBe s"""testLabel matches $pattern"""
@@ -100,12 +100,12 @@ class StringConditionFactoryTest extends AnyFunSpec with Matchers with MockFacto
       describe("contains") {
         val condition = scf contains pattern
 
-        declareTest("is the pattern",condition,Some(Iterable("Test")),Some(true))
-        declareTest("starts with the pattern",condition,Some(Iterable("TestCase")),Some(true))
-        declareTest("ends with the pattern",condition,Some(Iterable("UnitTest")),Some(true))
-        declareTest("contains the pattern",condition,Some(Iterable("BetaTester")),Some(true))
-        declareTest("is empty",condition,Some(Iterable.empty),Some(false))
-        declareTest("is absent",condition,None,None)
+        declareTest("is the pattern", condition, Some(Iterable("Test")), Some(true))
+        declareTest("starts with the pattern", condition, Some(Iterable("TestCase")), Some(true))
+        declareTest("ends with the pattern", condition, Some(Iterable("UnitTest")), Some(true))
+        declareTest("contains the pattern", condition, Some(Iterable("BetaTester")), Some(true))
+        declareTest("is empty", condition, Some(Iterable.empty), Some(false))
+        declareTest("is absent", condition, None, None)
 
         it("should have the right string representation") {
           condition.toString shouldBe s"""testLabel contains $pattern"""
@@ -115,12 +115,12 @@ class StringConditionFactoryTest extends AnyFunSpec with Matchers with MockFacto
       describe("startsWith") {
         val condition = scf startsWith pattern
 
-        declareTest("is the pattern",condition,Some(Iterable("Test")),Some(true))
-        declareTest("starts with the pattern",condition,Some(Iterable("TestCase")),Some(true))
-        declareTest("ends with the pattern",condition,Some(Iterable("UnitTest")),Some(false))
-        declareTest("contains the pattern",condition,Some(Iterable("BetaTester")),Some(false))
-        declareTest("is empty",condition,Some(Iterable.empty),Some(false))
-        declareTest("is absent",condition,None,None)
+        declareTest("is the pattern", condition, Some(Iterable("Test")), Some(true))
+        declareTest("starts with the pattern", condition, Some(Iterable("TestCase")), Some(true))
+        declareTest("ends with the pattern", condition, Some(Iterable("UnitTest")), Some(false))
+        declareTest("contains the pattern", condition, Some(Iterable("BetaTester")), Some(false))
+        declareTest("is empty", condition, Some(Iterable.empty), Some(false))
+        declareTest("is absent", condition, None, None)
 
         it("should have the right string representation") {
           condition.toString shouldBe s"""testLabel startsWith $pattern"""
@@ -130,12 +130,12 @@ class StringConditionFactoryTest extends AnyFunSpec with Matchers with MockFacto
       describe("endsWith") {
         val condition = scf endsWith pattern
 
-        declareTest("is the pattern",condition,Some(Iterable("Test")),Some(true))
-        declareTest("starts with the pattern",condition,Some(Iterable("TestCase")),Some(false))
-        declareTest("ends with the pattern",condition,Some(Iterable("UnitTest")),Some(true))
-        declareTest("contains the pattern",condition,Some(Iterable("BetaTester")),Some(false))
-        declareTest("is empty",condition,Some(Iterable.empty),Some(false))
-        declareTest("is absent",condition,None,None)
+        declareTest("is the pattern", condition, Some(Iterable("Test")), Some(true))
+        declareTest("starts with the pattern", condition, Some(Iterable("TestCase")), Some(false))
+        declareTest("ends with the pattern", condition, Some(Iterable("UnitTest")), Some(true))
+        declareTest("contains the pattern", condition, Some(Iterable("BetaTester")), Some(false))
+        declareTest("is empty", condition, Some(Iterable.empty), Some(false))
+        declareTest("is absent", condition, None, None)
 
         it("should have the right string representation") {
           condition.toString shouldBe s"""testLabel endsWith $pattern"""
@@ -145,10 +145,15 @@ class StringConditionFactoryTest extends AnyFunSpec with Matchers with MockFacto
     }
   }
 
-  private def declareTest(description:String, condition: Condition, extraction:Option[Iterable[String]], expected:Option[Boolean]) {
+  private def declareTest(
+      description: String,
+      condition: Condition,
+      extraction: Option[Iterable[String]],
+      expected: Option[Boolean]
+  ) {
     val result = expected match {
-      case None => "abstain"
-      case Some(true) => "accept"
+      case None        => "abstain"
+      case Some(true)  => "accept"
       case Some(false) => "reject"
     }
 

@@ -54,12 +54,8 @@ object DefaultDispatcherLoader {
     // Select the first ClassLoader that returns at least one DefaultDispatcher object
 
     val classLoaderAndResources: Seq[(ClassLoader, List[URL])] = classLoaders map { cl =>
-      // Java bridge...
-      var resources: List[URL] = Nil
-      val enum = cl.getResources(resourceName)
-      while (enum.hasMoreElements)
-        resources ::= enum.nextElement()
-      (cl, resources.reverse)
+      import scala.collection.JavaConverters._
+      (cl, cl.getResources(resourceName).asScala.toList)
     }
 
     val firstClassLoaderWithMatchingResources = classLoaderAndResources find {

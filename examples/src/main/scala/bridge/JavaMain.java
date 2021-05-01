@@ -17,14 +17,14 @@ package bridge;
 import org.slf4j.*;
 
 public class JavaMain {
-    public static void main(String[] args) {
-        // If you remove this call to Logging.configurate(), the slf4j bridge will use the default dispatcher in the
-        // system.  With this call, you can set up the slf4j bridge to use a different dispatcher.
-        Logging.configurate();
-        Logger log = LoggerFactory.getLogger("ABC");
-        log.debug("Hello, world!");
-        log.debug("Goodbye, world!",new IllegalArgumentException("psych"));
-        log.debug("{}, {}!","Hello again","world");
-    }
+  public static void main(String[] args) {
+    // If you remove this call to Logging.configurate(), the slf4j bridge will use the default dispatcher in the
+    // system.  With this call, you can set up the slf4j bridge to use a different dispatcher.
+    Logging.configurate();
+    Logger log = LoggerFactory.getLogger("ABC");
+    log.debug("Hello, world!");
+    log.debug("Goodbye, world!", new IllegalArgumentException("psych"));
+    log.debug("{}, {}!", "Hello again", "world");
+  }
 }
 

@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,23 +14,22 @@
 
 package org.scalawag.timber.slf4j.receiver.logback
 
-import org.scalatest.FunSuite
-import org.scalawag.timber.api.{Entry, BaseLogger}
+import org.scalawag.timber.api.{BaseLogger, Entry}
 import org.scalawag.timber.backend.dispatcher.Dispatcher
 import org.scalawag.timber.backend.receiver.Receiver
 import org.scalawag.timber.backend.dispatcher.configuration.dsl._
 import org.scalawag.timber.backend.receiver.formatter.DefaultEntryFormatter
-
 import org.scalawag.timber.slf4j.receiver.logback
 import ch.qos.logback.core.FileAppender
+import org.scalatest.funspec.AnyFunSpec
 
-class AppenderAdapterTestSuite extends FunSuite  {
+class AppenderAdapterTestSuite extends AnyFunSpec {
   import LogbackSupport._
 
   implicit private val dispatcher = new Dispatcher
   implicit val formatter = DefaultEntryFormatter
 
-  test("test file") {
+  it("test file") {
     dispatcher.configure { IN =>
       withLogbackSupport { implicit context =>
         val file = new AppenderAdapter(logback.file("/tmp/blah"))
@@ -43,11 +42,11 @@ class AppenderAdapterTestSuite extends FunSuite  {
     log.log(1)("log message")
   }
 
-  test("test rolling file") {
+  it("test rolling file") {
     dispatcher.configure { IN =>
       withLogbackSupport { implicit context =>
         val rollingPolicy = logback.timeBasedRollingPolicy("/tmp/blahr-%d{yyyy-MM-dd-HH-mm-ss}.log")
-        val file = new AppenderAdapter(logback.rollingFile("/tmp/blahr",rollingPolicy))
+        val file = new AppenderAdapter(logback.rollingFile("/tmp/blahr", rollingPolicy))
         Receiver.closeOnShutdown(file)
         IN ~> file
       }
@@ -60,7 +59,7 @@ class AppenderAdapterTestSuite extends FunSuite  {
     }
   }
 
-  test("test any logback ") {
+  it("test any logback ") {
     dispatcher.configure { IN =>
       withLogbackSupport { implicit context =>
         val encoder = new EncoderAdapter(DefaultEntryFormatter)
@@ -84,4 +83,3 @@ class AppenderAdapterTestSuite extends FunSuite  {
     log.log(1)("log message")
   }
 }
-

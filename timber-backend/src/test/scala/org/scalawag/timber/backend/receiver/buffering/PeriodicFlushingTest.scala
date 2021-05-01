@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,7 @@ import org.scalatest.time._
 import scala.concurrent.duration._
 
 class PeriodicFlushingTest extends AnyFunSpec with Matchers with Eventually {
-  override implicit def patienceConfig = PatienceConfig(Span(1,Second),Span(100,Milliseconds))
+  override implicit def patienceConfig = PatienceConfig(Span(1, Second), Span(100, Milliseconds))
 
   class FakeWriter extends Writer {
     var flushCount = 0
@@ -90,7 +90,7 @@ class PeriodicFlushingTest extends AnyFunSpec with Matchers with Eventually {
   it("should flush before close") {
     val writer = new FakeWriter
     val receiver = PeriodicFlushing(new WriterBasedStackableReceiver(writer), 50.milliseconds)
-    
+
     receiver.receive(oneLineEntry)
     writer.writeCount shouldBe 1
     writer.flushCount shouldBe 0

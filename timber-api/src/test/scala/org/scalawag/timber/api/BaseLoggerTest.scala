@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,7 @@ class BaseLoggerTest extends AnyFunSpec with Matchers with MockFactory {
     trait Fixture {
       var evaluated = false
       val logger = new BaseLogger()
-      val message = { pw:PrintWriter =>
+      val message = { pw: PrintWriter =>
         evaluated = true
       }
 
@@ -43,7 +43,7 @@ class BaseLoggerTest extends AnyFunSpec with Matchers with MockFactory {
 
     it("should evaluate Message immediately with ImmediateMessage tag") {
       new Fixture {
-        logger.log(0,Set(ImmediateMessage))(message)
+        logger.log(0, Set(ImmediateMessage))(message)
 
         evaluated shouldBe true
       }
@@ -57,7 +57,7 @@ class BaseLoggerTest extends AnyFunSpec with Matchers with MockFactory {
 
       (dispatcher.dispatch _).expects(*).once
 
-      logger.log(0,Set(ImmediateMessage)) { pw:PrintWriter =>
+      logger.log(0, Set(ImmediateMessage)) { pw: PrintWriter =>
         pw.println("blah")
       }
     }
@@ -69,7 +69,7 @@ class BaseLoggerTest extends AnyFunSpec with Matchers with MockFactory {
 
       val ex = new Exception("boom")
 
-      logger.warn("blah",ex)
+      logger.warn("blah", ex)
     }
   }
 }

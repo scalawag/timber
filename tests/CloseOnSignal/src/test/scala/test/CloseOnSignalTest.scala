@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,7 @@ import org.scalawag.timber.backend.receiver.{Receiver, WriterBasedReceiver}
 import sun.misc.Signal
 
 class CloseOnSignalTest extends AnyFunSpec with Matchers with MockFactory with Eventually {
-  override implicit def patienceConfig = PatienceConfig(Span(15,Seconds),Span(1,Second))
+  override implicit def patienceConfig = PatienceConfig(Span(15, Seconds), Span(1, Second))
 
   it("should close specified Receivers on SIGHUP") {
     import org.scalawag.timber.backend.dispatcher.configuration.dsl._
@@ -43,11 +43,11 @@ class CloseOnSignalTest extends AnyFunSpec with Matchers with MockFactory with E
     val r3 = new WriterBasedReceiver(new BufferedWriter(sw3))
     val r4 = new WriterBasedReceiver(new BufferedWriter(sw4))
 
-    Receiver.closeOnSignal("HUP",r2)
-    Receiver.closeOnSignal("HUP",r3,r4)
+    Receiver.closeOnSignal("HUP", r2)
+    Receiver.closeOnSignal("HUP", r3, r4)
 
     val cfg = Configuration {
-      true ~> fanout(r1,r2,r3,r4)
+      true ~> fanout(r1, r2, r3, r4)
     }
 
     implicit val dispatcher = new Dispatcher(cfg)
@@ -84,12 +84,12 @@ class CloseOnSignalTest extends AnyFunSpec with Matchers with MockFactory with E
     val internalLogging = new ByteArrayOutputStream
     InternalLogging.outputStreamOverride = Some(internalLogging)
 
-    Receiver.closeOnSignal("HUP",r)
+    Receiver.closeOnSignal("HUP", r)
     Signal.raise(new Signal("HUP"))
 
     eventually {
       val output = new String(internalLogging.toByteArray)
-      output should include ("boom")
+      output should include("boom")
     }
 
     InternalLogging.outputStreamOverride = None

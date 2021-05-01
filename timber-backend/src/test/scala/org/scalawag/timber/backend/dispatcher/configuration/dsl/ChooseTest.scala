@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,7 +43,7 @@ class ChooseTest extends AnyFunSpec with MockFactory with Matchers {
 
   it("should pass all entries to the otherwise chain") {
     val cfg = Configuration {
-      choose (
+      choose(
         otherwise ~> ra
       )
     }
@@ -55,7 +55,7 @@ class ChooseTest extends AnyFunSpec with MockFactory with Matchers {
 
   it("should pass entries to first matching when or drop") {
     val cfg = Configuration {
-      choose (
+      choose(
         when(level < 2) ~> ra
       )
     }
@@ -67,7 +67,7 @@ class ChooseTest extends AnyFunSpec with MockFactory with Matchers {
 
   it("should pass entries to first matching when or otherwise") {
     val cfg = Configuration {
-      choose (
+      choose(
         when(level < 2) ~> ra,
         otherwise ~> rb
       )
@@ -80,7 +80,7 @@ class ChooseTest extends AnyFunSpec with MockFactory with Matchers {
 
   it("should pass entries to first matching when of many or drop") {
     val cfg = Configuration {
-      choose (
+      choose(
         when(level < 2) ~> ra,
         when(level < 3) ~> rb
       )
@@ -93,7 +93,7 @@ class ChooseTest extends AnyFunSpec with MockFactory with Matchers {
 
   it("should pass entries to first matching when of many or otherwise") {
     val cfg = Configuration {
-      choose (
+      choose(
         when(level < 2) ~> ra,
         when(level < 3) ~> rb,
         otherwise ~> rc
@@ -107,7 +107,7 @@ class ChooseTest extends AnyFunSpec with MockFactory with Matchers {
 
   it("should support chains on when or otherwise cases") {
     val cfg = Configuration {
-      choose (
+      choose(
         when(level < 2) ~> true ~> ra,
         when(level < 3) ~> true ~> rb,
         otherwise ~> true ~> rc
@@ -121,7 +121,7 @@ class ChooseTest extends AnyFunSpec with MockFactory with Matchers {
 
   it("should support long chains on when or otherwise cases") {
     val cfg = Configuration {
-      choose (
+      choose(
         when(level < 2) ~> true ~> true ~> ra,
         when(level < 3) ~> true ~> true ~> rb,
         otherwise ~> true ~> true ~> rc
@@ -135,7 +135,7 @@ class ChooseTest extends AnyFunSpec with MockFactory with Matchers {
 
   it("should allow all cases of the choose to be fanned in") {
     val cfg = Configuration {
-      choose (
+      choose(
         when(level < 2) ~> true,
         when(level < 3) ~> true,
         otherwise ~> true
