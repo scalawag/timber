@@ -14,11 +14,11 @@
 
 package org.scalawag.timber.api
 
-import org.scalatest.Matchers
-import org.scalatest.FunSpec
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.BaseLogger.LogCallLocation
 
-class LogCallLocationTest extends FunSpec with Matchers {
+class LogCallLocationTest extends AnyFunSpec with Matchers {
   def grab(implicit x:LogCallLocation) = x
 
   it("capture") {

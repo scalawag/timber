@@ -16,13 +16,14 @@ package org.scalawag.timber.backend.receiver.formatter
 
 import java.util.{TimeZone, GregorianCalendar}
 
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.{Level, Entry, Tag}
 import org.scalawag.timber.backend.receiver.formatter.level.NumberLevelFormatter
 import org.scalawag.timber.backend.receiver.formatter.timestamp.HumanReadableTimestampFormatter
 import ProgrammableEntryFormatter._
 
-class ProgrammableEntryFormatterTest extends FunSpec with Matchers {
+class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
   private val UTC = TimeZone.getTimeZone("UTC")
 
   private val time = 72373200123L
@@ -319,7 +320,7 @@ class ProgrammableEntryFormatterTest extends FunSpec with Matchers {
 
     it("should map a Map") {
       val f = new ProgrammableEntryFormatter(Seq(
-        entry.loggerAttributes map { m:Map[String,Any] => m.mapValues( n => s"$n$n" ) } formattedWith CommasAndEquals
+        entry.loggerAttributes map { m:Map[String,Any] => m.mapValues( n => s"$n$n" ).toMap } formattedWith CommasAndEquals
       ))
 
       f.format(e) shouldBe "+a=11,b=22,c=33\n"

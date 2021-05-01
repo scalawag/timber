@@ -15,14 +15,15 @@
 package test
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.{Entry, BaseLogger}
 import org.scalawag.timber.backend.dispatcher.Dispatcher
 import org.scalawag.timber.backend.dispatcher.configuration.Configuration
 import org.scalawag.timber.backend.dispatcher.configuration.dsl._
 import org.scalawag.timber.backend.receiver.Receiver
 
-class CloseOnShutdownTest extends FunSpec with Matchers with MockFactory {
+class CloseOnShutdownTest extends AnyFunSpec with Matchers with MockFactory {
   // TODO: make this fully automated
 
   // Not actually a test right now.  There are no assertions.  You have to run it and then look to see that

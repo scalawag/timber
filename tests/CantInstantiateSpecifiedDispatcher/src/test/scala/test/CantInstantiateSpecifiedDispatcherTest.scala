@@ -16,7 +16,8 @@ package test
 
 import java.io.ByteArrayOutputStream
 
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.{Dispatcher, Entry, BaseLogger}
 
 import scala.io.Source
@@ -26,7 +27,7 @@ class UnloadableClass extends Dispatcher {
   override def dispatch(entry: Entry) = ???
 }
 
-class CantInstantiateSpecifiedDispatcherTest extends FunSpec with Matchers {
+class CantInstantiateSpecifiedDispatcherTest extends AnyFunSpec with Matchers {
   it("should fail and fall back to the default dispatcher") {
     val outs = new ByteArrayOutputStream
     val errs = new ByteArrayOutputStream

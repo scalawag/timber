@@ -14,18 +14,22 @@
 
 package org.scalawag.timber.backend.dispatcher.configuration.dsl
 
+import org.scalactic.Prettifier
+import org.scalactic.source.Position
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{FunSpec, Matchers}
-import org.scalawag.timber.api.{Level, Entry, Message}
+import org.scalatest.Assertion
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalawag.timber.api.{Entry, Level, Message}
 import org.scalawag.timber.backend.dispatcher.EntryFacets
 import org.scalawag.timber.backend.dispatcher.configuration.dsl
-import org.scalawag.timber.backend.dispatcher.configuration.dsl.Condition.{RejectAll, AcceptAll}
+import org.scalawag.timber.backend.dispatcher.configuration.dsl.Condition.{AcceptAll, RejectAll}
 import org.scalawag.timber.backend.receiver.Receiver
 import org.scalawag.timber.backend.receiver.formatter.EntryFormatter
 
 import scala.reflect.{ClassTag, classTag}
 
-class DslTest extends FunSpec with Matchers with MockFactory {
+class DslTest extends AnyFunSpec with Matchers with MockFactory {
 
   describe("implicit subgraph wrapping") {
 
@@ -78,8 +82,11 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     it("should represent receivers") {
       val er = new Receiver {
         override def receive(entry: Entry) = ???
+
         override def flush() = ???
+
         override def close() = ???
+
         override val toString = "garp"
       }
       val v = new MutableReceiverVertex(er)
@@ -92,7 +99,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     it("should wrap with a Chain when necessary") {
       val er = mock[Receiver]
 
-      val g:Subgraph[MutableReceiverVertex] = er
+      val g: Subgraph[MutableReceiverVertex] = er
 
       narrow[MutableReceiverVertex](g.root).receiver shouldBe er
       g.leaves.head.receiver shouldBe er
@@ -100,7 +107,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
 
     it("should implicitly wrap when chaining") {
       val er = mock[Receiver]
-      val g:Subgraph[MutableReceiverVertex] = true ~> er
+      val g: Subgraph[MutableReceiverVertex] = true ~> er
 
       narrow[MutableConditionVertex](g.root).condition shouldBe AcceptAll
       g.leaves.head.receiver shouldBe er
@@ -109,8 +116,8 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     it("should produce a new Receiver each time an Receiver is wrapped") {
       val er = mock[Receiver]
 
-      val e1:Subgraph[MutableReceiverVertex] = er
-      val e2:Subgraph[MutableReceiverVertex] = er
+      val e1: Subgraph[MutableReceiverVertex] = er
+      val e2: Subgraph[MutableReceiverVertex] = er
 
       // You should get different Receiver instances wrapping the same Receiver.
 
@@ -125,7 +132,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     it("should wrap with a Chain when necessary") {
       val cnd = mock[Condition]
 
-      val c:Subgraph[MutableConditionVertex] = cnd
+      val c: Subgraph[MutableConditionVertex] = cnd
 
       c.root.asInstanceOf[MutableConditionVertex].condition shouldBe cnd
       c.leaves.head.condition shouldBe cnd
@@ -133,7 +140,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
 
     it("should implicitly wrap when chaining") {
       val cnd = mock[Condition]
-      val g:Subgraph[MutableConditionVertex] = true ~> cnd
+      val g: Subgraph[MutableConditionVertex] = true ~> cnd
 
       narrow[MutableConditionVertex](g.root).condition shouldBe AcceptAll
       g.leaves.head.condition shouldBe cnd
@@ -142,8 +149,8 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     it("should produce a new Filter each time a Condition is wrapped") {
       val cnd = mock[Condition]
 
-      val e1:Subgraph[MutableConditionVertex] = cnd
-      val e2:Subgraph[MutableConditionVertex] = cnd
+      val e1: Subgraph[MutableConditionVertex] = cnd
+      val e2: Subgraph[MutableConditionVertex] = cnd
 
       // You should get different Receiver instances wrapping the same Receiver.  This way they can have
       // different outputs even though they are both using the same condition.
@@ -162,17 +169,17 @@ class DslTest extends FunSpec with Matchers with MockFactory {
 
       implicit val formatter = mock[EntryFormatter]
 
-      val ra:Receiver = file("/tmp/a",PeriodicFlushing,Queueing)
-      val rb:Receiver = file("/tmp/b",PeriodicFlushing(1.second),Locking)
-      val rc:Receiver = file("/tmp/c",ImmediateFlushing,NoThreadSafety)
-      val rd:Receiver = file("/tmp/d",LazyFlushing,Queueing)
+      val ra: Receiver = file("/tmp/a", PeriodicFlushing, Queueing)
+      val rb: Receiver = file("/tmp/b", PeriodicFlushing(1.second), Locking)
+      val rc: Receiver = file("/tmp/c", ImmediateFlushing, NoThreadSafety)
+      val rd: Receiver = file("/tmp/d", LazyFlushing, Queueing)
     }
 
     it("should console receivers to be created easily") {
       implicit val formatter = mock[EntryFormatter]
 
-      val ra:Receiver = stdout
-      val rb:Receiver = stderr
+      val ra: Receiver = stdout
+      val rb: Receiver = stderr
     }
   }
 
@@ -188,7 +195,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     }
 
     it("should extract correctly from full EntryFacets with loggingClass") {
-      scf.extractFrom(EntryFacets(loggingClass = Some(Some("TimberTest")))) shouldBe Some(Iterable("TimberTest"))
+      scf.extractFrom(EntryFacets(loggingClass = Some(Some("TimberTest")))) shouldContainSameItemsAs Some(Iterable("TimberTest"))
     }
   }
 
@@ -204,7 +211,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     }
 
     it("should extract correctly from full EntryFacets with level") {
-      scf.extractFrom(EntryFacets(level = Some(Some(Level(88,"name"))))) shouldBe Some(Iterable(88))
+      scf.extractFrom(EntryFacets(level = Some(Some(Level(88, "name"))))) shouldContainSameItemsAs Some(Iterable(88))
     }
   }
 
@@ -220,7 +227,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     }
 
     it("should extract correctly from full EntryFacets with message") {
-      scf.extractFrom(EntryFacets(message = Some(Some("foo bar baz":Message)))) shouldBe Some(Iterable("foo bar baz"))
+      scf.extractFrom(EntryFacets(message = Some(Some("foo bar baz": Message)))) shouldContainSameItemsAs Some(Iterable("foo bar baz"))
     }
   }
 
@@ -236,7 +243,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     }
 
     it("should extract correctly from full EntryFacets with sourceFile") {
-      scf.extractFrom(EntryFacets(sourceFile = Some(Some("TimberTest.scala")))) shouldBe Some(Iterable("TimberTest.scala"))
+      scf.extractFrom(EntryFacets(sourceFile = Some(Some("TimberTest.scala")))) shouldContainSameItemsAs Some(Iterable("TimberTest.scala"))
     }
   }
 
@@ -249,7 +256,7 @@ class DslTest extends FunSpec with Matchers with MockFactory {
 
     // TODO: absent case
     it("should extract correctly from EntryFacets without the key") {
-      scf.extractFrom(EntryFacets(loggerAttributes = Some(Map.empty[String,Any]))) shouldBe None
+      scf.extractFrom(EntryFacets(loggerAttributes = Some(Map.empty[String, Any]))) shouldBe None
     }
 
     it("should extract correctly from EntryFacets with the key") {
@@ -266,11 +273,11 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     // TODO: absent case
 
     it("should extract correctly from EntryFacets without the key") {
-      scf.extractFrom(EntryFacets(threadAttributes = Some(Map.empty[String,List[String]]))) shouldBe None
+      scf.extractFrom(EntryFacets(threadAttributes = Some(Map.empty[String, List[String]]))) shouldBe None
     }
 
     it("should extract correctly from EntryFacets with the key") {
-      scf.extractFrom(EntryFacets(threadAttributes = Some(Map("name" -> List("sam","chester"))))) shouldBe Some(Iterable("sam","chester"))
+      scf.extractFrom(EntryFacets(threadAttributes = Some(Map("name" -> List("sam", "chester"))))) shouldBe Some(Iterable("sam", "chester"))
     }
   }
 
@@ -284,11 +291,11 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     // TODO: absent case
 
     it("should extract correctly from EntryFacets without the key") {
-      scf.extractFrom(EntryFacets(threadAttributes = Some(Map.empty[String,List[String]]))) shouldBe None
+      scf.extractFrom(EntryFacets(threadAttributes = Some(Map.empty[String, List[String]]))) shouldBe None
     }
 
     it("should extract correctly from EntryFacets with the key") {
-      scf.extractFrom(EntryFacets(threadAttributes = Some(Map("name" -> List("sam","chester"))))) shouldBe Some(Iterable("sam"))
+      scf.extractFrom(EntryFacets(threadAttributes = Some(Map("name" -> List("sam", "chester"))))) shouldContainSameItemsAs Some(Iterable("sam"))
     }
   }
 
@@ -304,12 +311,17 @@ class DslTest extends FunSpec with Matchers with MockFactory {
     }
   }
 
-  private def narrow[T:ClassTag](obj:Any) =
+  private def narrow[T: ClassTag](obj: Any) =
     try {
       obj.asInstanceOf[T]
     } catch {
-      case c:ClassCastException =>
+      case c: ClassCastException =>
         fail("object " + obj + " is not of the expected type (" + classTag[T].runtimeClass + ")")
     }
-}
 
+  implicit sealed class AnyOps(l: Option[Iterable[_]]) {
+    def shouldContainSameItemsAs(r: Option[Iterable[_]]): Assertion = {
+      l.map(_.toList) shouldBe r.map(_.toList)
+    }
+  }
+}

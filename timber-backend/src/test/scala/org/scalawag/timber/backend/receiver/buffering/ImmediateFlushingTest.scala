@@ -17,12 +17,12 @@ package org.scalawag.timber.backend.receiver.buffering
 import java.io.{StringWriter, Writer, PrintWriter}
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.FunSpec
+import org.scalatest.funspec.AnyFunSpec
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.receiver.WriterBasedStackableReceiver
 import org.scalawag.timber.backend.receiver.formatter.DefaultEntryFormatter
 
-class ImmediateFlushingTest extends FunSpec with MockFactory {
+class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
   private class MockablePrintWriter extends PrintWriter(new StringWriter)
   private val pw:PrintWriter = mock[MockablePrintWriter]
   private val oneLineEntry = new Entry(message = Some("foo"))

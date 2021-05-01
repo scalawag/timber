@@ -15,13 +15,15 @@
 package org.scalawag.timber.backend.dispatcher.configuration.dsl
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.dispatcher.configuration.debug.DotDumper
 import org.scalawag.timber.backend.dispatcher.configuration.Configuration
 import org.scalawag.timber.backend.receiver.Receiver
 
-class ChooseTest extends FunSpec with MockFactory with Matchers {
+class ChooseTest extends AnyFunSpec with MockFactory with Matchers {
   val ra = mock[Receiver]
   val rb = mock[Receiver]
   val rc = mock[Receiver]

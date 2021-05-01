@@ -15,13 +15,14 @@
 package com.example.logclient
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.backend.dispatcher.configuration.dsl._
 import org.scalawag.timber.backend.receiver.Receiver
 import org.scalawag.timber.backend.dispatcher.Dispatcher
 import org.scalawag.timber.api.{Level, Entry, BaseLogger}
 
-class SimpleLoggingTest extends FunSpec with Matchers with MockFactory {
+class SimpleLoggingTest extends AnyFunSpec with Matchers with MockFactory {
 
   it("should succeed in the basic logging flow") {
     val r = mock[Receiver]

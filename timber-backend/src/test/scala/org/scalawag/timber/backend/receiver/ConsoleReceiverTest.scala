@@ -17,11 +17,12 @@ package org.scalawag.timber.backend.receiver
 import java.io.{StringWriter, OutputStream, ByteArrayOutputStream}
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.receiver.formatter.EntryFormatter
 
-class ConsoleReceiverTest extends FunSpec with Matchers with MockFactory {
+class ConsoleReceiverTest extends AnyFunSpec with Matchers with MockFactory {
   private val messageOnlyFormatter = new EntryFormatter {
     override def format(entry: Entry) = entry.message.get.text
   }

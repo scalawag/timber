@@ -16,9 +16,10 @@ package org.scalawag.timber.backend.receiver.formatter.timestamp
 
 import java.util.TimeZone
 
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
-class TimestampFormatterTest extends FunSpec with Matchers {
+class TimestampFormatterTest extends AnyFunSpec with Matchers {
   private val time = 72373200123L
 
   it("should format properly with ISO8601TimestampFormatter and default TimeZone") {

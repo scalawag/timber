@@ -16,7 +16,8 @@ package org.scalawag.timber.backend.receiver
 
 import org.scalatest.concurrent.Eventually
 import org.scalatest.time.{Second, Span, Seconds}
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.receiver.buffering.{ImmediateFlushing, LazyFlushing}
 import org.scalawag.timber.backend.receiver.concurrency.{Locking, Queueing, NoThreadSafety}
@@ -28,7 +29,7 @@ import java.util.concurrent.{BrokenBarrierException, TimeoutException, TimeUnit,
 
 import scala.util.Try
 
-class ReceiverConcurrencyTest extends FunSpec with Matchers with Eventually {
+class ReceiverConcurrencyTest extends AnyFunSpec with Matchers with Eventually {
 
   // Just useful for telling when two write() calls overlap in time.
 

@@ -14,14 +14,15 @@
 
 package org.scalawag.timber.api
 
-import org.scalatest.{FunSpec, Matchers, BeforeAndAfter}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.BeforeAndAfter
 import java.util.concurrent.CyclicBarrier
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.concurrent.Await._
-import collection.immutable.Stack
 
-class ThreadAttributesTest extends FunSpec with Matchers with BeforeAndAfter {
+class ThreadAttributesTest extends AnyFunSpec with Matchers with BeforeAndAfter {
 
   before {
     ThreadAttributes.clear
@@ -62,19 +63,19 @@ class ThreadAttributesTest extends FunSpec with Matchers with BeforeAndAfter {
 
     it("should push a value onto the stack") {
       ThreadAttributes.push("a","1")
-      ThreadAttributes.get shouldBe Map("a" -> Stack("1"))
+      ThreadAttributes.get shouldBe Map("a" -> List("1"))
     }
 
     it("should keep pushes with different keys distinct") {
       ThreadAttributes.push("a","1")
       ThreadAttributes.push("b","2")
-      ThreadAttributes.get shouldBe Map("a" -> Stack("1"),"b" -> Stack("2"))
+      ThreadAttributes.get shouldBe Map("a" -> List("1"),"b" -> List("2"))
     }
 
     it("should stack pushes with the same name") {
       ThreadAttributes.push("a","1")
       ThreadAttributes.push("a","2")
-      ThreadAttributes.get shouldBe Map("a" -> Stack("2","1"))
+      ThreadAttributes.get shouldBe Map("a" -> List("2","1"))
     }
 
   }
@@ -83,13 +84,13 @@ class ThreadAttributesTest extends FunSpec with Matchers with BeforeAndAfter {
 
     it("should push a Map of values onto the stack") {
       ThreadAttributes.push(Map("a" -> "1","b" -> "2"))
-      ThreadAttributes.get shouldBe Map("a" -> Stack("1"),"b" -> Stack("2"))
+      ThreadAttributes.get shouldBe Map("a" -> List("1"),"b" -> List("2"))
     }
 
     it("should support pushing overlapping Maps") {
       ThreadAttributes.push(Map("a" -> "1","b" -> "2"))
       ThreadAttributes.push(Map("a" -> "3","c" -> "4"))
-      ThreadAttributes.get shouldBe Map("a" -> Stack("3","1"),"b" -> Stack("2"),"c" -> Stack("4"))
+      ThreadAttributes.get shouldBe Map("a" -> List("3","1"),"b" -> List("2"),"c" -> List("4"))
     }
 
   }
@@ -125,14 +126,14 @@ class ThreadAttributesTest extends FunSpec with Matchers with BeforeAndAfter {
       ThreadAttributes.push("a","1")
       ThreadAttributes.push("a","2")
       ThreadAttributes.pop("a","2")
-      ThreadAttributes.get shouldBe Map("a" -> Stack("1"))
+      ThreadAttributes.get shouldBe Map("a" -> List("1"))
     }
 
     it("should not affect other keys") {
       ThreadAttributes.push("a","1")
       ThreadAttributes.push("b","2")
       ThreadAttributes.pop("a","1")
-      ThreadAttributes.get shouldBe Map("b" -> Stack("2"))
+      ThreadAttributes.get shouldBe Map("b" -> List("2"))
     }
 
     it("should fail to remove name from empty context") {
@@ -157,7 +158,7 @@ class ThreadAttributesTest extends FunSpec with Matchers with BeforeAndAfter {
       ThreadAttributes.push(Map("a" -> "1"))
       ThreadAttributes.push(Map("a" -> "2","b" -> "3"))
       ThreadAttributes.pop(Map("a" -> "2","b" -> "3"))
-      ThreadAttributes.get shouldBe Map("a" -> Stack("1"))
+      ThreadAttributes.get shouldBe Map("a" -> List("1"))
     }
 
     it("should fail to remove name from empty context") {
@@ -182,7 +183,7 @@ class ThreadAttributesTest extends FunSpec with Matchers with BeforeAndAfter {
 
     it("should set a name's value for the duration of a block") {
       ThreadAttributes.during("a","1") {
-        ThreadAttributes.get shouldBe Map("a" -> Stack("1"))
+        ThreadAttributes.get shouldBe Map("a" -> List("1"))
       }
       ThreadAttributes.get shouldBe Map()
     }
@@ -190,9 +191,9 @@ class ThreadAttributesTest extends FunSpec with Matchers with BeforeAndAfter {
     it("should reset the context to the state prior to the block") {
       ThreadAttributes.push("a","1")
       ThreadAttributes.during("a","2") {
-        ThreadAttributes.get shouldBe Map("a" -> Stack("2","1"))
+        ThreadAttributes.get shouldBe Map("a" -> List("2","1"))
       }
-      ThreadAttributes.get shouldBe Map("a" -> Stack("1"))
+      ThreadAttributes.get shouldBe Map("a" -> List("1"))
     }
 
   }
@@ -201,9 +202,9 @@ class ThreadAttributesTest extends FunSpec with Matchers with BeforeAndAfter {
     it("should set multiple name's value for the duration of a block") {
       ThreadAttributes.push("a","1")
       ThreadAttributes.during(Map("a" -> "2","b" -> "3")) {
-        ThreadAttributes.get shouldBe Map("a" -> Stack("2","1"),"b" -> Stack("3"))
+        ThreadAttributes.get shouldBe Map("a" -> List("2","1"),"b" -> List("3"))
       }
-      ThreadAttributes.get shouldBe Map("a" -> Stack("1"))
+      ThreadAttributes.get shouldBe Map("a" -> List("1"))
     }
   }
 

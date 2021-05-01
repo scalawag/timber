@@ -14,11 +14,12 @@
 
 package org.scalawag.timber.backend.dispatcher.configuration.dsl
 
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.backend.dispatcher.EntryFacets
 import org.scalawag.timber.backend.dispatcher.configuration.DogmaticConditions
 
-class LogicalOperationConditionTest extends FunSpec with Matchers with DogmaticConditions {
+class LogicalOperationConditionTest extends AnyFunSpec with Matchers with DogmaticConditions {
 
   private def descriptionOf(result:Option[Boolean]) = result match {
     case Some(true) => "match"

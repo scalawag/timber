@@ -17,10 +17,11 @@ package org.scalawag.timber.backend.dispatcher.configuration.dsl
 import java.util.regex.Pattern
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.backend.dispatcher.EntryFacets
 
-class StringConditionFactoryTest extends FunSpec with Matchers with MockFactory {
+class StringConditionFactoryTest extends AnyFunSpec with Matchers with MockFactory {
   val extractFn = mockFunction[EntryFacets,Option[Iterable[String]]]("extractFn")
   val entry = mock[EntryFacets]
   val scf = StringConditionFactory("testLabel")(extractFn)

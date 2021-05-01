@@ -15,13 +15,14 @@
 package org.scalawag.timber.backend.dispatcher.configuration.dsl
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.dispatcher.EntryFacets
 import org.scalawag.timber.backend.dispatcher.configuration.dsl.Condition.AcceptAll
 import org.scalawag.timber.backend.receiver.Receiver
 
-class MutableVertexTest extends FunSpec with Matchers with MockFactory {
+class MutableVertexTest extends AnyFunSpec with Matchers with MockFactory {
 
   describe("MutableVertexWithOutputs") {
 

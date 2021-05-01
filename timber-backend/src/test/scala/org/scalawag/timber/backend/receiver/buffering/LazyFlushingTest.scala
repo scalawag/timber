@@ -16,12 +16,13 @@ package org.scalawag.timber.backend.receiver.buffering
 
 import java.io.Writer
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.receiver.WriterBasedStackableReceiver
 import org.scalawag.timber.backend.receiver.formatter.DefaultEntryFormatter
 
-class LazyFlushingTest extends FunSpec with Matchers with MockFactory {
+class LazyFlushingTest extends AnyFunSpec with Matchers with MockFactory {
   private val oneLineEntry = new Entry(message = Some("foo"))
 
   it("should allow explicit specification of lazy flushing") {

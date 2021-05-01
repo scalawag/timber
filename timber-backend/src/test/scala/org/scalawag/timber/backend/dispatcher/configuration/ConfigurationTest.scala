@@ -15,10 +15,11 @@
 package org.scalawag.timber.backend.dispatcher.configuration
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.backend.receiver.Receiver
 
-class ConfigurationTest extends FunSpec with Matchers with MockFactory with DogmaticConditions {
+class ConfigurationTest extends AnyFunSpec with Matchers with MockFactory with DogmaticConditions {
 
   describe("constrain") {
     import dsl._

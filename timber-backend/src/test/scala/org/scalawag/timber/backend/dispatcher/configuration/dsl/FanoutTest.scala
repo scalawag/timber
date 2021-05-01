@@ -15,13 +15,14 @@
 package org.scalawag.timber.backend.dispatcher.configuration.dsl
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.{Level, Entry}
 import org.scalawag.timber.backend.dispatcher.configuration.Configuration
 import org.scalawag.timber.backend.dispatcher.configuration.debug.DotDumper
 import org.scalawag.timber.backend.receiver.Receiver
 
-class FanoutTest extends FunSpec with MockFactory with Matchers {
+class FanoutTest extends AnyFunSpec with MockFactory with Matchers {
   val ra = mock[Receiver]
   val rb = mock[Receiver]
   val rc = mock[Receiver]

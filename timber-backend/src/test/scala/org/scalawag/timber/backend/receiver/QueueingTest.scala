@@ -21,9 +21,11 @@ import scala.language.reflectiveCalls
 import org.scalatest.time.{Second, Seconds, Span}
 import org.scalawag.timber.backend.receiver.concurrency.Queueing
 import org.scalatest.concurrent.Eventually
-import org.scalatest.{FunSpec, Matchers, OneInstancePerTest}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.OneInstancePerTest
 
-class QueueingTest extends FunSpec with Matchers with OneInstancePerTest with Eventually {
+class QueueingTest extends AnyFunSpec with Matchers with OneInstancePerTest with Eventually {
   override implicit def patienceConfig= (PatienceConfig(Span(5,Seconds),Span(1,Second)))
 
   private val delay = 50L

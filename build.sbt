@@ -22,15 +22,15 @@ import scoverage._
 
 lazy val commonSettings = /*GitFlowPlugin.defaults ++*/ Seq(
   organization := "org.scalawag.timber",
-  scalaVersion := "2.11.7",
+  scalaVersion := "2.13.5",
+  crossScalaVersions := Seq("2.11.7", "2.12.13", "2.13.5"),
   exportJars := true,
-  scalacOptions ++= Seq("-unchecked","-deprecation","-feature","-language:implicitConversions","-target:jvm-1.6"),
-  javacOptions ++= Seq("-source","1.6","-target","1.6"),
+  scalacOptions ++= Seq("-unchecked","-deprecation","-feature","-language:implicitConversions"),
 //  testOptions += Tests.Argument("-oDF"),
   coverageEnabled in Test := true,
 
   publishMavenStyle := true,
-  publishArtifact in Test := false,
+  Test / publishArtifact := false,
   publishTo := {
     val nexus = "https://oss.sonatype.org/"
     if (version.value.trim.endsWith("SNAPSHOT"))
@@ -47,8 +47,8 @@ lazy val commonSettings = /*GitFlowPlugin.defaults ++*/ Seq(
   developers := List(Developer("justinp","Justin Patterson","justin@scalawag.org",url("https://github.com/justinp"))),
 
   libraryDependencies ++= Seq (
-    "org.scalatest" %% "scalatest" % "2.2.4",
-    "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2"
+    "org.scalatest" %% "scalatest" % "3.2.8",
+    "org.scalamock" %% "scalamock" % "5.1.0"
   ) map ( _ % "test" )
 
 ) //++ osgiSettings //++ site.settings

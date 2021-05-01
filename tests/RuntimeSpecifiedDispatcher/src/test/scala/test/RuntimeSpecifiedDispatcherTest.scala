@@ -16,7 +16,8 @@ package test
 
 import java.io.ByteArrayOutputStream
 
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.{Dispatcher, Entry, BaseLogger}
 import org.scalawag.timber.backend.DefaultDispatcher
 
@@ -36,7 +37,7 @@ object TestMain {
   }
 }
 
-class RuntimeSpecifiedDispatcherTest extends FunSpec with Matchers {
+class RuntimeSpecifiedDispatcherTest extends AnyFunSpec with Matchers {
   it("should throw on logging an entry") {
     val outs = new ByteArrayOutputStream
     val errs = new ByteArrayOutputStream

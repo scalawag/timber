@@ -16,9 +16,10 @@ package org.scalawag.timber.backend.dispatcher.configuration.dsl
 
 import java.util.regex.Pattern
 
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
-class StringOrPatternTest extends FunSpec with Matchers {
+class StringOrPatternTest extends AnyFunSpec with Matchers {
   describe("implicit conversions") {
 
     it("should convert from a String") {

@@ -26,20 +26,20 @@ package org.scalawag.timber.api
   */
 object ThreadAttributes {
   private val contextThreadLocal = new ThreadLocal[Map[String,List[String]]] {
-    override def initialValue() = Map[String,List[String]]()
+    override def initialValue(): Map[String, List[String]] = Map[String,List[String]]()
   }
 
   /** Retrieves the current thread attributes.
     *
     * @return the topmost value on the stack for each attribute on this thread as a map
     */
-  def getTopmost = get map { case(k,v) => (k,v.head) }
+  def getTopmost: Map[String, String] = get map { case(k,v) => (k,v.head) }
 
   /** Retrieves the current thread attributes.
     *
     * @return the stack of values for each attribute on this thread as a map of lists
     */
-  def get = contextThreadLocal.get
+  def get: Map[String, List[String]] = contextThreadLocal.get
 
   /** Pushes a new value onto the stack for the named thread attribute.
     *
@@ -52,7 +52,7 @@ object ThreadAttributes {
     *
     * @param attributes the thread attribute names and values to push
     */
-  def push(attributes:Map[String,String]) {
+  def push(attributes:Map[String,String]): Unit = {
     val context = this.contextThreadLocal.get
 
     val (existingKeys,newKeys) = attributes.partition(entry => context.contains(entry._1) )
@@ -88,7 +88,7 @@ object ThreadAttributes {
     *
     * @param attributes a map of the thread attribute names to pop and the expected value for each
     */
-  def pop(attributes:Map[String,String]) {
+  def pop(attributes:Map[String,String]): Unit = {
     val context = this.contextThreadLocal.get
 
     // Check to make sure that all the removed keys are valid (that they're are the top of the stacks)
@@ -107,7 +107,7 @@ object ThreadAttributes {
       attributes.get(key) match {
         case Some(newValue) =>
           val stack = existingValue.tail
-          if ( ! stack.isEmpty )
+          if ( stack.nonEmpty )
             Some( key -> stack )
           else
             None
@@ -121,7 +121,7 @@ object ThreadAttributes {
 
   /** Removes all thread attributes.  This includes all stacked values.
     */
-  def clear = this.contextThreadLocal.remove()
+  def clear: Unit = this.contextThreadLocal.remove()
 
   /** Executes a thunk, during which the specified thread attribute will be in place.  After the thunk has completed,
     * the thread attribute is returned to its original value (before the call to `during`).  The return value of

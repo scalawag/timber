@@ -16,9 +16,10 @@ package org.scalawag.timber.api
 
 import java.io.PrintWriter
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
-class BaseLoggerTest extends FunSpec with Matchers with MockFactory {
+class BaseLoggerTest extends AnyFunSpec with Matchers with MockFactory {
   implicit val dispatcher = mock[Dispatcher]
 
   describe("lazy message evaluation") {

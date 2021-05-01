@@ -17,19 +17,21 @@ package org.scalawag.timber.backend.dispatcher
 import language.reflectiveCalls
 
 import org.scalamock.scalatest.MockFactory
+import org.scalawag.timber.backend.dispatcher.{Dispatcher => BackendDispatcher}
 import org.scalawag.timber.backend.dispatcher.Dispatcher.{Attribute, CacheKeyExtractor}
 import org.scalawag.timber.backend.dispatcher.configuration.Configuration
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api._
 
-class CachingDispatcherTest extends FunSpec with Matchers with MockFactory {
+class CachingDispatcherTest extends AnyFunSpec with Matchers with MockFactory {
   private class MockableConfiguration extends Configuration(Set.empty)
 
   describe("CacheKeyExtractor use") {
 
     it("should use the dispatcher's configuration directly with no CacheKeyExtractor") {
       val cfg = mock[MockableConfiguration]("cfg")
-      val dispatcher = new Dispatcher(cfg)
+      val dispatcher = new BackendDispatcher(cfg)
       val entry = Entry(level = Some(0),loggingClass = Some("foo"))
       val entryFacets = EntryFacets(entry)
 
@@ -47,7 +49,7 @@ class CachingDispatcherTest extends FunSpec with Matchers with MockFactory {
       val extractor = new CacheKeyExtractor {
         override def extractKey(entry:Entry) = EntryFacets(entry) // Returns the whole entry as the key!
       }
-      val dispatcher = new Dispatcher(cfg,Some(extractor))
+      val dispatcher = new BackendDispatcher(cfg,Some(extractor))
       val e1 = Entry(level = Some(0),loggingClass = Some("foo"))
       val pe1 = EntryFacets(e1)
       val cc1 = mock[MockableConfiguration]("constrained")
@@ -71,7 +73,7 @@ class CachingDispatcherTest extends FunSpec with Matchers with MockFactory {
       val extractor = new CacheKeyExtractor {
         override def extractKey(entry:Entry) = EntryFacets(loggingClass = Some(entry.loggingClass),level = Some(entry.level))
       }
-      val dispatcher = new Dispatcher(cfg,Some(extractor))
+      val dispatcher = new BackendDispatcher(cfg,Some(extractor))
 
       val k1 = EntryFacets(level = Some(Some(0)),loggingClass = Some(Some("foo")))
       val e1a = Entry(level = Some(0),loggingClass = Some("foo"),message = Some("a"))

@@ -16,12 +16,13 @@ package test
 
 import java.io.ByteArrayOutputStream
 
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.BaseLogger
 
 import scala.io.Source
 
-class CantFindSpecifiedDispatcherTest extends FunSpec with Matchers {
+class CantFindSpecifiedDispatcherTest extends AnyFunSpec with Matchers {
   it("should fail and fall back to the default dispatcher") {
     val outs = new ByteArrayOutputStream
     val errs = new ByteArrayOutputStream

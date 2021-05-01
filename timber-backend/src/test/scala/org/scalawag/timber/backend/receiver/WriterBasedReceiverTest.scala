@@ -16,13 +16,14 @@ package org.scalawag.timber.backend.receiver
 
 import java.io.Writer
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.receiver.formatter.EntryFormatter
 
 // TODO: this needs tests to handle multiple opens (and closes)
 
-class WriterBasedReceiverTest extends FunSpec with Matchers with MockFactory {
+class WriterBasedReceiverTest extends AnyFunSpec with Matchers with MockFactory {
   private val writer = mock[Writer]("writer")
   private val createWriterFn = mockFunction[Writer]("createWriterFn")
   private val formatter = mock[EntryFormatter]("formatter")

@@ -17,12 +17,12 @@ package org.scalawag.timber.backend.dispatcher.configuration.debug
 import java.io.File
 
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.FunSpec
+import org.scalatest.funspec.AnyFunSpec
 import org.scalawag.timber.backend.dispatcher.configuration.Configuration
 import org.scalawag.timber.backend.dispatcher.configuration.dsl._
 import org.scalawag.timber.backend.receiver.Receiver
 
-class DotDumperTest extends FunSpec with MockFactory {
+class DotDumperTest extends AnyFunSpec with MockFactory {
   it("should dump a configuration graph to a dot file") {
     val cfg = Configuration {
       true ~> fanout (

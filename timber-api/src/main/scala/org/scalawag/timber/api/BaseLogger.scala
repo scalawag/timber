@@ -133,7 +133,7 @@ class BaseLogger(val attributes:Map[String,Any] = Map.empty, val tags:Set[Tag] =
     * @param location the source location of the method call (usually automatically fulfilled by LogCallLocation.capture())
     */
 
-  def log(message:Message)(implicit location:LogCallLocation) {
+  def log(message:Message)(implicit location:LogCallLocation): Unit = {
     dispatcher.dispatch(buildEntry(None,Some(message),Some(location),Set.empty))
   }
 

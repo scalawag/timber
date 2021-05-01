@@ -17,14 +17,15 @@ package org.scalawag.timber.backend.receiver.buffering
 import java.io.Writer
 import org.scalatest.concurrent.Eventually
 import org.scalatest.time.Span
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.receiver.WriterBasedStackableReceiver
 import org.scalawag.timber.backend.receiver.formatter.DefaultEntryFormatter
 import org.scalatest.time._
 import scala.concurrent.duration._
 
-class PeriodicFlushingTest extends FunSpec with Matchers with Eventually {
+class PeriodicFlushingTest extends AnyFunSpec with Matchers with Eventually {
   override implicit def patienceConfig = PatienceConfig(Span(1,Second),Span(100,Milliseconds))
 
   class FakeWriter extends Writer {

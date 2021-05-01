@@ -14,11 +14,12 @@
 
 package org.scalawag.timber.backend.dispatcher.configuration.dsl
 
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.Tag
 import org.scalawag.timber.backend.dispatcher.EntryFacets
 
-class TaggedConditionTest extends FunSpec with Matchers {
+class TaggedConditionTest extends AnyFunSpec with Matchers {
 
   describe("is") {
     object t1 extends Tag

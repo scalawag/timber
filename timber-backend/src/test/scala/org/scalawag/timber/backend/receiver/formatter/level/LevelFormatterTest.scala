@@ -14,10 +14,11 @@
 
 package org.scalawag.timber.backend.receiver.formatter.level
 
-import org.scalatest.{Matchers, FunSpec}
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.Level
 
-class LevelFormatterTest extends FunSpec with Matchers {
+class LevelFormatterTest extends AnyFunSpec with Matchers {
 
   describe("NameLevelFormatter") {
 

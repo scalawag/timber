@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,8 +15,9 @@
 package org.scalawag.timber.api.impl
 
 import scala.reflect.runtime.universe
-import scala.collection.JavaConversions._
-import org.scalawag.timber.api.{Dispatcher, BaseLogger}
+import org.scalawag.timber.api.{BaseLogger, Dispatcher}
+
+import java.net.URL
 
 /**
   * Loads the default [[Dispatcher dispatcher]] to be used for all loggers that do
@@ -52,12 +53,17 @@ object DefaultDispatcherLoader {
 
     // Select the first ClassLoader that returns at least one DefaultDispatcher object
 
-    val classLoaderAndResources = classLoaders map { cl =>
-      (cl,cl.getResources(resourceName).toSeq)
+    val classLoaderAndResources: Seq[(ClassLoader, List[URL])] = classLoaders map { cl =>
+      // Java bridge...
+      var resources: List[URL] = Nil
+      val enum = cl.getResources(resourceName)
+      while ( enum.hasMoreElements )
+        resources ::= enum.nextElement()
+      (cl,resources.reverse)
     }
 
-    val firstClassLoaderWithMatchingResources = classLoaderAndResources find { case (cl,resources) =>
-      ! resources.isEmpty
+    val firstClassLoaderWithMatchingResources = classLoaderAndResources find { case (_,resources) =>
+      resources.nonEmpty
     }
 
     // Make sure that we found it and that there's only one of these on the classpath of the selected class loader
