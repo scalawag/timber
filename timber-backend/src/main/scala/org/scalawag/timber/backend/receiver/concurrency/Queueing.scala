@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,10 +24,10 @@ import scala.concurrent.{ExecutionContext, Future}
   * with a single-threaded ExecutionContext.
   */
 
-class Queueing(delegate:Receiver) extends Receiver {
-  implicit private[this] lazy val ec:ExecutionContext = SingleThreadExecutionContext(this.toString)
+class Queueing(delegate: Receiver) extends Receiver {
+  implicit private[this] lazy val ec: ExecutionContext = SingleThreadExecutionContext(this.toString)
 
-  override def receive(entry:Entry): Unit = Future(delegate.receive(entry))
+  override def receive(entry: Entry): Unit = Future(delegate.receive(entry))
   override def flush(): Unit = Future(delegate.flush())
   override def close(): Unit = Future(delegate.close())
 
@@ -35,5 +35,5 @@ class Queueing(delegate:Receiver) extends Receiver {
 }
 
 object Queueing {
-    def apply(delegate: Receiver): Queueing = new Queueing(delegate)
+  def apply(delegate: Receiver): Queueing = new Queueing(delegate)
 }

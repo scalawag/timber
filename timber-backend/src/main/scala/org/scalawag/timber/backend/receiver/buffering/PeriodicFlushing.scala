@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,8 +30,8 @@ import scala.concurrent.duration._
   * @param maximumFlushInterval the maximum interval between flushes
   */
 
-class PeriodicFlushing(delegate:Receiver, maximumFlushInterval:FiniteDuration = 5.seconds) extends Receiver {
-  private[this] var scheduledFlush:Option[ScheduledFuture[_]] = None
+class PeriodicFlushing(delegate: Receiver, maximumFlushInterval: FiniteDuration = 5.seconds) extends Receiver {
+  private[this] var scheduledFlush: Option[ScheduledFuture[_]] = None
 
   private[this] val flushRunnable = new Runnable {
     // Must use the external call so that there aren't concurrency issues where this thread has direct access to the
@@ -40,8 +40,10 @@ class PeriodicFlushing(delegate:Receiver, maximumFlushInterval:FiniteDuration = 
   }
 
   private[this] def scheduleFlush(): Unit =
-    if ( scheduledFlush.isEmpty ) {
-      scheduledFlush = Some(PeriodicFlushing.executor.schedule(flushRunnable,maximumFlushInterval.toMillis,TimeUnit.MILLISECONDS))
+    if (scheduledFlush.isEmpty) {
+      scheduledFlush = Some(
+        PeriodicFlushing.executor.schedule(flushRunnable, maximumFlushInterval.toMillis, TimeUnit.MILLISECONDS)
+      )
     }
 
   private[this] def cancelScheduledFlush(): Unit = {
@@ -68,14 +70,14 @@ class PeriodicFlushing(delegate:Receiver, maximumFlushInterval:FiniteDuration = 
 }
 
 private[backend] object PeriodicFlushing {
-  def apply(delegate: Receiver, maximumFlushInterval:FiniteDuration = 5.seconds): PeriodicFlushing =
+  def apply(delegate: Receiver, maximumFlushInterval: FiniteDuration = 5.seconds): PeriodicFlushing =
     new PeriodicFlushing(delegate, maximumFlushInterval)
 
   private[PeriodicFlushing] val executor = {
     val threadFactory = new ThreadFactory { r =>
-      override def newThread(r:Runnable): Thread =
-        new Thread(r,"Timber-PeriodicFlusher")
+      override def newThread(r: Runnable): Thread =
+        new Thread(r, "Timber-PeriodicFlusher")
     }
-    Executors.newScheduledThreadPool(1,threadFactory)
+    Executors.newScheduledThreadPool(1, threadFactory)
   }
 }

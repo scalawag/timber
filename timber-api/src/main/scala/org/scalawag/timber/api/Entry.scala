@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,7 @@ object Entry {
     * @param lineNumber the line number within the source file containing the log method call
     */
 
-  case class SourceLocation(val filename:String,val lineNumber:Int) {
+  case class SourceLocation(val filename: String, val lineNumber: Int) {
     override val toString = s"$filename:$lineNumber"
   }
 }
@@ -45,14 +45,15 @@ object Entry {
   * @param threadAttributes the attributes associated with the thread that created this entry
   */
 
-case class Entry (level: Option[Level] = None,
-                  message: Option[Message] = None,
-                  sourceLocation: Option[Entry.SourceLocation] = None,
-                  loggingClass: Option[String] = None,
-                  loggingMethod: Option[String] = None,
-                  tags: Set[Tag] = Set.empty,
-                  timestamp: Long = System.currentTimeMillis,
-                  threadName: String = Thread.currentThread.getName,
-                  loggerAttributes: Map[String,Any] = Map.empty,
-                  threadAttributes: Map[String, List[String]] = Map.empty)
-
+case class Entry(
+    level: Option[Level] = None,
+    message: Option[Message] = None,
+    sourceLocation: Option[Entry.SourceLocation] = None,
+    loggingClass: Option[String] = None,
+    loggingMethod: Option[String] = None,
+    tags: Set[Tag] = Set.empty,
+    timestamp: Long = System.currentTimeMillis,
+    threadName: String = Thread.currentThread.getName,
+    loggerAttributes: Map[String, Any] = Map.empty,
+    threadAttributes: Map[String, List[String]] = Map.empty
+)

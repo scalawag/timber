@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,11 @@ import java.util.Locale
 
 // $COVERAGE-OFF$
 
-private[debug] class IndentingPrintWriter(private val writer: Writer, private val indentWidth: Int = IndentingPrintWriter.DEFAULT_INDENT_WIDTH, autoFlush: Boolean = false) extends PrintWriter(writer,autoFlush) {
+private[debug] class IndentingPrintWriter(
+    private val writer: Writer,
+    private val indentWidth: Int = IndentingPrintWriter.DEFAULT_INDENT_WIDTH,
+    autoFlush: Boolean = false
+) extends PrintWriter(writer, autoFlush) {
   private var currentLevel = 0
   private var currentPrefix = ""
   private var needsPrefix = false
@@ -38,11 +42,11 @@ private[debug] class IndentingPrintWriter(private val writer: Writer, private va
     changeIndent(-change)
   }
 
-  def indent(fn: => Unit):Unit = indent(1)(fn)
+  def indent(fn: => Unit): Unit = indent(1)(fn)
 
   def changeIndent(change: Int) {
     this.currentLevel = Iterable(0, this.currentLevel + change).max
-    this.currentPrefix = " " * ( indentWidth * this.currentLevel )
+    this.currentPrefix = " " * (indentWidth * this.currentLevel)
   }
 
   override def println() {
@@ -206,4 +210,3 @@ object IndentingPrintWriter {
 }
 
 // $COVERAGE-ON$
-

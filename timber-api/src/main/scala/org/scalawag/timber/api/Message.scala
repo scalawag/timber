@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,13 +25,14 @@ You don't normally need to create instances of this class
   */
 
 class Message(fn: => String) {
+
   /** The full text of this message.  This may be more than one line of text, separated by newlines.  During normal
     * operation of the logging system, message text will not be calculated until it is needed. This may be when it
     * is eventually written to a log file or when the text is needed to determine its destination.
     *
     * You will probably never need to call this method yourself.  Timber will call it when it needs the message text.
     */
-  lazy val text:String = fn
+  lazy val text: String = fn
 
   /** Each String in the Traversable represents a single line in the message.  While the eventual receiver(s) of this
     * message will ultimately determine how the message is rendered, it is customary to separate the "lines" of the
@@ -39,7 +40,7 @@ class Message(fn: => String) {
     *
     * You will probably never need to call this method yourself.  Timber will call it when it needs the message lines.
     */
-  lazy val lines:Traversable[String] = Source.fromString(text).getLines.toIterable
+  lazy val lines: Traversable[String] = Source.fromString(text).getLines.toIterable
 }
 
 /** Contains some useful implicit conversions to Message.  These are all that make using the timber API bearable.
@@ -47,18 +48,19 @@ class Message(fn: => String) {
   */
 
 object Message {
+
   /** Converts a String into a Message containing only the string. */
-  implicit def stringFnToMessage(s: => String):Message = new Message(s)
+  implicit def stringFnToMessage(s: => String): Message = new Message(s)
 
   /** Converts a Throwable to a Message containing its stack trace. */
-  implicit def throwableToMessage(t: Throwable):Message = messageGathererToMessage(t.printStackTrace)
+  implicit def throwableToMessage(t: Throwable): Message = messageGathererToMessage(t.printStackTrace)
 
   /** Converts a String and a Throwable to a Message containing first the String and then the stack trace of the
     * Throwable, separated by a new line.  This conversion makes any function call that requires a single Message
     * argument to appear to support two arguments.
     */
-  implicit def stringAndThrowableToMessage(st: (String,Throwable)):Message =
-    messageGathererToMessage { pw:PrintWriter =>
+  implicit def stringAndThrowableToMessage(st: (String, Throwable)): Message =
+    messageGathererToMessage { pw: PrintWriter =>
       pw.println(st._1)
       st._2.printStackTrace(pw)
     }
@@ -81,12 +83,12 @@ object Message {
     *   }
     * }}}
     */
-  implicit def messageGathererToMessage(fn: PrintWriter => Unit):Message = stringFnToMessage {
-    val sw = new StringWriter
-    val pw = new PrintWriter(sw)
-    fn(pw)
-    pw.close
-    sw.toString
-  }
+  implicit def messageGathererToMessage(fn: PrintWriter => Unit): Message =
+    stringFnToMessage {
+      val sw = new StringWriter
+      val pw = new PrintWriter(sw)
+      fn(pw)
+      pw.close
+      sw.toString
+    }
 }
-

@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,12 +28,13 @@ import scala.concurrent.duration.FiniteDuration
   */
 
 trait Receiver {
+
   /** Receives an [[Entry]] for processing.  There is no initialization method for receivers, so this method must
     * handle resource initialization on the first call after construction or after closure.
     *
     * @param entry the entry being received by this receiver
     */
-  def receive(entry:Entry): Unit
+  def receive(entry: Entry): Unit
 
   /** Tells this receiver to flush any buffered entries that it has received but not yet fully processed.  This makes
     * it possible for this receiver to improve performance by batching I/O work.
@@ -60,7 +61,7 @@ trait Receiver {
 /** Provides methods for telling timber how to manage your Receivers. */
 
 object Receiver {
-  private[this] var closeOnShutdownReceivers:Set[Receiver] = Set.empty
+  private[this] var closeOnShutdownReceivers: Set[Receiver] = Set.empty
   private[this] var shutdownHookInstalled = false
 
   /** Registers [[Receiver receivers]] to be closed at system shutdown.  This uses the Java runtime's
@@ -71,8 +72,8 @@ object Receiver {
     *
     * @param receivers a set of receivers to attempt to close on normal system shutdown
     */
-  def closeOnShutdown(receivers:Receiver*): Unit = {
-    if ( ! shutdownHookInstalled ) {
+  def closeOnShutdown(receivers: Receiver*): Unit = {
+    if (!shutdownHookInstalled) {
       val runnable = new Runnable {
         override def run(): Unit = {
           closeOnShutdownReceivers foreach { er =>
@@ -88,7 +89,7 @@ object Receiver {
         }
       }
 
-      Runtime.getRuntime.addShutdownHook(new Thread(runnable,"Timber-ReceiverManager-ShutdownHook"))
+      Runtime.getRuntime.addShutdownHook(new Thread(runnable, "Timber-ReceiverManager-ShutdownHook"))
     }
 
     closeOnShutdownReceivers ++= receivers
@@ -97,7 +98,7 @@ object Receiver {
   // TODO: This is non-standard Java.  We should maybe protect it with reflection to allow this to run on non-Oracle
   // TODO: JVMs.  Or maybe you just can't use this call except on Oracle JVMs.
 
-  private[this] var closeOnSignalReceivers:Map[String,Set[Receiver]] = Map.empty
+  private[this] var closeOnSignalReceivers: Map[String, Set[Receiver]] = Map.empty
 
   /** Registers [[Receiver receivers]] to be closed when the JVM receives a certain signal.  This is intended for
     * integration with tools like [[https://github.com/logrotate/logrotate logrotate]] that are capable of sending
@@ -111,25 +112,27 @@ object Receiver {
     * @param signal the signal to listen for (I recommend "HUP")
     * @param receivers the receivers to close when the signal is received
     */
-  def closeOnSignal(signal:String,receivers:Receiver*): Unit = {
+  def closeOnSignal(signal: String, receivers: Receiver*): Unit = {
     // Ony install the signal handler once.  After that, just add the receivers to the set.
-    if ( ! closeOnSignalReceivers.contains(signal) ) {
-      Signal.handle(new Signal(signal),new SignalHandler {
-        override def handle(s: Signal) = {
-          closeOnSignalReceivers(signal) foreach { er =>
-            try {
-              er.close()
-            } catch {
-              case ex: Exception =>
-                InternalLogger.error(s"failed to close receiver ($er) on signal $signal: $ex")
+    if (!closeOnSignalReceivers.contains(signal)) {
+      Signal.handle(
+        new Signal(signal),
+        new SignalHandler {
+          override def handle(s: Signal) = {
+            closeOnSignalReceivers(signal) foreach { er =>
+              try {
+                er.close()
+              } catch {
+                case ex: Exception =>
+                  InternalLogger.error(s"failed to close receiver ($er) on signal $signal: $ex")
+              }
             }
           }
         }
-      })
+      )
     }
 
     val newReceiversSet = closeOnSignalReceivers.get(signal).getOrElse(Set.empty) ++ receivers
     closeOnSignalReceivers += signal -> newReceiversSet
   }
 }
-

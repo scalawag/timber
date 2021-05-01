@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,14 +29,14 @@ object ProgrammableEntryFormatter {
   }
 
   object MetadataProvider {
-    implicit def fromString(s:String) = new LiteralMetadata(s)
+    implicit def fromString(s: String) = new LiteralMetadata(s)
   }
 
   trait MetadataProvider {
-    def extractFrom(entry:Entry):Option[String]
+    def extractFrom(entry: Entry): Option[String]
   }
 
-  class LiteralMetadata(literal:String) extends MetadataProvider {
+  class LiteralMetadata(literal: String) extends MetadataProvider {
     override def extractFrom(entry: Entry) = Some(literal)
   }
 
@@ -46,74 +46,85 @@ object ProgrammableEntryFormatter {
   // "Formatted" indicates a provider with an associated formatter for the type of metadata it provides.
 
   trait OptionalMetadataProvider extends MetadataProvider {
-    def orElse(fallback: OptionalMetadataProvider) = new OptionalChainMetadataProvider(Seq(this,fallback))
-    def orElse(fallback: MetadataProvider) = new ChainMetadataProvider(Seq(this),fallback)
+    def orElse(fallback: OptionalMetadataProvider) = new OptionalChainMetadataProvider(Seq(this, fallback))
+    def orElse(fallback: MetadataProvider) = new ChainMetadataProvider(Seq(this), fallback)
   }
 
-  class OptionalChainMetadataProvider private[formatter] (private[formatter] val delegates:Seq[OptionalMetadataProvider]) extends OptionalMetadataProvider {
-    override def extractFrom(entry: Entry) = delegates.map(c => c.extractFrom(entry) ).find(_.isDefined).flatten
-    override def orElse(fallback: OptionalMetadataProvider) = new OptionalChainMetadataProvider(this.delegates :+ fallback)
-    override def orElse(fallback: MetadataProvider) = new ChainMetadataProvider(this.delegates,fallback)
+  class OptionalChainMetadataProvider private[formatter] (
+      private[formatter] val delegates: Seq[OptionalMetadataProvider]
+  ) extends OptionalMetadataProvider {
+    override def extractFrom(entry: Entry) = delegates.map(c => c.extractFrom(entry)).find(_.isDefined).flatten
+    override def orElse(fallback: OptionalMetadataProvider) =
+      new OptionalChainMetadataProvider(this.delegates :+ fallback)
+    override def orElse(fallback: MetadataProvider) = new ChainMetadataProvider(this.delegates, fallback)
   }
 
-  class ChainMetadataProvider private[formatter] (delegates:Seq[OptionalMetadataProvider], lastResort:MetadataProvider) extends MetadataProvider {
+  class ChainMetadataProvider private[formatter] (
+      delegates: Seq[OptionalMetadataProvider],
+      lastResort: MetadataProvider
+  ) extends MetadataProvider {
     override def extractFrom(entry: Entry) =
-      delegates.map(c => c.extractFrom(entry) ).find(_.isDefined).flatten orElse lastResort.extractFrom(entry)
+      delegates.map(c => c.extractFrom(entry)).find(_.isDefined).flatten orElse lastResort.extractFrom(entry)
   }
 
   class ExtractingMetadataProvider[A] private[formatter] (extractor: Entry => A) extends MetadataProvider {
     override def extractFrom(entry: Entry) = Some(extractor(entry).toString)
-    def formattedWith(formatter:Formatter[A]) = new FormattedExtractingMetadataProvider(extractor,formatter)
-    def map[B](fn:A => B):ExtractingMetadataProvider[B] = new ExtractingMetadataProvider(extractor andThen fn)
+    def formattedWith(formatter: Formatter[A]) = new FormattedExtractingMetadataProvider(extractor, formatter)
+    def map[B](fn: A => B): ExtractingMetadataProvider[B] = new ExtractingMetadataProvider(extractor andThen fn)
   }
 
-  class OptionalExtractingMetadataProvider[A] private[formatter] (extractor: Entry => Option[A]) extends OptionalMetadataProvider {
+  class OptionalExtractingMetadataProvider[A] private[formatter] (extractor: Entry => Option[A])
+      extends OptionalMetadataProvider {
     override def extractFrom(entry: Entry) = extractor(entry).map(_.toString)
-    def formattedWith(formatter:Formatter[A]) = new FormattedOptionalExtractingMetadataProvider[A](extractor,formatter)
-    def map[B](fn:A => B):OptionalExtractingMetadataProvider[B] = {
-      def optFn(oa:Option[A]):Option[B] = oa.map(fn)
+    def formattedWith(formatter: Formatter[A]) =
+      new FormattedOptionalExtractingMetadataProvider[A](extractor, formatter)
+    def map[B](fn: A => B): OptionalExtractingMetadataProvider[B] = {
+      def optFn(oa: Option[A]): Option[B] = oa.map(fn)
       new OptionalExtractingMetadataProvider(extractor andThen optFn)
     }
   }
 
-  class MapExtractingMetadataProvider[A,B] private[formatter] (extractor: Entry => Map[A,B]) extends ExtractingMetadataProvider[Map[A,B]](extractor) {
-    def without(key: A) = this map { m:Map[A,B] => m - key }
-    def without(keys: Set[A]) = this map { m:Map[A,B] => m -- keys }
-    def map[C,D](fn:Map[A,B] => Map[C,D]) = new MapExtractingMetadataProvider(extractor andThen fn)
+  class MapExtractingMetadataProvider[A, B] private[formatter] (extractor: Entry => Map[A, B])
+      extends ExtractingMetadataProvider[Map[A, B]](extractor) {
+    def without(key: A) = this map { m: Map[A, B] => m - key }
+    def without(keys: Set[A]) = this map { m: Map[A, B] => m -- keys }
+    def map[C, D](fn: Map[A, B] => Map[C, D]) = new MapExtractingMetadataProvider(extractor andThen fn)
   }
 
   class FormattedExtractingMetadataProvider[T] private[formatter] (extractor: Entry => T, formatter: Formatter[T])
-    extends MetadataProvider
-  {
+      extends MetadataProvider {
     override def extractFrom(entry: Entry) = Some(formatter.format(extractor(entry)))
   }
 
-  class FormattedOptionalExtractingMetadataProvider[T] private[formatter] (extractor: Entry => Option[T], formatter: Formatter[T])
-    extends OptionalMetadataProvider
-  {
+  class FormattedOptionalExtractingMetadataProvider[T] private[formatter] (
+      extractor: Entry => Option[T],
+      formatter: Formatter[T]
+  ) extends OptionalMetadataProvider {
     override def extractFrom(entry: Entry) = extractor(entry).map(formatter.format)
   }
 
-  class Delimiter private[formatter] (delimiter:String) extends Formatter[Iterable[Any]] {
+  class Delimiter private[formatter] (delimiter: String) extends Formatter[Iterable[Any]] {
     override def format(value: Iterable[Any]) = value.map(_.toString).mkString(delimiter)
   }
 
   object Delimiter {
-    def apply(delimiter:String) = new Delimiter(delimiter)
+    def apply(delimiter: String) = new Delimiter(delimiter)
   }
 
   object Commas extends Delimiter(",")
 
   object Spaces extends Delimiter(" ")
 
-  object CommasAndEquals extends Formatter[Map[String,Any]] {
-    override def format(value: Map[String,Any]) = value map { case (k,v) => s"$k=$v" } mkString ","
+  object CommasAndEquals extends Formatter[Map[String, Any]] {
+    override def format(value: Map[String, Any]) = value map { case (k, v) => s"$k=$v" } mkString ","
   }
 
-  object TopsOnly extends (Map[String,List[String]] => Map[String,String]) {
-    override def apply(in: Map[String,List[String]]) = in.flatMap { case (k,v) =>
-      v.headOption.map( k -> _ )
-    }
+  object TopsOnly extends (Map[String, List[String]] => Map[String, String]) {
+    override def apply(in: Map[String, List[String]]) =
+      in.flatMap {
+        case (k, v) =>
+          v.headOption.map(k -> _)
+      }
   }
 
   object entry {
@@ -126,8 +137,9 @@ object ProgrammableEntryFormatter {
     val tags = new ExtractingMetadataProvider(e => e.tags)
     val loggerAttributes = new MapExtractingMetadataProvider(e => e.loggerAttributes)
     val threadAttributes = new MapExtractingMetadataProvider(e => e.threadAttributes)
-    def loggerAttribute(name:String) = new OptionalExtractingMetadataProvider(e => e.loggerAttributes.get(name))
-    def threadAttribute(name:String) = new OptionalExtractingMetadataProvider(e => e.threadAttributes.get(name).flatMap(_.headOption))
+    def loggerAttribute(name: String) = new OptionalExtractingMetadataProvider(e => e.loggerAttributes.get(name))
+    def threadAttribute(name: String) =
+      new OptionalExtractingMetadataProvider(e => e.threadAttributes.get(name).flatMap(_.headOption))
   }
 }
 
@@ -196,23 +208,24 @@ import org.scalawag.timber.api.Entry
   * @param continuationPrefix determines the prefix for the remaining lines of an entry
   * @param missingValueString determines the string to use for optional metadata providers that return no content
   */
-class ProgrammableEntryFormatter(val metadataProviders: Seq[MetadataProvider],
-                                 val delimiter: String = "|",
-                                 val continuationHeader: ProgrammableEntryFormatter.ContinuationHeader.Value = ProgrammableEntryFormatter.ContinuationHeader.NONE,
-                                 val firstLinePrefix: String = "+",
-                                 val continuationPrefix: String = " ",
-                                 val missingValueString: String = "")
-  extends EntryFormatter
-{
-  def format(entry:Entry): String = {
+class ProgrammableEntryFormatter(
+    val metadataProviders: Seq[MetadataProvider],
+    val delimiter: String = "|",
+    val continuationHeader: ProgrammableEntryFormatter.ContinuationHeader.Value =
+      ProgrammableEntryFormatter.ContinuationHeader.NONE,
+    val firstLinePrefix: String = "+",
+    val continuationPrefix: String = " ",
+    val missingValueString: String = ""
+) extends EntryFormatter {
+  def format(entry: Entry): String = {
     val headerComponents = metadataProviders.map(_.extractFrom(entry)).map(_.getOrElse(missingValueString))
-    val header = headerComponents.mkString("",delimiter,if ( entry.message.isDefined ) delimiter else "")
+    val header = headerComponents.mkString("", delimiter, if (entry.message.isDefined) delimiter else "")
 
     val continuationHeaderString =
       continuationHeader match {
         case ContinuationHeader.METADATA => header
-        case ContinuationHeader.INDENT => " " * header.length
-        case ContinuationHeader.NONE => ""
+        case ContinuationHeader.INDENT   => " " * header.length
+        case ContinuationHeader.NONE     => ""
       }
 
     val firstLineHeader = firstLinePrefix + header
@@ -220,9 +233,8 @@ class ProgrammableEntryFormatter(val metadataProviders: Seq[MetadataProvider],
     val otherLineHeader = newline + continuationPrefix + continuationHeaderString
 
     entry.message match {
-      case Some(m) => m.lines.mkString(firstLineHeader,otherLineHeader,newline)
-      case None => s"$firstLineHeader$newline"
+      case Some(m) => m.lines.mkString(firstLineHeader, otherLineHeader, newline)
+      case None    => s"$firstLineHeader$newline"
     }
   }
 }
-

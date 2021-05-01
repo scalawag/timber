@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,19 +28,20 @@ import org.scalawag.timber.backend.receiver.formatter.EntryFormatter
 // be able to follow those changes.  It seems like the easiest thing to do it recreate the one OutputStreamWriter
 // method that we'd be using (write(String)) by encoding the string manually.
 
-private[timber] abstract class ConsoleReceiver(formatter:EntryFormatter, charsetName:Option[String] = None) extends Receiver {
+private[timber] abstract class ConsoleReceiver(formatter: EntryFormatter, charsetName: Option[String] = None)
+    extends Receiver {
   // Override to provide the stream to write to
-  protected def stream:OutputStream
+  protected def stream: OutputStream
 
   private[this] val charset = charsetName match {
     case Some(csn) => Charset.forName(csn)
-    case None => Charset.defaultCharset
+    case None      => Charset.defaultCharset
   }
 
   override def receive(entry: Entry): Unit = {
     val s = formatter.format(entry)
     val bb = charset.encode(s)
-    stream.write(bb.array,bb.arrayOffset,bb.limit)
+    stream.write(bb.array, bb.arrayOffset, bb.limit)
   }
 
   override def flush(): Unit = stream.flush()
@@ -55,10 +56,10 @@ private[timber] abstract class ConsoleReceiver(formatter:EntryFormatter, charset
   * @param charset the optional charset to use for encoding the entry text (defaults to the process default)
   */
 class ConsoleOutReceiver(formatter: EntryFormatter, charset: Option[String] = None)
-  extends ConsoleReceiver(formatter,charset) {
-    // Console.err is a def, so this needs to be a def as well to follow any changes to the former.
-    override def stream: OutputStream = Console.out
-    override val toString: String = "Console.out"
+    extends ConsoleReceiver(formatter, charset) {
+  // Console.err is a def, so this needs to be a def as well to follow any changes to the former.
+  override def stream: OutputStream = Console.out
+  override val toString: String = "Console.out"
 }
 
 /** A [[Receiver]] that formats entries and writes them to scala's
@@ -68,9 +69,8 @@ class ConsoleOutReceiver(formatter: EntryFormatter, charset: Option[String] = No
   * @param charset the optional charset to use for encoding the entry text (defaults to the process default)
   */
 class ConsoleErrReceiver(formatter: EntryFormatter, charset: Option[String] = None)
-  extends ConsoleReceiver(formatter,charset) {
-    // Console.err is a def, so this needs to be a def as well to follow any changes to the former.
-    override def stream: OutputStream = Console.err
-    override val toString: String = "Console.err"
+    extends ConsoleReceiver(formatter, charset) {
+  // Console.err is a def, so this needs to be a def as well to follow any changes to the former.
+  override def stream: OutputStream = Console.err
+  override val toString: String = "Console.err"
 }
-

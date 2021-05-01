@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,23 +26,22 @@ import org.scalawag.timber.backend.dispatcher.configuration.dsl._
 
 private[configuration] sealed trait ImmutableVertex
 
-
 private[configuration] object ImmutableVertex {
 
   /** Turns a graph of MutableVertices (built by the DSL) into a graph of ImmutableVertices (which can be used to
     * configure an Dispatcher).
     */
 
-  def apply(root:MutableVertex):ImmutableVertex = {
-    var cache = Map[MutableVertex,ImmutableVertex]()
+  def apply(root: MutableVertex): ImmutableVertex = {
+    var cache = Map[MutableVertex, ImmutableVertex]()
 
-    def helper(vertex:MutableVertex):ImmutableVertex = {
+    def helper(vertex: MutableVertex): ImmutableVertex = {
       cache.get(vertex) match {
         case Some(ie) => ie
         case None =>
           val iv = vertex match {
             case f: MutableConditionVertex =>
-              new ImmutableConditionVertex(f.condition,f.nexts.map(helper))
+              new ImmutableConditionVertex(f.condition, f.nexts.map(helper))
             case e: MutableReceiverVertex =>
               new ImmutableReceiverVertex(e.receiver)
           }
@@ -64,15 +63,13 @@ private[configuration] object ImmutableVertex {
  * well.
  */
 
-private[configuration] final case class ImmutableConditionVertex(val condition: Condition, val nexts: Set[ImmutableVertex])
-  extends ImmutableVertex
-{
+private[configuration] final case class ImmutableConditionVertex(
+    val condition: Condition,
+    val nexts: Set[ImmutableVertex]
+) extends ImmutableVertex {
   override def toString = condition.toString
 }
 
-private[configuration] final case class ImmutableReceiverVertex(val receiver:Receiver)
-  extends ImmutableVertex
-{
+private[configuration] final case class ImmutableReceiverVertex(val receiver: Receiver) extends ImmutableVertex {
   override def toString = receiver.toString
 }
-

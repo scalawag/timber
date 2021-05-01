@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +37,7 @@ import org.scalawag.timber.backend.dispatcher.EntryFacets
   * Configuration based on it but the Configuration creates a snapshot of the graph at the time of its construction.
   */
 
-case class Configuration private[dispatcher] (roots:Set[ImmutableVertex]) {
+case class Configuration private[dispatcher] (roots: Set[ImmutableVertex]) {
 
   /** Transforms this vertex and all of its descendants (all vertices reachable through its "outs").  It is
     * guaranteed that each vertex will be visited exactly once, <em>after</em> all of its outs have been processed.
@@ -56,31 +56,35 @@ case class Configuration private[dispatcher] (roots:Set[ImmutableVertex]) {
     *                  newly transformed vertices with which the source vertex should be replaced.
     */
 
-  private def flatMap(prune:ImmutableVertex => Boolean,transform:(ImmutableVertex,Set[ImmutableVertex]) => Set[ImmutableVertex]):Configuration = {
-    var cache = Map[ImmutableVertex,Set[ImmutableVertex]]()
+  private def flatMap(
+      prune: ImmutableVertex => Boolean,
+      transform: (ImmutableVertex, Set[ImmutableVertex]) => Set[ImmutableVertex]
+  ): Configuration = {
+    var cache = Map[ImmutableVertex, Set[ImmutableVertex]]()
 
-    def helper(vertex:ImmutableVertex):Set[ImmutableVertex] = cache.get(vertex) match {
-      case Some(e) =>
-        e
-      case None =>
-        if ( prune(vertex) ) {
-          Set()
-        } else {
-          val e = vertex match {
-            case f:ImmutableConditionVertex => transform(f,f.nexts.flatMap(helper))
-            case r:ImmutableReceiverVertex => transform(r,Set())
-          }
-          cache += (vertex -> e)
+    def helper(vertex: ImmutableVertex): Set[ImmutableVertex] =
+      cache.get(vertex) match {
+        case Some(e) =>
           e
-        }
-    }
+        case None =>
+          if (prune(vertex)) {
+            Set()
+          } else {
+            val e = vertex match {
+              case f: ImmutableConditionVertex => transform(f, f.nexts.flatMap(helper))
+              case r: ImmutableReceiverVertex  => transform(r, Set())
+            }
+            cache += (vertex -> e)
+            e
+          }
+      }
 
     Configuration(roots.flatMap(helper))
   }
 
-  def findReceivers(entry:Entry): Set[Receiver] =
+  def findReceivers(entry: Entry): Set[Receiver] =
     // constraining in conclusive mode should always give us a Configuration with only ImmutableReceivers in it
-    constrain(entry,true).roots.asInstanceOf[Set[ImmutableReceiverVertex]].map(_.receiver)
+    constrain(entry, true).roots.asInstanceOf[Set[ImmutableReceiverVertex]].map(_.receiver)
 
   /** Constrain the DAG based on the fields present in the EntryFacets.
     *
@@ -91,69 +95,72 @@ case class Configuration private[dispatcher] (roots:Set[ImmutableVertex]) {
     * @return the constrained Configuration
     */
 
-  def constrain(entryFacets:EntryFacets = EntryFacets.Empty, decisive:Boolean = false):Configuration = {
+  def constrain(entryFacets: EntryFacets = EntryFacets.Empty, decisive: Boolean = false): Configuration = {
 
-    def invert(b:Boolean) = !b
+    def invert(b: Boolean) = !b
 
-    def prune(vertex:ImmutableVertex):Boolean = vertex match {
+    def prune(vertex: ImmutableVertex): Boolean =
+      vertex match {
 
-      // A filter that doesn't match this entry can be pruned. If it's inconclusive _and_ we're in decisive mode, go
-      // ahead and prune it.  Otherwise, if it's inconclusive, we must not prune so that the decision structure can
-      // be preserved for future constrain calls.
+        // A filter that doesn't match this entry can be pruned. If it's inconclusive _and_ we're in decisive mode, go
+        // ahead and prune it.  Otherwise, if it's inconclusive, we must not prune so that the decision structure can
+        // be preserved for future constrain calls.
 
-      case f:ImmutableConditionVertex => f.condition.accepts(entryFacets).map(invert).getOrElse(decisive)
+        case f: ImmutableConditionVertex => f.condition.accepts(entryFacets).map(invert).getOrElse(decisive)
 
-      // A receiver is never pruned since its behavior isn't conditional on the entry being analyzed.  That's
-      // not to say it won't be removed later anyway if it's not reachable from any of the root vertices.
+        // A receiver is never pruned since its behavior isn't conditional on the entry being analyzed.  That's
+        // not to say it won't be removed later anyway if it's not reachable from any of the root vertices.
 
-      case r:ImmutableReceiverVertex => false
+        case r: ImmutableReceiverVertex => false
 
-    }
+      }
 
-    def transform(vertex:ImmutableVertex,outs:Set[ImmutableVertex]):Set[ImmutableVertex] = vertex match {
+    def transform(vertex: ImmutableVertex, outs: Set[ImmutableVertex]): Set[ImmutableVertex] =
+      vertex match {
 
-      // For a filter to make it past the prune phase, one of the following must be true:
-      //  - it conclusively accepts the entry, or
-      //  - it abstained and we're not in decisive mode.
-      // In the former case, we can treat it like an open valve and skip directly to its outs.
-      // In the latter case, we either have to maintain the condition (with its new children) for future constrain
-      // calls or, if it has no new children, can drop the filter altogether.
+        // For a filter to make it past the prune phase, one of the following must be true:
+        //  - it conclusively accepts the entry, or
+        //  - it abstained and we're not in decisive mode.
+        // In the former case, we can treat it like an open valve and skip directly to its outs.
+        // In the latter case, we either have to maintain the condition (with its new children) for future constrain
+        // calls or, if it has no new children, can drop the filter altogether.
 
-      case f:ImmutableConditionVertex =>
-        // We only need to distinguish between the two cases above here, so our logic looks kind of lax here.
-        if ( outs.isEmpty )
-          Set.empty // If there are no longer any outs, we can just drop the filter altogether.
-        else if ( f.condition.accepts(entryFacets).isDefined )
-          outs // The condition is decisively true, we can skip directly to its new outs.
-        else
-          Set(f.copy(nexts = outs)) // Otherwise, make a new condition with the new outs and the old condition.
+        case f: ImmutableConditionVertex =>
+          // We only need to distinguish between the two cases above here, so our logic looks kind of lax here.
+          if (outs.isEmpty)
+            Set.empty // If there are no longer any outs, we can just drop the filter altogether.
+          else if (f.condition.accepts(entryFacets).isDefined)
+            outs // The condition is decisively true, we can skip directly to its new outs.
+          else
+            Set(f.copy(nexts = outs)) // Otherwise, make a new condition with the new outs and the old condition.
 
-      // Receivers are always maintained during constrain calls.
+        // Receivers are always maintained during constrain calls.
 
-      case r:ImmutableReceiverVertex => Set(r)
-    }
+        case r: ImmutableReceiverVertex => Set(r)
+      }
 
-    flatMap(prune,transform)
+    flatMap(prune, transform)
   }
-/*
+  /*
   /** Removes redundant or contradictory vertices from the graph.  Constraining a configuration graph only takes care
-    * of obvious inefficiencies like removing closed valves, conditions that are always true and paths that don't
-    * end in a receiver.  Optimization takes more analysis (and therefore more time) but removes additional
-    * inefficiencies that constrain can not.  For example, ( level > 5 and level < 3 ) can be pruned since they can't
-    * both be true.  Also, (level > 3 and level > 2) can be simplified to just (level > 2) since that includes levels
-    * greater than 3.
+   * of obvious inefficiencies like removing closed valves, conditions that are always true and paths that don't
+   * end in a receiver.  Optimization takes more analysis (and therefore more time) but removes additional
+   * inefficiencies that constrain can not.  For example, ( level > 5 and level < 3 ) can be pruned since they can't
+   * both be true.  Also, (level > 3 and level > 2) can be simplified to just (level > 2) since that includes levels
+   * greater than 3.
    */
 
   def optimized = {
     // yet to be implemented.
   }
-*/
+   */
 }
 
 object Configuration {
+
   /** An empty configuration (one that routes doesn't route entries anywhere). */
   val empty = Configuration(Set.empty[ImmutableVertex])
-  /** Creates a Configuration based on a routing graph. */
-  implicit def apply(g:Subgraph[_]):Configuration = Configuration(Set(ImmutableVertex(g.root)))
-}
 
+  /** Creates a Configuration based on a routing graph. */
+  implicit def apply(g: Subgraph[_]): Configuration = Configuration(Set(ImmutableVertex(g.root)))
+}

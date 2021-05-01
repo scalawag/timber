@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,7 +35,7 @@ object NumberLevelFormatter extends Formatter[Level] {
   * @param thresholds the thresholds at which to switch to a new level name
   */
 
-class TranslatingLevelFormatter(thresholds:Iterable[Level]) extends Formatter[Level] {
+class TranslatingLevelFormatter(thresholds: Iterable[Level]) extends Formatter[Level] {
   // Produce a sorted list that will help us efficiently select the level name
   private[this] val thresholdList = {
     // Sort by level number

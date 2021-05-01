@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,7 +46,7 @@ import org.scalawag.timber.api
   */
 
 object DefaultDispatcher extends api.Dispatcher {
-  override def dispatch(entry:Entry) = dispatcherRef.get.dispatch(entry)
+  override def dispatch(entry: Entry) = dispatcherRef.get.dispatch(entry)
 
   /** Sets a new delegate for all the dispatch calls received by this dispatcher.  This call is thread-safe and
     * can be called any number of times during the process' lifetime.  The normal use case is for it to be set once
@@ -54,7 +54,7 @@ object DefaultDispatcher extends api.Dispatcher {
     *
     * @param delegate the dispatcher which should handle all entries for timber loggers not specifying another dispatcher
     */
-  def set(delegate:api.Dispatcher) = dispatcherRef.set(delegate)
+  def set(delegate: api.Dispatcher) = dispatcherRef.set(delegate)
 
   import org.scalawag.timber.backend.{InternalLogger => log}
 
@@ -70,12 +70,14 @@ object DefaultDispatcher extends api.Dispatcher {
           new Dispatcher
         }
       case None =>
-        log.debug(s"The system property '$SYSTEM_PROPERTY' is not specified, using the default dispatcher ($DEFAULT_DISPATCHER_CLASS_NAME).")
+        log.debug(
+          s"The system property '$SYSTEM_PROPERTY' is not specified, using the default dispatcher ($DEFAULT_DISPATCHER_CLASS_NAME)."
+        )
         new Dispatcher
     }
   })
 
-  private def loadDispatcherByName(className:String) = {
+  private def loadDispatcherByName(className: String) = {
     val classLoaders = Seq(
       Option(Thread.currentThread.getContextClassLoader),
       Some(this.getClass.getClassLoader),
@@ -89,26 +91,30 @@ object DefaultDispatcher extends api.Dispatcher {
         try {
           Left(Class.forName(className, true, cl))
         } catch {
-          case ex:ClassNotFoundException => Right(ex)
+          case ex: ClassNotFoundException => Right(ex)
         }
       }
 
     // Choose the class that we'll use (the first one we found).  Log an error if no ClassLoader could find one.
 
-    eitherClassOrExceptions collectFirst { case Left(cls) =>
+    eitherClassOrExceptions collectFirst {
+      case Left(cls) =>
+        // Instantiate the dispatcher based on the class we chose above.
 
-      // Instantiate the dispatcher based on the class we chose above.
-
-      try {
-        Some(cls.newInstance().asInstanceOf[api.Dispatcher])
-      } catch {
-        case ex:ClassCastException =>
-          log.error(s"The class specified by the system property '$SYSTEM_PROPERTY' ($className) is not a timber dispatcher (${classOf[api.Dispatcher].getName}).")
-          None
-        case ex:Exception =>
-          log.error(s"The class specified by the system property '$SYSTEM_PROPERTY' ($className) could not be instantiated: $ex")
-          None
-      }
+        try {
+          Some(cls.newInstance().asInstanceOf[api.Dispatcher])
+        } catch {
+          case ex: ClassCastException =>
+            log.error(
+              s"The class specified by the system property '$SYSTEM_PROPERTY' ($className) is not a timber dispatcher (${classOf[api.Dispatcher].getName})."
+            )
+            None
+          case ex: Exception =>
+            log.error(
+              s"The class specified by the system property '$SYSTEM_PROPERTY' ($className) could not be instantiated: $ex"
+            )
+            None
+        }
 
     } getOrElse {
       log.error(s"The class specified by the system property '$SYSTEM_PROPERTY' ($className) could not be found.")
@@ -116,4 +122,3 @@ object DefaultDispatcher extends api.Dispatcher {
     }
   }
 }
-

@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,21 +34,24 @@ object Dispatcher {
   }
 
   object CacheKeyExtractor {
-    def apply(attributes:Attribute.Value*) = new CacheKeyExtractor {
-      override def extractKey(entry:Entry) = {
-        def include[T](attribute:Attribute.Value,value:Option[T]):Option[T] =
-          if ( attributes.contains(attribute) )
-            value
-          else
-            None
+    def apply(attributes: Attribute.Value*) =
+      new CacheKeyExtractor {
+        override def extractKey(entry: Entry) = {
+          def include[T](attribute: Attribute.Value, value: Option[T]): Option[T] =
+            if (attributes.contains(attribute))
+              value
+            else
+              None
 
-        import Attribute._
-        new EntryFacets(loggingClass = include(LoggingClass,Some(entry.loggingClass)),
-                         level = include(Level,Some(entry.level)),
-                         threadName = include(ThreadName,Some(entry.threadName)),
-                         tags = include(Tags,Some(entry.tags)))
+          import Attribute._
+          new EntryFacets(
+            loggingClass = include(LoggingClass, Some(entry.loggingClass)),
+            level = include(Level, Some(entry.level)),
+            threadName = include(ThreadName, Some(entry.threadName)),
+            tags = include(Tags, Some(entry.tags))
+          )
+        }
       }
-    }
   }
 
   /** Specifies the key to be used for caching configurations within a [[Dispatcher]].  If a [[Dispatcher]]
@@ -61,12 +64,13 @@ object Dispatcher {
     * If you are not concerned with performance, it is safe to ignore the CacheKeyExtractor entirely.
     */
   trait CacheKeyExtractor {
+
     /** Extract the cache key (an EntryFacets representing the significant portions of the entry) from a given entry.
       *
       * @param entry the entry whose cache key should be extracted
       * @return the cache key
       */
-    def extractKey(entry:Entry):EntryFacets
+    def extractKey(entry: Entry): EntryFacets
   }
 }
 
@@ -82,12 +86,12 @@ object Dispatcher {
   * @param initialConfiguration the configuration used until another call to setConfiguration()
   * @param cacheKeyExtractor the optional CacheKeyExtractor for caching constrained configurations (None disables caching)
   */
-class Dispatcher(initialConfiguration:Configuration = DefaultConfiguration,
-                 cacheKeyExtractor:Option[CacheKeyExtractor] = None)
-  extends api.Dispatcher
-{
+class Dispatcher(
+    initialConfiguration: Configuration = DefaultConfiguration,
+    cacheKeyExtractor: Option[CacheKeyExtractor] = None
+) extends api.Dispatcher {
   private[this] val activeConfiguration = new AtomicReference(initialConfiguration)
-  private[this] val configurationCache = new AtomicReference(Map.empty[EntryFacets,Configuration])
+  private[this] val configurationCache = new AtomicReference(Map.empty[EntryFacets, Configuration])
 
   /** Sets the configuration for this dispatcher.  This call is safe to call without concurrency protection. Entries
     * dispatched before the call will use the old configuration and entries dispatched after the call will be
@@ -95,7 +99,7 @@ class Dispatcher(initialConfiguration:Configuration = DefaultConfiguration,
     *
     * @param configuration the new configuration to be used by this dispatcher
     */
-  def setConfiguration(configuration:Configuration) = {
+  def setConfiguration(configuration: Configuration) = {
     activeConfiguration.set(configuration)
     configurationCache.set(Map.empty)
   }
@@ -104,10 +108,10 @@ class Dispatcher(initialConfiguration:Configuration = DefaultConfiguration,
     *
     * @param entry the entry to be dispatched.
     */
-  override def dispatch(entry:Entry) =
+  override def dispatch(entry: Entry) =
     getConstrainedConfigurationFor(entry).findReceivers(entry).foreach(_.receive(entry))
 
-  private[this] def getConstrainedConfigurationFor(entry:Entry) =
+  private[this] def getConstrainedConfigurationFor(entry: Entry) =
     cacheKeyExtractor match {
       case None =>
         activeConfiguration.get
@@ -121,7 +125,7 @@ class Dispatcher(initialConfiguration:Configuration = DefaultConfiguration,
           val constrained = activeConfiguration.get.constrain(key)
           // Only add the value to the cache if no one else has modified the cache in the mean time.  If that happens,
           // it means that we'll have to constrain it again next time, but we avoid retries and locks that way.
-          configurationCache.compareAndSet(cache,cache + ( key -> constrained))
+          configurationCache.compareAndSet(cache, cache + (key -> constrained))
           constrained
         }
     }
@@ -131,10 +135,9 @@ class Dispatcher(initialConfiguration:Configuration = DefaultConfiguration,
     * @param fn the thunk which takes the root vertex of the configuration and adds routes to receivers
     */
 
-  def configure(fn:SubgraphWithOutputs[MutableConditionVertex] => Unit) {
-    val IN:SubgraphWithOutputs[MutableConditionVertex] = true
+  def configure(fn: SubgraphWithOutputs[MutableConditionVertex] => Unit) {
+    val IN: SubgraphWithOutputs[MutableConditionVertex] = true
     fn(IN)
     setConfiguration(IN) // Call the external API so that it can be made thread-safe, however that's done
   }
 }
-

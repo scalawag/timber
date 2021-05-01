@@ -49,7 +49,7 @@ object DefaultDispatcherLoader {
       Some(ClassLoader.getSystemClassLoader)
     ).flatten
 
-    val resourceName = DEFAULT_DISPATCHER.replaceAllLiterally(".","/") + "$.class"
+    val resourceName = DEFAULT_DISPATCHER.replaceAllLiterally(".", "/") + "$.class"
 
     // Select the first ClassLoader that returns at least one DefaultDispatcher object
 
@@ -57,30 +57,34 @@ object DefaultDispatcherLoader {
       // Java bridge...
       var resources: List[URL] = Nil
       val enum = cl.getResources(resourceName)
-      while ( enum.hasMoreElements )
+      while (enum.hasMoreElements)
         resources ::= enum.nextElement()
-      (cl,resources.reverse)
+      (cl, resources.reverse)
     }
 
-    val firstClassLoaderWithMatchingResources = classLoaderAndResources find { case (_,resources) =>
-      resources.nonEmpty
+    val firstClassLoaderWithMatchingResources = classLoaderAndResources find {
+      case (_, resources) =>
+        resources.nonEmpty
     }
 
     // Make sure that we found it and that there's only one of these on the classpath of the selected class loader
 
     firstClassLoaderWithMatchingResources match {
       case None =>
-        throw new RuntimeException(s"No default timber dispatcher (${DEFAULT_DISPATCHER}) defined: add timber.jar, timber-over-slf4j.jar or timber-over-osgi.jar (or another jar with this object) to your classpath or use Thread.setContextClassLoader.")
-      case Some((classLoader,Seq(first))) =>
+        throw new RuntimeException(
+          s"No default timber dispatcher (${DEFAULT_DISPATCHER}) defined: add timber.jar, timber-over-slf4j.jar or timber-over-osgi.jar (or another jar with this object) to your classpath or use Thread.setContextClassLoader."
+        )
+      case Some((classLoader, Seq(first))) =>
         val rootMirror = universe.runtimeMirror(classLoader)
         val driverSymbol = rootMirror.staticModule(DEFAULT_DISPATCHER)
         val driverMirror = rootMirror.reflectModule(driverSymbol)
         driverMirror.instance.asInstanceOf[Dispatcher]
-      case Some((classLoader,all)) =>
-        val locations = all.map(_.toString.replaceAllLiterally(s"!/$resourceName","")).mkString(" ")
-        throw new RuntimeException(s"Found multiple default timber dispatchers ($DEFAULT_DISPATCHER) on the classpath ($locations) of ClassLoader $classLoader but expecting exactly one.  Please remove all but one from your classpath.")
+      case Some((classLoader, all)) =>
+        val locations = all.map(_.toString.replaceAllLiterally(s"!/$resourceName", "")).mkString(" ")
+        throw new RuntimeException(
+          s"Found multiple default timber dispatchers ($DEFAULT_DISPATCHER) on the classpath ($locations) of ClassLoader $classLoader but expecting exactly one.  Please remove all but one from your classpath."
+        )
     }
   }
 
 }
-

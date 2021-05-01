@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,19 +41,22 @@ import org.scalawag.timber.backend.dispatcher.configuration.dsl.Condition
   * @param loggerAttributes optional view of the loggerAttributes field in an Entry instance
   * @param threadAttributes optional view of the threadAttributes field in an Entry instance
   */
-case class EntryFacets(level: Option[Option[Level]] = None,
-                       message: Option[Option[Message]] = None,
-                       sourceFile: Option[Option[String]] = None,
-                       sourceLineNumber: Option[Option[Int]] = None,
-                       loggingClass: Option[Option[String]] = None,
-                       loggingMethod: Option[Option[String]] = None,
-                       tags: Option[Set[Tag]] = None,
-                       timestamp: Option[Long] = None,
-                       threadName: Option[String] = None,
-                       loggerAttributes: Option[Map[String,Any]] = None,
-                       threadAttributes: Option[Map[String, List[String]]] = None)
+case class EntryFacets(
+    level: Option[Option[Level]] = None,
+    message: Option[Option[Message]] = None,
+    sourceFile: Option[Option[String]] = None,
+    sourceLineNumber: Option[Option[Int]] = None,
+    loggingClass: Option[Option[String]] = None,
+    loggingMethod: Option[Option[String]] = None,
+    tags: Option[Set[Tag]] = None,
+    timestamp: Option[Long] = None,
+    threadName: Option[String] = None,
+    loggerAttributes: Option[Map[String, Any]] = None,
+    threadAttributes: Option[Map[String, List[String]]] = None
+)
 
 object EntryFacets {
+
   /** An EntryFacets object that knows nothing about the Entry.  This is used (for example) to determine if a Condition
     * will always accept or reject a value regardless of the entry's content.
     */
@@ -64,16 +67,17 @@ object EntryFacets {
     * @param entry the entry on which to base the returned EntryFacets
     * @return an EntryFacets with complete knowledge of the entry
     */
-  implicit def apply(entry:Entry):EntryFacets =
-    new EntryFacets(level = Some(entry.level),
-                     message = Some(entry.message),
-                     sourceFile = Some(entry.sourceLocation.map(_.filename)),
-                     loggingClass = Some(entry.loggingClass),
-                     loggingMethod = Some(entry.loggingMethod),
-                     tags = Some(entry.tags),
-                     timestamp = Some(entry.timestamp),
-                     threadName = Some(entry.threadName),
-                     loggerAttributes = Some(entry.loggerAttributes),
-                     threadAttributes = Some(entry.threadAttributes))
+  implicit def apply(entry: Entry): EntryFacets =
+    new EntryFacets(
+      level = Some(entry.level),
+      message = Some(entry.message),
+      sourceFile = Some(entry.sourceLocation.map(_.filename)),
+      loggingClass = Some(entry.loggingClass),
+      loggingMethod = Some(entry.loggingMethod),
+      tags = Some(entry.tags),
+      timestamp = Some(entry.timestamp),
+      threadName = Some(entry.threadName),
+      loggerAttributes = Some(entry.loggerAttributes),
+      threadAttributes = Some(entry.threadAttributes)
+    )
 }
-

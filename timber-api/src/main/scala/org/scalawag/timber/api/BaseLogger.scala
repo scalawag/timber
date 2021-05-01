@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -71,9 +71,11 @@ import Entry.SourceLocation
   * @param dispatcher the dispatcher that is used to dispatch the entries that this logger creates
   */
 
-class BaseLogger(val attributes:Map[String,Any] = Map.empty, val tags:Set[Tag] = Set.empty)(implicit dispatcher:Dispatcher)  {
+class BaseLogger(val attributes: Map[String, Any] = Map.empty, val tags: Set[Tag] = Set.empty)(implicit
+    dispatcher: Dispatcher
+) {
 
-  def this(attributes:(String,Any)*)(implicit dispatcher:Dispatcher) = this(attributes.toMap)(dispatcher)
+  def this(attributes: (String, Any)*)(implicit dispatcher: Dispatcher) = this(attributes.toMap)(dispatcher)
 
   /** Submits an entry with a level, a message and maybe tags to the logging system.
     *
@@ -90,8 +92,10 @@ class BaseLogger(val attributes:Map[String,Any] = Map.empty, val tags:Set[Tag] =
     * @param location the source location of the method call (usually automatically fulfilled by LogCallLocation.capture())
     */
 
-  def log(level:Level,tags:TraversableOnce[Tag] = Iterable.empty)(message:Message)(implicit location:LogCallLocation):Unit =
-    dispatcher.dispatch(buildEntry(Some(level),Some(message),Some(location),tags))
+  def log(level: Level, tags: TraversableOnce[Tag] = Iterable.empty)(
+      message: Message
+  )(implicit location: LogCallLocation): Unit =
+    dispatcher.dispatch(buildEntry(Some(level), Some(message), Some(location), tags))
 
   /** Submits an entry with a Message and tags but no level to the logging system.
     *
@@ -107,8 +111,8 @@ class BaseLogger(val attributes:Map[String,Any] = Map.empty, val tags:Set[Tag] =
     * @param location the source location of the method call (usually automatically fulfilled by LogCallLocation.capture())
     */
 
-  def log(tags:TraversableOnce[Tag])(message:Message)(implicit location:LogCallLocation): Unit =
-    dispatcher.dispatch(buildEntry(None,Some(message),Some(location),tags))
+  def log(tags: TraversableOnce[Tag])(message: Message)(implicit location: LogCallLocation): Unit =
+    dispatcher.dispatch(buildEntry(None, Some(message), Some(location), tags))
 
   /** Submits an entry with a Message and level but no tags to the logging system.
     *
@@ -124,8 +128,8 @@ class BaseLogger(val attributes:Map[String,Any] = Map.empty, val tags:Set[Tag] =
     * @param location the source location of the method call (usually automatically fulfilled by LogCallLocation.capture())
     */
 
-  def log(level:Level)(message:Message)(implicit location:LogCallLocation): Unit =
-    dispatcher.dispatch(buildEntry(Some(level),Some(message),Some(location),Set.empty))
+  def log(level: Level)(message: Message)(implicit location: LogCallLocation): Unit =
+    dispatcher.dispatch(buildEntry(Some(level), Some(message), Some(location), Set.empty))
 
   /** Submits an entry with a Message but no level or tags to the logging system.
     *
@@ -133,8 +137,8 @@ class BaseLogger(val attributes:Map[String,Any] = Map.empty, val tags:Set[Tag] =
     * @param location the source location of the method call (usually automatically fulfilled by LogCallLocation.capture())
     */
 
-  def log(message:Message)(implicit location:LogCallLocation): Unit = {
-    dispatcher.dispatch(buildEntry(None,Some(message),Some(location),Set.empty))
+  def log(message: Message)(implicit location: LogCallLocation): Unit = {
+    dispatcher.dispatch(buildEntry(None, Some(message), Some(location), Set.empty))
   }
 
   /** Submits an entry without a level, a Message or tags to the logging system.  This essentially creates an entry
@@ -143,25 +147,33 @@ class BaseLogger(val attributes:Map[String,Any] = Map.empty, val tags:Set[Tag] =
     * @param location the source location of the method call (usually automatically fulfilled by LogCallLocation.capture())
     */
 
-  def log(implicit location:LogCallLocation) = dispatcher.dispatch(buildEntry(None,None,Some(location),Set.empty))
+  def log(implicit location: LogCallLocation) = dispatcher.dispatch(buildEntry(None, None, Some(location), Set.empty))
 
-  protected def buildEntry(level:Option[Level], message: Option[Message], location: Option[LogCallLocation], entryTags: TraversableOnce[Tag]) = {
+  protected def buildEntry(
+      level: Option[Level],
+      message: Option[Message],
+      location: Option[LogCallLocation],
+      entryTags: TraversableOnce[Tag]
+  ) = {
     val tags = this.tags ++ entryTags
-    if ( tags.contains(ImmediateMessage) )
+    if (tags.contains(ImmediateMessage))
       message.foreach(_.text) // trigger message evaluation now
 
-    Entry(level = level,
-          message = message,
-          sourceLocation = location.map(_.sourceLocation),
-          loggingClass = location.flatMap(_.className),
-          loggingMethod = location.flatMap(_.methodName),
-          tags = tags,
-          loggerAttributes = this.attributes,
-          threadAttributes = ThreadAttributes.get)
+    Entry(
+      level = level,
+      message = message,
+      sourceLocation = location.map(_.sourceLocation),
+      loggingClass = location.flatMap(_.className),
+      loggingMethod = location.flatMap(_.methodName),
+      tags = tags,
+      loggerAttributes = this.attributes,
+      threadAttributes = ThreadAttributes.get
+    )
   }
 }
 
 object BaseLogger {
+
   /** Represents all automatically collected information regarding the location of a log method call.  This class
     * exists so that the log method calls contain only one implicit parameter and that it's unique enough that a call
     * to the implicit [[LogCallLocation]].capture() method will be generated to fulfill the argument.
@@ -176,9 +188,11 @@ object BaseLogger {
     *                   specified by className if such a method exists)
     */
 
-  case class LogCallLocation(sourceLocation: SourceLocation,
-                             className:Option[String] = None,
-                             methodName:Option[String] = None) {
+  case class LogCallLocation(
+      sourceLocation: SourceLocation,
+      className: Option[String] = None,
+      methodName: Option[String] = None
+  ) {
     override def toString = s"$sourceLocation:$className:$methodName"
   }
 
@@ -191,27 +205,27 @@ object BaseLogger {
       * @return as much source location metadata as is available
       */
 
-    implicit def capture:LogCallLocation = macro LogCallLocation.captureImpl
+    implicit def capture: LogCallLocation = macro LogCallLocation.captureImpl
 
-    def captureImpl(c:Context):c.Expr[LogCallLocation] = {
+    def captureImpl(c: Context): c.Expr[LogCallLocation] = {
       import c.universe._
 
       @tailrec
-      def enclosingSymbols(sym:Symbol,path:List[Symbol] = Nil):List[Symbol] =
-        if ( sym == NoSymbol ) {
+      def enclosingSymbols(sym: Symbol, path: List[Symbol] = Nil): List[Symbol] =
+        if (sym == NoSymbol) {
           path
         } else {
-          enclosingSymbols(sym.owner,sym :: path)
+          enclosingSymbols(sym.owner, sym :: path)
         }
 
       // TODO: There's more than could be done here in terms of locally-defined classes and methods.  I'm not sure it's
       // TODO: worth it, though, given that it will make conditions more complicated.
       val owners = enclosingSymbols(c.internal.enclosingOwner)
 
-      val classNameParts = owners.tail.takeWhile( s => s.isPackage || s.isModule || s.isClass ).map(_.name.toString)
+      val classNameParts = owners.tail.takeWhile(s => s.isPackage || s.isModule || s.isClass).map(_.name.toString)
 
       val className =
-        if ( classNameParts.isEmpty )
+        if (classNameParts.isEmpty)
           None
         else
           Some(classNameParts.mkString("."))
@@ -227,4 +241,3 @@ object BaseLogger {
   }
 
 }
-

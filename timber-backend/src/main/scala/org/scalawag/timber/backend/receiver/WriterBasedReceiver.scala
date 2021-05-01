@@ -1,11 +1,11 @@
 // timber -- Copyright 2012-2015 -- Justin Patterson
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,14 +28,16 @@ import org.scalawag.timber.backend.receiver.formatter.{DefaultEntryFormatter, En
   * @param formatter the formatter used to format the entries before writing them
   */
 
-class WriterBasedReceiver(createWriterFn: => Writer)(implicit formatter:EntryFormatter = DefaultEntryFormatter) extends Receiver {
-  private[this] var writerOption:Option[Writer] = None
+class WriterBasedReceiver(createWriterFn: => Writer)(implicit formatter: EntryFormatter = DefaultEntryFormatter)
+    extends Receiver {
+  private[this] var writerOption: Option[Writer] = None
 
-  private[this] def writer:Writer = writerOption getOrElse {
-    val w = createWriterFn
-    writerOption = Some(w)
-    w
-  }
+  private[this] def writer: Writer =
+    writerOption getOrElse {
+      val w = createWriterFn
+      writerOption = Some(w)
+      w
+    }
 
   override def receive(entry: Entry): Unit = writer.write(formatter.format(entry))
 
@@ -53,6 +55,6 @@ class WriterBasedReceiver(createWriterFn: => Writer)(implicit formatter:EntryFor
 
 /** A stackable version of the [[WriterBasedReceiver]]. */
 
-class WriterBasedStackableReceiver(createWriterFn: => Writer)(implicit formatter:EntryFormatter = DefaultEntryFormatter)
-  extends WriterBasedReceiver(createWriterFn)(formatter)
-
+class WriterBasedStackableReceiver(createWriterFn: => Writer)(implicit
+    formatter: EntryFormatter = DefaultEntryFormatter
+) extends WriterBasedReceiver(createWriterFn)(formatter)
