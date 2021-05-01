@@ -50,9 +50,8 @@ class PeriodicFlushingTest extends AnyFunSpec with Matchers with Eventually {
 
   it("should flush on receive eventually") {
     val writer = new FakeWriter
-    val receiver = new WriterBasedStackableReceiver(writer) with PeriodicFlushing {
-      override protected[this] val maximumFlushInterval  = 500.milliseconds
-    }
+    val receiver = PeriodicFlushing(new WriterBasedStackableReceiver(writer), 500.milliseconds)
+
     (0 until 10).foreach(_ => receiver.receive(oneLineEntry))
 
     writer.writeCount shouldBe 10
@@ -66,9 +65,8 @@ class PeriodicFlushingTest extends AnyFunSpec with Matchers with Eventually {
 
   it("should restart interval timer after manual flush") {
     val writer = new FakeWriter
-    val receiver = new WriterBasedStackableReceiver(writer) with PeriodicFlushing {
-      override protected[this] val maximumFlushInterval  = 1.second
-    }
+    val receiver = PeriodicFlushing(new WriterBasedStackableReceiver(writer), 1.second)
+
     receiver.receive(oneLineEntry)
     Thread.sleep(800) // almost the flush interval
     receiver.receive(oneLineEntry)
@@ -84,17 +82,15 @@ class PeriodicFlushingTest extends AnyFunSpec with Matchers with Eventually {
 
   it("should not flush if nothing's been received") {
     val writer = new FakeWriter
-    val receiver = new WriterBasedStackableReceiver(writer) with PeriodicFlushing {
-      override protected[this] val maximumFlushInterval  = 50.milliseconds
-    }
+    val receiver = PeriodicFlushing(new WriterBasedStackableReceiver(writer), 50.milliseconds)
     Thread.sleep(100) // the automated flush would have happened by now if anything had been received
+    writer.flushCount shouldBe 0
   }
 
   it("should flush before close") {
     val writer = new FakeWriter
-    val receiver = new WriterBasedStackableReceiver(writer) with PeriodicFlushing {
-      override protected[this] val maximumFlushInterval  = 50.milliseconds
-    }
+    val receiver = PeriodicFlushing(new WriterBasedStackableReceiver(writer), 50.milliseconds)
+    
     receiver.receive(oneLineEntry)
     writer.writeCount shouldBe 1
     writer.flushCount shouldBe 0

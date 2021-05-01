@@ -16,30 +16,24 @@ package org.scalawag.timber.backend.receiver.concurrency
 
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.SingleThreadExecutionContext
-import org.scalawag.timber.backend.receiver.{StackableReceiver, Receiver}
+import org.scalawag.timber.backend.receiver.Receiver
 
 import scala.concurrent.{ExecutionContext, Future}
-
-/** Applies the Queueing (see companion object) concurrency policy to the [[StackableReceiver]] it is mixed into. */
-
-trait Queueing { _: StackableReceiver =>
-  final override private[backend] val concurrencyPolicy = Queueing
-}
 
 /** Prevents concurrent access to the core Receiver methods through queueing the entries and processing them
   * with a single-threaded ExecutionContext.
   */
 
-object Queueing extends ConcurrencyPolicy {
-  override def layerConcurrencyBehavior(delegate:Receiver) = new Behavior(delegate)
+class Queueing(delegate:Receiver) extends Receiver {
+  implicit private[this] lazy val ec:ExecutionContext = SingleThreadExecutionContext(this.toString)
 
-  class Behavior(delegate:Receiver) extends Receiver {
-    implicit private[this] lazy val ec:ExecutionContext = SingleThreadExecutionContext(this.toString)
+  override def receive(entry:Entry): Unit = Future(delegate.receive(entry))
+  override def flush(): Unit = Future(delegate.flush())
+  override def close(): Unit = Future(delegate.close())
 
-    override def receive(entry:Entry) = Future(delegate.receive(entry))
-    override def flush() = Future(delegate.flush())
-    override def close() = Future(delegate.close())
-    override val toString = s"Queueing(${delegate.toString()})"
-  }
+  override val toString: String = s"Queueing($delegate)"
 }
 
+object Queueing {
+    def apply(delegate: Receiver): Queueing = new Queueing(delegate)
+}

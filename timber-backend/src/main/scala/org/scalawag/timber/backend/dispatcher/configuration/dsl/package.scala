@@ -15,8 +15,8 @@
 package org.scalawag.timber.backend.dispatcher.configuration
 
 import org.scalawag.timber.backend.dispatcher.configuration.dsl.Condition.{AcceptAll, NotCondition}
-import org.scalawag.timber.backend.receiver.buffering.{BufferingPolicy, ImmediateFlushing, LazyFlushing}
-import org.scalawag.timber.backend.receiver.concurrency.{ConcurrencyPolicy, Locking}
+import org.scalawag.timber.backend.receiver.buffering.ImmediateFlushing
+import org.scalawag.timber.backend.receiver.concurrency.Locking
 import org.scalawag.timber.backend.receiver.formatter.{DefaultEntryFormatter, EntryFormatter}
 import org.scalawag.timber.backend.receiver._
 import java.io.FileWriter
@@ -78,16 +78,12 @@ package object dsl {
   }
 
   def stdout(implicit formatter:EntryFormatter = DefaultEntryFormatter) =
-    new ConsoleOutReceiver(formatter) with LazyFlushing with Locking
+    Locking(new ConsoleOutReceiver(formatter))
   def stderr(implicit formatter:EntryFormatter = DefaultEntryFormatter) =
-    new ConsoleErrReceiver(formatter) with ImmediateFlushing with Locking
+    Locking(ImmediateFlushing(new ConsoleErrReceiver(formatter)))
 
-  def file(filename:String,bp:BufferingPolicy = LazyFlushing,cp:ConcurrencyPolicy = Locking)
-          (implicit formatter:EntryFormatter = DefaultEntryFormatter) =
-    new StackableReceiver(new WriterBasedStackableReceiver(new FileWriter(filename,true))(formatter)) {
-      override private[backend] val bufferingPolicy = bp
-      override private[backend] val concurrencyPolicy = cp
-    }
+  def file(filename:String)(implicit formatter:EntryFormatter = DefaultEntryFormatter) =
+    new WriterBasedStackableReceiver(new FileWriter(filename,true))(formatter)
 
   // These are not on the Subgraph* companion objects because we want the compiler to try them even when it doesn't
   // know that it's looking for a subgraph.  This means that the caller needs to have imported the dsl package, but

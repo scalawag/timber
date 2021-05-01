@@ -54,5 +54,5 @@ class WriterBasedReceiver(createWriterFn: => Writer)(implicit formatter:EntryFor
 /** A stackable version of the [[WriterBasedReceiver]]. */
 
 class WriterBasedStackableReceiver(createWriterFn: => Writer)(implicit formatter:EntryFormatter = DefaultEntryFormatter)
-  extends StackableReceiver(new WriterBasedReceiver(createWriterFn)(formatter))
+  extends WriterBasedReceiver(createWriterFn)(formatter)
 

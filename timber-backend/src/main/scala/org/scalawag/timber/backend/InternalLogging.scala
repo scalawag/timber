@@ -52,12 +52,12 @@ private[timber] object InternalLogging extends Dispatcher {
   private[timber] var outputStreamOverride:Option[OutputStream] = None
 
   class RedirectableConsoleErrReceiver(formatter: EntryFormatter, charset: Option[String] = None)
-    extends StackableReceiver(new ConsoleReceiver(formatter,charset) {
+    extends ConsoleReceiver(formatter,charset) {
       override def stream = outputStreamOverride.getOrElse(Console.err)
       override val toString = "Console.err"
-    })
+    }
 
-  private[this] val receiver = new RedirectableConsoleErrReceiver(formatter) with ImmediateFlushing with Locking
+  private[this] val receiver = Locking(ImmediateFlushing(new RedirectableConsoleErrReceiver(formatter)))
 
   // This is the configuration that's always used by timber internally.  It always writes to stderr.  It will
   // limit the printed log entries to those with intValue WARN or above unless the system property "timber.debug"

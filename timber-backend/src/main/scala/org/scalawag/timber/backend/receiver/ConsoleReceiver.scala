@@ -37,7 +37,7 @@ private[timber] abstract class ConsoleReceiver(formatter:EntryFormatter, charset
     case None => Charset.defaultCharset
   }
 
-  override def receive(entry: Entry) = {
+  override def receive(entry: Entry): Unit = {
     val s = formatter.format(entry)
     val bb = charset.encode(s)
     stream.write(bb.array,bb.arrayOffset,bb.limit)
@@ -48,33 +48,29 @@ private[timber] abstract class ConsoleReceiver(formatter:EntryFormatter, charset
   override def close(): Unit = stream.flush() // Don't close console streams!
 }
 
-/** A [[StackableReceiver]] that formats entries and writes them to scala's
+/** A [[Receiver]] that formats entries and writes them to scala's
   * [[scala.Console Console.out]] (which normally points to stdout but can be redirected).
   *
   * @param formatter the formatter to use to format the entries
   * @param charset the optional charset to use for encoding the entry text (defaults to the process default)
   */
 class ConsoleOutReceiver(formatter: EntryFormatter, charset: Option[String] = None)
-  extends StackableReceiver(new ConsoleReceiver(formatter,charset) {
+  extends ConsoleReceiver(formatter,charset) {
     // Console.err is a def, so this needs to be a def as well to follow any changes to the former.
-    override def stream = Console.out
-  })
-{
-  override val toString = "Console.out"
+    override def stream: OutputStream = Console.out
+    override val toString: String = "Console.out"
 }
 
-/** A [[StackableReceiver]] that formats entries and writes them to scala's
+/** A [[Receiver]] that formats entries and writes them to scala's
   * [[scala.Console Console.err]] (which normally points to stderr but can be redirected).
   *
   * @param formatter the formatter to use to format the entries
   * @param charset the optional charset to use for encoding the entry text (defaults to the process default)
   */
 class ConsoleErrReceiver(formatter: EntryFormatter, charset: Option[String] = None)
-  extends StackableReceiver(new ConsoleReceiver(formatter,charset) {
+  extends ConsoleReceiver(formatter,charset) {
     // Console.err is a def, so this needs to be a def as well to follow any changes to the former.
-    override def stream = Console.err
-  })
-{
-  override val toString = "Console.err"
+    override def stream: OutputStream = Console.err
+    override val toString: String = "Console.err"
 }
 

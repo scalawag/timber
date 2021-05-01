@@ -19,8 +19,8 @@ import org.scalatest.time.{Second, Span, Seconds}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalawag.timber.api.Entry
-import org.scalawag.timber.backend.receiver.buffering.{ImmediateFlushing, LazyFlushing}
-import org.scalawag.timber.backend.receiver.concurrency.{Locking, Queueing, NoThreadSafety}
+import org.scalawag.timber.backend.receiver.buffering.ImmediateFlushing
+import org.scalawag.timber.backend.receiver.concurrency.{Locking, Queueing}
 import scala.concurrent._
 import scala.concurrent.Future._
 import scala.concurrent.Await._
@@ -33,7 +33,7 @@ class ReceiverConcurrencyTest extends AnyFunSpec with Matchers with Eventually {
 
   // Just useful for telling when two write() calls overlap in time.
 
-  override implicit def patienceConfig = PatienceConfig(Span(5,Seconds),Span(1,Second))
+  override implicit def patienceConfig: PatienceConfig = PatienceConfig(Span(5,Seconds),Span(1,Second))
 
   case class Call(method:String,start:Long,end:Long,result:Try[Int])
 
@@ -94,31 +94,22 @@ class ReceiverConcurrencyTest extends AnyFunSpec with Matchers with Eventually {
   import scala.concurrent.ExecutionContext.Implicits.global
   import scala.concurrent.duration._
 
-  it("should not protect Receiver with no ConcurrencyPolicy mixed in (control case)") {
+  it("should not protect Receiver with no concurrency wrapper mixed in (control case)") {
     val r = new TestReceiver
-    val sr = new StackableReceiver(r)
 
-    verifyConcurrencyAllowed(r,sr)
-
-  }
-
-  it("should not protect Receiver with NoThreadSafety") {
-    val r = new TestReceiver
-    val sr = new StackableReceiver(r) with NoThreadSafety
-
-    verifyConcurrencyAllowed(r,sr)
+    verifyConcurrencyAllowed(r,r)
   }
 
   it("should protect Receiver with Locking") {
     val r = new TestReceiver
-    val lr = new StackableReceiver(r) with Locking
+    val lr = Locking(r)
 
     verifyConcurrencyDisallowed(r,lr)
   }
 
   it("should protect Receiver with Queueing") {
     val r = new TestReceiver
-    val qr = new StackableReceiver(r) with Queueing
+    val qr = Queueing(r)
 
     verifyConcurrencyDisallowed(r,qr)
   }
@@ -176,22 +167,6 @@ class ReceiverConcurrencyTest extends AnyFunSpec with Matchers with Eventually {
 
       testReceiver.hasOverlappingCalls shouldBe false
     }
-  }
-
-  it("should allow appropriate stacking at compile time") {
-    class NoopReceiver extends StackableReceiver(new Receiver {
-      override def receive(entry: Entry): Unit = {}
-      override def flush(): Unit = {}
-      override def close(): Unit = {}
-    })
-
-    val r1 = new NoopReceiver with ImmediateFlushing with Queueing
-    val r2 = new NoopReceiver with ImmediateFlushing
-    val r3 = new NoopReceiver with Locking with LazyFlushing
-    val r4 = new NoopReceiver
-    val r5 = new NoopReceiver with LazyFlushing with NoThreadSafety
-
-    r1.receive(entry)
   }
 }
 

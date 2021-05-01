@@ -41,7 +41,7 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
       (pw.flush _).expects().once
     }
 
-    val receiver = new WriterBasedStackableReceiver(pw) with ImmediateFlushing
+    val receiver = ImmediateFlushing(new WriterBasedStackableReceiver(pw))
     receiver.receive(oneLineEntry)
   }
 
@@ -51,7 +51,7 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
       (pw.flush _).expects().once
     }
 
-    val receiver = new WriterBasedStackableReceiver(pw) with ImmediateFlushing
+    val receiver = ImmediateFlushing(new WriterBasedStackableReceiver(pw))
     receiver.receive(twoLineEntry)
   }
 
@@ -65,7 +65,7 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
       (pw.flush _).expects().once
     }
 
-    val receiver = new WriterBasedStackableReceiver(pw) with ImmediateFlushing
+    val receiver = ImmediateFlushing(new WriterBasedStackableReceiver(pw))
     receiver.receive(oneLineEntry)
     receiver.receive(twoLineEntry)
     receiver.receive(oneLineEntry)

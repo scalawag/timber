@@ -169,10 +169,10 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
 
       implicit val formatter = mock[EntryFormatter]
 
-      val ra: Receiver = file("/tmp/a", PeriodicFlushing, Queueing)
-      val rb: Receiver = file("/tmp/b", PeriodicFlushing(1.second), Locking)
-      val rc: Receiver = file("/tmp/c", ImmediateFlushing, NoThreadSafety)
-      val rd: Receiver = file("/tmp/d", LazyFlushing, Queueing)
+      val ra: Receiver = Queueing(PeriodicFlushing(file("/tmp/a")))
+      val rb: Receiver = Locking(PeriodicFlushing(file("/tmp/b"), 1.second))
+      val rc: Receiver = ImmediateFlushing(file("/tmp/c"))
+      val rd: Receiver = Queueing(file("/tmp/d"))
     }
 
     it("should console receivers to be created easily") {

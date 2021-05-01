@@ -16,43 +16,21 @@ package org.scalawag.timber.backend.receiver.buffering
 
 import java.util.concurrent.{TimeUnit, _}
 import org.scalawag.timber.api.Entry
-import org.scalawag.timber.backend.receiver.{StackableReceiver, Receiver}
+import org.scalawag.timber.backend.receiver.Receiver
 
 import scala.concurrent.duration._
 
-/** Applies the PeriodicFlushing (see companion object) buffering policy to the [[StackableReceiver]] it is mixed into.
-  *
-  * Override the `maximumFlushInterval` member to change the frequency of automatic flushes.
-  */
-
-trait PeriodicFlushing { _: StackableReceiver =>
-  /** Determines the frequency at which the receiver is flushed. */
-  protected[this] val maximumFlushInterval:FiniteDuration = PeriodicFlushingBehavior.DEFAULT_MAXIMUM_FLUSH_INTERVAL
-  private[backend] final override def bufferingPolicy = PeriodicFlushing(maximumFlushInterval)
-}
-
-/** Periodically flushes a [[Receiver]] at the default frequency (5 seconds).  The receiver may flush more often than
-  * this interval in other scenarios (e.g., when buffer capacity is reached).
+/** Periodically flushes a [[Receiver]] at a specified frequency. The receiver may flush more often than
+  * this interval in other scenarios (e.g., when buffer capacity is reached or when expressly requested).
   *
   * The interval is dependent only on flushes that are initiated from the receiver, either explicitly through its
   * `flush()` method or automatically through the periodic schedule.  It does not take into account flushes that
   * occur in the underlying objects.
+  *
+  * @param maximumFlushInterval the maximum interval between flushes
   */
 
-object PeriodicFlushing extends PeriodicFlushingPolicy() {
-  /** Periodically flushes a [[Receiver]] at the specified interval.  The receiver may flush more often than
-    * this interval in other scenarios (e.g., when buffer capacity is reached).
-    *
-    * @param maximumFlushInterval the maximum interval between flushes
-    */
-  def apply(maximumFlushInterval:FiniteDuration) = new PeriodicFlushingPolicy(maximumFlushInterval)
-}
-
-private[backend] class PeriodicFlushingPolicy(maximumFlushInterval:FiniteDuration = PeriodicFlushingBehavior.DEFAULT_MAXIMUM_FLUSH_INTERVAL) extends BufferingPolicy {
-  private[backend] override def layerBufferingBehavior(delegate:Receiver) = new PeriodicFlushingBehavior(delegate,maximumFlushInterval)
-}
-
-private[backend] class PeriodicFlushingBehavior private[buffering] (delegate:Receiver, maximumFlushInterval:FiniteDuration) extends Receiver {
+class PeriodicFlushing(delegate:Receiver, maximumFlushInterval:FiniteDuration = 5.seconds) extends Receiver {
   private[this] var scheduledFlush:Option[ScheduledFuture[_]] = None
 
   private[this] val flushRunnable = new Runnable {
@@ -61,12 +39,12 @@ private[backend] class PeriodicFlushingBehavior private[buffering] (delegate:Rec
     override def run(): Unit = flush()
   }
 
-  private[this] def scheduleFlush() =
+  private[this] def scheduleFlush(): Unit =
     if ( scheduledFlush.isEmpty ) {
-      scheduledFlush = Some(PeriodicFlushingBehavior.executor.schedule(flushRunnable,maximumFlushInterval.toMillis,TimeUnit.MILLISECONDS))
+      scheduledFlush = Some(PeriodicFlushing.executor.schedule(flushRunnable,maximumFlushInterval.toMillis,TimeUnit.MILLISECONDS))
     }
 
-  private[this] def cancelScheduledFlush() = {
+  private[this] def cancelScheduledFlush(): Unit = {
     scheduledFlush foreach { sf =>
       sf.cancel(false)
       scheduledFlush = None
@@ -89,14 +67,14 @@ private[backend] class PeriodicFlushingBehavior private[buffering] (delegate:Rec
   }
 }
 
-private[backend] object PeriodicFlushingBehavior {
-  val DEFAULT_MAXIMUM_FLUSH_INTERVAL = 5.seconds
+private[backend] object PeriodicFlushing {
+  def apply(delegate: Receiver, maximumFlushInterval:FiniteDuration = 5.seconds): PeriodicFlushing =
+    new PeriodicFlushing(delegate, maximumFlushInterval)
 
-  private val executor = {
-    val threadFactory = new ThreadFactory {
-      override def newThread(r:Runnable) = {
+  private[PeriodicFlushing] val executor = {
+    val threadFactory = new ThreadFactory { r =>
+      override def newThread(r:Runnable): Thread =
         new Thread(r,"Timber-PeriodicFlusher")
-      }
     }
     Executors.newScheduledThreadPool(1,threadFactory)
   }

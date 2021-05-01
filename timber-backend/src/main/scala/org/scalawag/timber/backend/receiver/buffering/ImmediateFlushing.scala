@@ -15,24 +15,17 @@
 package org.scalawag.timber.backend.receiver.buffering
 
 import org.scalawag.timber.api.Entry
-import org.scalawag.timber.backend.receiver.{StackableReceiver, DelegatingReceiver, Receiver}
+import org.scalawag.timber.backend.receiver.{DelegatingReceiver, Receiver}
 
-/** Applies the ImmediateFlushing (see companion object) buffering policy to the [[StackableReceiver]] it is mixed into. */
+/** Flushes the [[Receiver]] immediately after each entry is received. */
 
-trait ImmediateFlushing { _: StackableReceiver =>
-  private[backend] final override val bufferingPolicy = ImmediateFlushing
-}
-
-/** Flushes a [[Receiver]] immediately after each entry is received. */
-
-object ImmediateFlushing extends BufferingPolicy {
-  private[backend] override def layerBufferingBehavior(delegate:Receiver) = new Behavior(delegate)
-
-  class Behavior(delegate:Receiver) extends DelegatingReceiver(delegate) {
-    override def receive(entry:Entry) = {
-      delegate.receive(entry)
-      delegate.flush()
-    }
+class ImmediateFlushing(delegate: Receiver) extends DelegatingReceiver(delegate) {
+  override def receive(entry:Entry): Unit = {
+    delegate.receive(entry)
+    delegate.flush()
   }
 }
 
+object ImmediateFlushing {
+  def apply(delegate: Receiver): ImmediateFlushing = new ImmediateFlushing(delegate)
+}

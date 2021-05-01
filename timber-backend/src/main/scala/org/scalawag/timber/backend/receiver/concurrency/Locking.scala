@@ -16,35 +16,28 @@ package org.scalawag.timber.backend.receiver.concurrency
 
 import java.util.concurrent.locks.{Lock, ReentrantLock}
 import org.scalawag.timber.api.Entry
-import org.scalawag.timber.backend.receiver.{StackableReceiver, Receiver}
-
-/** Applies the Locking (see companion object) concurrency policy to the [[StackableReceiver]] it is mixed into. */
-
-trait Locking { _: StackableReceiver =>
-  final override private[backend] val concurrencyPolicy = Locking
-}
+import org.scalawag.timber.backend.receiver.Receiver
 
 /** Prevents concurrent access to the core Receiver methods through locking (with a [[ReentrantLock]]). */
 
-object Locking extends ConcurrencyPolicy {
-  override def layerConcurrencyBehavior(delegate:Receiver) = new Behavior(delegate)
-
-  class Behavior(delegate:Receiver) extends Receiver {
-    private[this] val lock:Lock = new ReentrantLock
+class Locking(delegate: Receiver) extends Receiver {
+    private[this] val lock: Lock = new ReentrantLock
   
     private[this] def withLock(fn: => Unit):Unit = {
-      lock.lock
+      lock.lock()
       try {
         fn
       } finally {
-        lock.unlock
+        lock.unlock()
       }
     }
   
-    override def receive(entry: Entry) = withLock(delegate.receive(entry))
-    override def flush() = withLock(delegate.flush())
-    override def close() = withLock(delegate.close())
-    override val toString = s"Locking(${delegate.toString()})"
-  }
+    override def receive(entry: Entry): Unit = withLock(delegate.receive(entry))
+    override def flush(): Unit = withLock(delegate.flush())
+    override def close(): Unit = withLock(delegate.close())
+    override val toString: String = s"Locking($delegate)"
 }
 
+object Locking {
+  def apply(delegate: Receiver): Locking = new Locking(delegate)
+}

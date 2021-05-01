@@ -45,7 +45,7 @@ class QueueingTest extends AnyFunSpec with Matchers with OneInstancePerTest with
   }
 
   private val r = new TestReceiver
-  private val qr = new StackableReceiver(r) with Queueing
+  private val qr = Queueing(r)
 
   it("should receive multiple entries and return immediately") {
     val time = timer(10) {

@@ -25,6 +25,6 @@ package object configuration {
     * you'll notice that you forgot to configure your dispatcher and do it.
     */
   val DefaultConfiguration = Configuration(
-    new ConsoleErrReceiver(DefaultEntryFormatter) with ImmediateFlushing with Locking
+    Locking(ImmediateFlushing(new ConsoleErrReceiver(DefaultEntryFormatter)))
   )
 }
