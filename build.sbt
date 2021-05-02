@@ -21,12 +21,13 @@ import scoverage._
 
 lazy val commonSettings = /*GitFlowPlugin.defaults ++*/ Seq(
   organization := "org.scalawag.timber",
+  version := "0.7.0-pre.1",
   scalaVersion := "2.13.5",
   crossScalaVersions := Seq("2.12.13", "2.13.5"),
   exportJars := true,
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
 //  testOptions += Tests.Argument("-oDF"),
-  coverageEnabled in Test := true,
+  Test / coverageEnabled := true,
   publishMavenStyle := true,
   Test / publishArtifact := false,
   publishTo := {
@@ -96,7 +97,7 @@ val logbackSupport = project
   ) dependsOn (timberBackend)
 
 val testProjectSettings = commonSettings ++ Seq(
-  fork in Test := true,
+  Test / fork := true,
   publishArtifact := false
 )
 
@@ -112,7 +113,7 @@ val DebugModeTest =
     .in(file("tests/DebugMode"))
     .settings(testProjectSettings: _*)
     .settings(
-      javaOptions in Test := Seq("-Dtimber.debug")
+      Test / javaOptions := Seq("-Dtimber.debug")
     ) dependsOn (timberBackend)
 
 val SpecifiedDispatcherTest =
@@ -120,7 +121,7 @@ val SpecifiedDispatcherTest =
     .in(file("tests/SpecifiedDispatcher"))
     .settings(testProjectSettings: _*)
     .settings(
-      javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.ThrowingDispatcher")
+      Test / javaOptions := Seq("-Dtimber.dispatcher.class=test.ThrowingDispatcher")
     ) dependsOn (timberBackend)
 
 val CantCastSpecifiedDispatcherTest =
@@ -128,7 +129,7 @@ val CantCastSpecifiedDispatcherTest =
     .in(file("tests/CantCastSpecifiedDispatcher"))
     .settings(testProjectSettings: _*)
     .settings(
-      javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.NotReallyADispatcher")
+      Test / javaOptions := Seq("-Dtimber.dispatcher.class=test.NotReallyADispatcher")
     ) dependsOn (timberBackend)
 
 val CantFindSpecifiedDispatcherTest =
@@ -136,7 +137,7 @@ val CantFindSpecifiedDispatcherTest =
     .in(file("tests/CantFindSpecifiedDispatcher"))
     .settings(testProjectSettings: _*)
     .settings(
-      javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.MissingDispatcher")
+      Test / javaOptions := Seq("-Dtimber.dispatcher.class=test.MissingDispatcher")
     ) dependsOn (timberBackend)
 
 val CantInstantiateSpecifiedDispatcherTest =
@@ -144,7 +145,7 @@ val CantInstantiateSpecifiedDispatcherTest =
     .in(file("tests/CantInstantiateSpecifiedDispatcher"))
     .settings(testProjectSettings: _*)
     .settings(
-      javaOptions in Test := Seq("-Dtimber.dispatcher.class=test.UnloadableClass")
+      Test / javaOptions := Seq("-Dtimber.dispatcher.class=test.UnloadableClass")
     ) dependsOn (timberBackend)
 
 val RuntimeSpecifiedDispatcherTest =
@@ -156,14 +157,14 @@ val CloseOnShutdownTest =
 val CloseOnSignalTest =
   project.in(file("tests/CloseOnSignal")).settings(testProjectSettings: _*) dependsOn (timberBackend)
 
-val root = project
+val timber = project
   .in(file("."))
   .
 //  settings(site.settings:_*).
 //  settings(site.jekyllSupport():_*).
 //  settings(ghpages.settings:_*).
   settings(
-    aggregate in update := false,
+    update / aggregate := false,
     publishArtifact := false,
     publishTo := Some(Resolver.file("Not actually used but required by publish-signed", file("/tmp/bogusrepo"))),
 //    siteMappings ++= siteMappings.in(timberApi).value.map { case (f,t) => (f,t.replace("latest/api","docs/timber-api")) },
