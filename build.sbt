@@ -21,7 +21,7 @@ import scoverage._
 
 lazy val commonSettings = /*GitFlowPlugin.defaults ++*/ Seq(
   organization := "org.scalawag.timber",
-  version := "0.7.0-pre.1",
+  version := "0.7.0-pre.2",
   scalaVersion := "2.13.5",
   crossScalaVersions := Seq("2.12.13", "2.13.5"),
   exportJars := true,
