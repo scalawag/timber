@@ -45,6 +45,7 @@ lazy val commonSettings = /*GitFlowPlugin.defaults ++*/ Seq(
   developers := List(
     Developer("justinp", "Justin Patterson", "justin@scalawag.org", url("https://github.com/justinp"))
   ),
+  credentials += Credentials("GnuPG Key ID", "gpg", "439444E02ED9335F91C538455283F6A358FB8629", "ignored"),
   libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "3.2.8",
     "org.scalamock" %% "scalamock" % "5.1.0"
