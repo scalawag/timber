@@ -6,10 +6,11 @@ before_install:
 install:
  - gem install jekyll -v 3.0.1
 
-script: "sbt clean coverage test && sbt coverageAggregate"
+script: "sbt ++$TRAVIS_SCALA_VERSION clean coverage test && sbt coverageAggregate"
 
 scala:
- - 2.11.7
+ - 2.13.5
+ - 2.12.13
 
 jdk:
  - oraclejdk8
