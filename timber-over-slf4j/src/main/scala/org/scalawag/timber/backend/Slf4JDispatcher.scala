@@ -15,12 +15,13 @@
 package org.scalawag.timber.backend
 
 import org.scalawag.timber.api.{Dispatcher, Entry, Level, Message}
-import org.slf4j.{LoggerFactory, MarkerFactory}
+import org.slf4j.{LoggerFactory, MDC, MarkerFactory}
 import org.scalawag.timber.api.style.slf4j.Level._
+import scala.collection.JavaConverters._
 
 class Slf4JDispatcher extends Dispatcher {
 
-  override def dispatch(entry: Entry) {
+  override def dispatch(entry: Entry): Unit = {
     val loggerName = Stream(
       entry.loggerAttributes.get("name").map(_.toString),
       entry.loggingClass,
@@ -38,6 +39,14 @@ class Slf4JDispatcher extends Dispatcher {
 
     val logger = LoggerFactory.getLogger(loggerName)
     val message: Message = entry.message.getOrElse("")
+
+    val oldMdc = MDC.getCopyOfContextMap
+    MDC.setContextMap(
+      (
+        entry.loggerAttributes.view.mapValues(_.toString).toMap ++
+          entry.threadAttributes.view.mapValues(_.head)
+      ).asJava
+    )
 
     entry.tags.headOption.map(tag => MarkerFactory.getMarker(tag.getClass.getName)) match {
 
@@ -79,5 +88,6 @@ class Slf4JDispatcher extends Dispatcher {
 
     }
 
+    Option(oldMdc).map(MDC.setContextMap).getOrElse(MDC.clear())
   }
 }
