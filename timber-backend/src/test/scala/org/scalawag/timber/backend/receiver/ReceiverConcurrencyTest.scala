@@ -93,7 +93,7 @@ class ReceiverConcurrencyTest extends AnyFunSpec with Matchers with Eventually {
   import scala.concurrent.ExecutionContext.Implicits.global
   import scala.concurrent.duration._
 
-  it("should not protect Receiver with no concurrency wrapper mixed in (control case)") {
+  ignore("should not protect Receiver with no concurrency wrapper mixed in (control case)") {
     val r = new TestReceiver
 
     verifyConcurrencyAllowed(r, r)
