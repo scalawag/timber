@@ -42,10 +42,7 @@ class Slf4JDispatcher extends Dispatcher {
 
     val oldMdc = MDC.getCopyOfContextMap
     MDC.setContextMap(
-      (
-        entry.loggerAttributes.view.mapValues(_.toString).toMap ++
-          entry.threadAttributes.view.mapValues(_.head)
-      ).asJava
+      (entry.loggerAttributes.mapValues(_.toString).toMap ++ entry.threadAttributes.mapValues(_.head)).asJava
     )
 
     entry.tags.headOption.map(tag => MarkerFactory.getMarker(tag.getClass.getName)) match {
