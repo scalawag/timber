@@ -19,33 +19,17 @@ import scoverage._
 //import org.scalawag.sbt.gitflow.GitFlowPlugin
 //import SiteKeys._
 
-lazy val commonSettings = /*GitFlowPlugin.defaults ++*/ Seq(
+val commonSettings = /*GitFlowPlugin.defaults ++*/ Seq(
   organization := "org.scalawag.timber",
-  version := "0.7.0-pre.4",
-  scalaVersion := "2.13.5",
+  scalaVersion := "2.12.13",
   crossScalaVersions := Seq("2.12.13", "2.13.5"),
   exportJars := true,
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
 //  testOptions += Tests.Argument("-oDF"),
   Test / coverageEnabled := true,
   publishMavenStyle := true,
-  Test / publishArtifact := false,
-  publishTo := {
-    val nexus = "https://oss.sonatype.org/"
-    if (version.value.trim.endsWith("SNAPSHOT"))
-      Some("snapshots" at nexus + "content/repositories/snapshots")
-    else
-      Some("releases" at nexus + "service/local/staging/deploy/maven2")
-  },
-  pomIncludeRepository := { _ => false },
   homepage := Some(url("http://scalawag.org/timber")),
   startYear := Some(2012),
-  licenses += "Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"),
-  scmInfo := Some(ScmInfo(url("http://github.com/scalawag/timber"), "scm:git:git://github.com/scalawag/timber.git")),
-  developers := List(
-    Developer("justinp", "Justin Patterson", "justin@scalawag.org", url("https://github.com/justinp"))
-  ),
-  credentials += Credentials("GnuPG Key ID", "gpg", "439444E02ED9335F91C538455283F6A358FB8629", "ignored"),
   libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "3.2.8",
     "org.scalamock" %% "scalamock" % "5.1.0"
@@ -85,6 +69,7 @@ val timberOverSlf4j = project
   .settings(
     name := "timber-over-slf4j",
     libraryDependencies += "org.slf4j" % "slf4j-api" % "1.6.1",
+    libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % Test
   ) dependsOn (timberApi)
 
 val logbackSupport = project
@@ -99,7 +84,7 @@ val logbackSupport = project
 
 val testProjectSettings = commonSettings ++ Seq(
   Test / fork := true,
-  publishArtifact := false
+  publish / skip := true
 )
 
 val examples = project

@@ -14,6 +14,8 @@
 
 addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.1.2")
 
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.7")
+
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
 
 addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.7")
@@ -28,4 +30,5 @@ addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.2")
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-//addSbtPlugin("org.scalawag.sbt.gitflow" %% "sbt-gitflow" % "2.0.0-SNAPSHOT")
+addSbtPlugin("org.scalawag.sbt" %% "sbt-git-series" % "0.1.0-pre.6")
+addSbtPlugin("org.scalawag.sbt" %% "sbt-build-metadata" % "0.1.0-pre.2")
