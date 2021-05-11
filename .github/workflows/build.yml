@@ -3,12 +3,6 @@ on:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - scala: '2.12.13'
-          - scala: '2.13.5'
     runs-on: ubuntu-latest
     env:
       PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
@@ -22,9 +16,9 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Test
-        run: sbt ++${{ matrix.scala }} test
+        run: sbt +test
       - name: Publish
-        run: sbt ++${{ matrix.scala }} publishSigned
+        run: sbt +publishSigned
       - name: Release
         if: startsWith(github.ref, 'refs/tags/')
-        run: sbt ++${{ matrix.scala }} sonatypeRelease
+        run: sbt sonatypeRelease
