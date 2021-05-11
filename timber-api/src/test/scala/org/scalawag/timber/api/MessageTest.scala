@@ -63,7 +63,7 @@ class MessageTest extends AnyFunSpec with Matchers {
   // timings and it was faster to use the BufferedReader.  There are unit tests to try and make sure these results
   // continue to hold true in the future, regardless of dependency and JVM version updates.
 
-  describe("getLinesWithSource performance") {
+  ignore("getLinesWithSource performance") {
     // create a message with multiple lines
     val text = convert { pw: PrintWriter =>
       pw.println("fake message\nanother line\r\nyet another line\rone with only carriage return")
