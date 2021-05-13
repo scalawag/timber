@@ -12,21 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import com.typesafe.sbt.SbtSite
-//import com.typesafe.sbt.site.JekyllSupport
-import sbt._
-import scoverage._
-//import org.scalawag.sbt.gitflow.GitFlowPlugin
-//import SiteKeys._
-
-val commonSettings = /*GitFlowPlugin.defaults ++*/ Seq(
+val commonSettings = Seq(
   organization := "org.scalawag.timber",
   scalaVersion := "2.12.13",
   crossScalaVersions := Seq("2.12.13", "2.13.5"),
   exportJars := true,
   scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
 //  testOptions += Tests.Argument("-oDF"),
-  Test / coverageEnabled := true,
   publishMavenStyle := true,
   homepage := Some(url("http://scalawag.org/timber")),
   startYear := Some(2012),
@@ -34,7 +26,7 @@ val commonSettings = /*GitFlowPlugin.defaults ++*/ Seq(
     "org.scalatest" %% "scalatest" % "3.2.8",
     "org.scalamock" %% "scalamock" % "5.1.0"
   ) map (_ % "test")
-) //++ site.settings
+)
 
 val timberApi = project
   .in(file("timber-api"))
@@ -43,8 +35,8 @@ val timberApi = project
     name := "timber-api",
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value
-    ),
-  ) //.settings(site.includeScaladoc():_*)
+    )
+  )
 
 val timberBackend = project
   .in(file("timber-backend"))
@@ -53,7 +45,6 @@ val timberBackend = project
   .settings(
     name := "timber-backend"
   )
-//  .settings(site.includeScaladoc():_*)
 
 val slf4jOverTimber = project
   .in(file("slf4j-over-timber"))
@@ -143,20 +134,20 @@ val CloseOnShutdownTest =
 val CloseOnSignalTest =
   project.in(file("tests/CloseOnSignal")).settings(testProjectSettings: _*) dependsOn (timberBackend)
 
+val TimberApi = config("timberApi")
+val TimberBackend = config("timberBackend")
+
 val timber = project
   .in(file("."))
-  .
-//  settings(site.settings:_*).
-//  settings(site.jekyllSupport():_*).
-//  settings(ghpages.settings:_*).
-  settings(
+  .enablePlugins(JekyllPlugin)
+  .enablePlugins(GhpagesPlugin)
+  .settings(
     update / aggregate := false,
     publishArtifact := false,
     publishTo := Some(Resolver.file("Not actually used but required by publish-signed", file("/tmp/bogusrepo"))),
-//    siteMappings ++= siteMappings.in(timberApi).value.map { case (f,t) => (f,t.replace("latest/api","docs/timber-api")) },
-//    siteMappings ++= siteMappings.in(timberBackend).value.map { case (f,t) => (f,t.replace("latest/api","docs/timber-backend")) },
-//    siteMappings ++= (sourceDirectory.in(JekyllSupport.Jekyll).value ** "*.svg") pair relativeTo(sourceDirectory.in(JekyllSupport.Jekyll).value),
-    git.remoteRepo := "https://github.com/scalawag/timber.git"
+    SiteScaladocPlugin.scaladocSettings(TimberApi, timberApi / Compile / packageDoc / mappings, "docs/timber-api"),
+    SiteScaladocPlugin
+      .scaladocSettings(TimberBackend, timberBackend / Compile / packageDoc / mappings, "docs/timber-backend"),
   )
   .aggregate(
     timberApi,
