@@ -140,7 +140,6 @@ val TimberBackend = config("timberBackend")
 val timber = project
   .in(file("."))
   .enablePlugins(JekyllPlugin)
-  .enablePlugins(GhpagesPlugin)
   .settings(
     update / aggregate := false,
     publishArtifact := false,

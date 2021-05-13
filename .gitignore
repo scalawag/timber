@@ -16,3 +16,4 @@ target/
 .idea/
 .idea_modules/
 _site/
+.jekyll-cache/
