@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Concepts &middot; timber
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/timber/public/css/poole.css">
+  <link rel="stylesheet" href="/timber/public/css/syntax.css">
+  <link rel="stylesheet" href="/timber/public/css/hyde.css">
+  <link rel="stylesheet" href="/timber/public/css/custom.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <!-- <link rel="shortcut icon" href="/timberpublic/favicon.ico"> -->
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      <h1>
+        timber
+      </h1>
+      <p class="lead"></p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/timber">Home</a>
+
+      
+
+      
+      
+
+      
+        
+        
+          
+            
+              
+                <a class="sidebar-nav-item active" href="/timber/Concepts">Concepts</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-api
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Loggers">Loggers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Messages">Messages</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Levels">Levels</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/ThreadAttributes">Thread Attributes</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/BestPractices">Best Practices</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/AdvancedUsage">Advanced Usage</a>
+              
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-backend
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Dispatchers">Dispatchers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/ConfigurationDSL">Configuration DSL</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Conditions">Conditions</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Entries">Entries</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Formatters">Formatters</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Receivers">Receivers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber">View on GitHub</a>
+<!--      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber/archive/v0.7.0-SNAPSHOT.zip">Download</a> -->
+      <span class="sidebar-nav-item">Currently v0.7.0-SNAPSHOT</span>
+    </nav>
+
+    <p>&copy; 2021</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">Concepts</h1>
+  <p>Before any of the timber documentation will make sense, you’ll need to understand some of the core concepts and
+terminology.</p>
+
+<ul>
+  <li><a href="timber-api/Entries">Entries</a> are the main data structures in timber. You can think of them as lines in an 
+application log file. As a matter of fact, that’s usually what they end up becoming.</li>
+  <li><a href="timber-api/Messages">Messages</a> represent the textual content of entries.  Usually, the message is the essence of 
+a particular entry, although in timber, it is optional.</li>
+  <li><a href="timber-api/Loggers">Loggers</a> are used by timber API consumers to generate entries and inject them into the logging 
+system (an activity more commonly known as “logging”). Loggers can have attributes and tags that get associated with 
+the entries that they create.</li>
+  <li><a href="timber-api/Tags">Tags</a> are used to mark specific entries with application-specific semantics.  Tags can be 
+specified as parameters to the logging method call or imparted by the logger.</li>
+  <li><a href="timber-api/ThreadAttributes">ThreadAttributes</a> can be used to maintain extra application-specific metadata per 
+thread, which will become associated with any entries created by that thread.</li>
+</ul>
+
+<p>Some concepts are only important if you’re using the timber logging backend.</p>
+
+<ul>
+  <li><a href="timber-backend/Receivers">Receivers</a> perform the actual processing of entries by writing them into log files, 
+sending them to network servers, etc.</li>
+  <li><a href="timber-backend/Formatters">Formatters</a> turn entries into text.  A formatter is usually required by any receiver 
+that needs a text representation of the entry (e.g., one that writes entries to the console).</li>
+  <li><a href="timber-backend/Dispatchers">Dispatchers</a> route entries to the correct receivers based on their configuration.</li>
+</ul>
+
+<p>Timber draws a clear distinction between code that generates log entries (using the timber API) and code that
+processes those log entries (using the timber backend). API consumers generally don’t know or care about the
+specifics of how entries are processed.  That is determined solely by the application.</p>
+
+<h2 id="dependencies">Dependencies</h2>
+
+<p>Timber is broken down into a number of individual jars that each provide a subset of its overall functionality.  This
+is to allow for more flexibility at run time and a cleaner internal architecture.  You should depend only on the
+jars that you need for your specific use case.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">jar</th>
+      <th style="text-align: left">purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">timber-api</code></td>
+      <td style="text-align: left">provides the timber logging API for generating timber entries</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">timber-backend</code></td>
+      <td style="text-align: left">provides the backend for processing timber entries (writing to files and log services)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">timber-over-slf4j</code></td>
+      <td style="text-align: left">bridges timber entries to an <a href="http://www.slf4j.org/">slf4j</a> backend</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">slf4j-over-timber</code></td>
+      <td style="text-align: left">bridges slf4j entries to the timber backend</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">timber-logback-support</code></td>
+      <td style="text-align: left">provides support for using custom logback implementations with timber</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Any code that logs using the timber API must depend on <code class="language-plaintext highlighter-rouge">timber-api</code>.  Any application that uses the timber backend
+must depend on <code class="language-plaintext highlighter-rouge">timber-backend</code>.  The other jars provided by timber are used to integrate with other logging systems.</p>
+
+<h3 id="bridging-to-timber">Bridging to timber</h3>
+
+<p>A given process normally uses a single logging backend, chosen by the application developer.  This makes it so that
+there is a single logging configuration that (often) writes to a single application log file.  Given that most
+applications take advantage of third-party libraries (written by different developers using different logging APIs),
+some bridging is required to get entries from those APIs to the selected logging backend.  Timber is no different.
+If you choose the timber backend, you may want to include some bridging jars to collect the entries generated by
+libraries using other logging APIs.</p>
+
+<p>The main bridges provided by timber are to and from <a href="http://www.slf4j.org/">slf4j</a> which itself provides
+<a href="http://www.slf4j.org/legacy.html">several bridges</a> to other logging systems).  This allows timber to collect entries
+from many popular logging APIs.  It perfectly acceptable to include both the timber bridge for slf4j and one or more
+of the other bridges at the same time.  The only restriction is that you can’t include more than one backend for any
+given logging system.  If you do this, you’ll probably get an error from that logging system.</p>
+
+<p>The following table lists the jars that you need to include to gather entries generated by various logging APIs</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">API</th>
+      <th style="text-align: left">dependency</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">timber</td>
+      <td style="text-align: left">slf4j</td>
+      <td><code class="language-plaintext highlighter-rouge">slf4j-over-timber</code></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">timber</td>
+      <td style="text-align: left">jcl</td>
+      <td><code class="language-plaintext highlighter-rouge">jcl-over-slf4j</code>, <code class="language-plaintext highlighter-rouge">slf4j-over-timber</code></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">timber</td>
+      <td style="text-align: left">log4j</td>
+      <td><code class="language-plaintext highlighter-rouge">log4j-over-slf4j</code>, <code class="language-plaintext highlighter-rouge">slf4j-over-timber</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Depending on the number of libraries you’re using, your application may match multiple rows in the table above with
+the same backend. In that case, you’ll need to add the jars from all the rows.</p>
+
+<h3 id="bridging-from-timber">Bridging from timber</h3>
+
+<p>If you have a library that uses the timber logging API as part of an application that’s using an slf4j-compatible
+logging backend, you need to include the dependency <code class="language-plaintext highlighter-rouge">timber-over-slf4j</code>.  This jar will bridge all timber entries
+into the slf4j system.  You can’t use both this jar and the <code class="language-plaintext highlighter-rouge">timber-backend</code> jar simultaneously since they both
+provide a timber backend.  Doing so doesn’t really make sense anyway, since you normally only want to use one
+logging backend.</p>
+
+<h2 id="caveat">Caveat</h2>
+
+<p>In general, unless you’re delivering an application, you shouldn’t depend on any timber jar except <code class="language-plaintext highlighter-rouge">timber-api</code>.
+Doing so means that you’re tying your application to a specific logging backend and that will frustrate anyone
+trying to use your library.  If you’re creating a library and you find yourself wanting to use a definition from
+<code class="language-plaintext highlighter-rouge">timber-backend</code> (or any of the other jars), you’re probably doing something wrong.</p>
+
+</div>
+
+<a class="help" href="https://github.com/scalawag/timber/edit/series/0.7/src/jekyll/01-Concepts.md">
+  Help improve this page.
+</a>
+
+    </div>
+
+  </body>
+</html>

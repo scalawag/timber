@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Best Practices &middot; timber
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/timber/public/css/poole.css">
+  <link rel="stylesheet" href="/timber/public/css/syntax.css">
+  <link rel="stylesheet" href="/timber/public/css/hyde.css">
+  <link rel="stylesheet" href="/timber/public/css/custom.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <!-- <link rel="shortcut icon" href="/timberpublic/favicon.ico"> -->
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      <h1>
+        timber
+      </h1>
+      <p class="lead"></p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/timber">Home</a>
+
+      
+
+      
+      
+
+      
+        
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/Concepts">Concepts</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-api
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Loggers">Loggers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Messages">Messages</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Levels">Levels</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/ThreadAttributes">Thread Attributes</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item active" href="/timber/timber-api/BestPractices">Best Practices</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/AdvancedUsage">Advanced Usage</a>
+              
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-backend
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Dispatchers">Dispatchers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/ConfigurationDSL">Configuration DSL</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Conditions">Conditions</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Entries">Entries</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Formatters">Formatters</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Receivers">Receivers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber">View on GitHub</a>
+<!--      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber/archive/v0.7.0-SNAPSHOT.zip">Download</a> -->
+      <span class="sidebar-nav-item">Currently v0.7.0-SNAPSHOT</span>
+    </nav>
+
+    <p>&copy; 2021</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">Best Practices</h1>
+  <h2 id="create-a-baselogger-subclass">Create a <code class="language-plaintext highlighter-rouge">BaseLogger</code> subclass</h2>
+
+<p>You can use the timber <code class="language-plaintext highlighter-rouge">Logger</code> class directly to log the five standard levels (<code class="language-plaintext highlighter-rouge">TRACE</code>, <code class="language-plaintext highlighter-rouge">DEBUG</code>, <code class="language-plaintext highlighter-rouge">INFO</code>, <code class="language-plaintext highlighter-rouge">WARN</code> and
+<code class="language-plaintext highlighter-rouge">ERROR</code>).  However, if you decide, that you want to change the way that you’re logging (e.g., add a custom log level
+or associate all of your library’s entries with a specific tag), you’ll have to do it everywhere that you create a
+logger or log entries.  For this reason, it’s a good practice to have a custom <code class="language-plaintext highlighter-rouge">Logger</code> subclass that you use
+throughout your source code.  This gives you a single place to control the way logging works in your library or
+application.</p>
+
+<p>Here’s an example that uses the default levels but adds a custom tag to all entries generated by your loggers:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+
+<span class="k">object</span> <span class="nc">MyLoggerTag</span> <span class="k">extends</span> <span class="nc">Tag</span>
+
+<span class="k">class</span> <span class="nc">MyLogger</span><span class="o">(</span><span class="k">override</span> <span class="k">val</span> <span class="nv">attributes</span><span class="k">:</span><span class="kt">Map</span><span class="o">[</span><span class="kt">String</span>,<span class="kt">Any</span><span class="o">]</span> <span class="k">=</span> <span class="nv">Map</span><span class="o">.</span><span class="py">empty</span><span class="o">,</span> <span class="k">override</span> <span class="k">val</span> <span class="nv">tags</span><span class="k">:</span><span class="kt">Set</span><span class="o">[</span><span class="kt">Tag</span><span class="o">]</span> <span class="k">=</span> <span class="nv">Set</span><span class="o">.</span><span class="py">empty</span><span class="o">)</span>
+  <span class="k">extends</span> <span class="nc">Logger</span><span class="o">(</span><span class="n">attributes</span><span class="o">,</span> <span class="n">tags</span> <span class="o">+</span> <span class="nc">MyLoggerTag</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Here’s another example that uses a custom set of log levels:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.api.level._</span>
+
+<span class="k">class</span> <span class="nc">MyLogger</span><span class="o">(</span><span class="k">override</span> <span class="k">val</span> <span class="nv">attributes</span><span class="k">:</span><span class="kt">Map</span><span class="o">[</span><span class="kt">String</span>,<span class="kt">Any</span><span class="o">]</span> <span class="k">=</span> <span class="nv">Map</span><span class="o">.</span><span class="py">empty</span><span class="o">,</span> <span class="k">override</span> <span class="k">val</span> <span class="nv">tags</span><span class="k">:</span><span class="kt">Set</span><span class="o">[</span><span class="kt">Tag</span><span class="o">]</span> <span class="k">=</span> <span class="nv">Set</span><span class="o">.</span><span class="py">empty</span><span class="o">)</span>
+  <span class="k">extends</span> <span class="nc">BaseLogger</span><span class="o">(</span><span class="n">attributes</span><span class="o">,</span> <span class="n">tags</span><span class="o">)</span> <span class="k">with</span> <span class="nc">Trace</span> <span class="k">with</span> <span class="nc">Debug</span> <span class="k">with</span> <span class="nc">Emergency</span>
+<span class="o">{</span>
+  <span class="k">override</span> <span class="k">protected</span><span class="o">[</span><span class="kt">this</span><span class="o">]</span> <span class="k">val</span> <span class="nv">traceLevel</span>     <span class="k">=</span> <span class="nv">Level</span><span class="o">.</span><span class="py">TRACE</span>
+  <span class="k">override</span> <span class="k">protected</span><span class="o">[</span><span class="kt">this</span><span class="o">]</span> <span class="k">val</span> <span class="nv">debugLevel</span>     <span class="k">=</span> <span class="nv">Level</span><span class="o">.</span><span class="py">DEBUG</span>
+  <span class="k">override</span> <span class="k">protected</span><span class="o">[</span><span class="kt">this</span><span class="o">]</span> <span class="k">val</span> <span class="nv">emergencyLevel</span> <span class="k">=</span> <span class="nv">Level</span><span class="o">.</span><span class="py">ERROR</span> <span class="o">+</span> <span class="mi">1000</span> <span class="n">as</span> <span class="s">"EMERGENCY"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="use-the-default-dispatcher-in-libraries">Use the Default Dispatcher in Libraries</h2>
+
+<p>When using timber in a library, it’s important that you don’t do anything that constrains developers using
+your library in their applications.  To achieve this, all of your loggers should use the <code class="language-plaintext highlighter-rouge">DefaultDispatcher</code>,
+which allows the logging backend to be determined at run time.  Then, application developers can choose the
+logging backend and then configure that backend any way they choose.  Your library code should be oblivious to how
+the entries it generates are being processed.</p>
+
+<p>It’s easier to use the <code class="language-plaintext highlighter-rouge">DefaultDispatcher</code> than not.  When you create a logger, if you don’t explicitly specify
+the dispatcher as a constructor parameter and there is no implicit <code class="language-plaintext highlighter-rouge">Dispatcher</code> in scope, the <code class="language-plaintext highlighter-rouge">DefaultDispatcher</code> is
+used. Since there are no concrete dispatcher implementations in the timber API, this shouldn’t be too hard to achieve.
+(You <em>could</em> implement <code class="language-plaintext highlighter-rouge">Dispatcher</code> yourself and instantiate it and construct all of your loggers to use it but this
+would only server to anger the developer trying to use your library and cause them not to decide against using it.)</p>
+
+<p>An easy way to guard against this is to create a custom <code class="language-plaintext highlighter-rouge">BaseLogger</code> subclass for use in your library that explicitly
+uses the <code class="language-plaintext highlighter-rouge">DefaultDispatcher</code> instead of relying on there being no implicit dispatcher in scope.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api._</span>
+
+<span class="k">class</span> <span class="nc">MyLogger</span> <span class="k">extends</span> <span class="nc">Logger</span><span class="o">()(</span><span class="nc">DefaultDispatcher</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>Of course, you may want to combine this example with one of the examples above to both restrict the dispatcher <em>and</em>
+add custom tags or log levels.</p>
+
+<h2 id="specify-a-logging-backend-for-testing">Specify a Logging Backend for Testing</h2>
+
+<p>Even if you’re only using the timber API, you’ll need to have a logging backend available for your unit tests.  You
+can create a simple backend that logs to stderr just by including <code class="language-plaintext highlighter-rouge">timber.jar</code> in the test classpath.  Make sure you
+don’t include it in your <code class="language-plaintext highlighter-rouge">compile</code> classpath or you might end up inadvertently creating a dependency on <code class="language-plaintext highlighter-rouge">timber.jar</code>
+in your library and that’s a bad thing (see above).</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"org.scalawag.timber"</span> <span class="o">%%</span> <span class="s">"timber-backend"</span> <span class="o">%</span> <span class="s">"0.7.0-SNAPSHOT"</span> <span class="o">%</span> <span class="s">"test"</span>
+</code></pre></div></div>
+
+<p>If you want anything fancier than that, read about <a href="../timber-backend/GettingStarted">using the timber backend</a> to discover
+everything you can do.</p>
+
+</div>
+
+<a class="help" href="https://github.com/scalawag/timber/edit/series/0.7/src/jekyll/timber-api/10-BestPractices.md">
+  Help improve this page.
+</a>
+
+    </div>
+
+  </body>
+</html>

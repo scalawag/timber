@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+       &middot; timber
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/timber/public/css/poole.css">
+  <link rel="stylesheet" href="/timber/public/css/syntax.css">
+  <link rel="stylesheet" href="/timber/public/css/hyde.css">
+  <link rel="stylesheet" href="/timber/public/css/custom.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <!-- <link rel="shortcut icon" href="/timberpublic/favicon.ico"> -->
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      <h1>
+        timber
+      </h1>
+      <p class="lead"></p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item active" href="/timber">Home</a>
+
+      
+
+      
+      
+
+      
+        
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/Concepts">Concepts</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-api
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Loggers">Loggers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Messages">Messages</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Levels">Levels</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/ThreadAttributes">Thread Attributes</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/BestPractices">Best Practices</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/AdvancedUsage">Advanced Usage</a>
+              
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-backend
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Dispatchers">Dispatchers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/ConfigurationDSL">Configuration DSL</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Conditions">Conditions</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Entries">Entries</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Formatters">Formatters</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Receivers">Receivers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber">View on GitHub</a>
+<!--      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber/archive/v0.7.0-SNAPSHOT.zip">Download</a> -->
+      <span class="sidebar-nav-item">Currently v0.7.0-SNAPSHOT</span>
+    </nav>
+
+    <p>&copy; 2021</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title"></h1>
+  <p>Timber is a logging system for Scala applications. It is written in Scala to take advantage of its unique language
+features. It’s not a wrapper for an existing Java logging library.</p>
+
+<p>Configuration is done through an [internal DSL](timber-backend/ConfigurationDSL], allowing you to use the full 
+power of Scala to configure your logging system.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">dispatcher</span><span class="o">.</span><span class="py">configure</span> <span class="o">{</span> <span class="nc">IN</span> <span class="k">=&gt;</span>
+  <span class="nc">IN</span> <span class="o">~&gt;</span> <span class="nf">fanout</span> <span class="o">(</span>
+    <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">DEBUG</span> <span class="o">),</span>
+    <span class="o">(</span> <span class="n">loggingClass</span> <span class="n">startsWith</span> <span class="s">"com.example"</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">WARN</span> <span class="o">)</span>
+  <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>It takes advantage of Scala’s by-name parameters and function literals to provide lazy message evaluation. That
+prevents doing work that doesn’t need to be done without requiring “isEnabled” conditionals.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">log</span><span class="o">.</span><span class="py">debug</span><span class="o">(</span><span class="n">s</span><span class="s">"n = $n"</span><span class="o">)</span>
+
+<span class="nv">log</span><span class="o">.</span><span class="py">debug</span> <span class="o">{</span> <span class="n">pw</span><span class="k">:</span> <span class="kt">PrintWriter</span> <span class="o">=&gt;</span>
+  <span class="nv">pw</span><span class="o">.</span><span class="py">print</span><span class="o">(</span><span class="s">"Here's a multi-line log entry that"</span><span class="o">)</span>
+  <span class="nv">pw</span><span class="o">.</span><span class="py">println</span><span class="o">(</span><span class="s">"won't be built unless it's needed."</span><span class="o">)</span>
+  <span class="nv">traversable</span><span class="o">.</span><span class="py">foreach</span><span class="o">(</span><span class="nv">pw</span><span class="o">.</span><span class="py">println</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>It supports the <a href="http://www.slf4j.org/">slf4j</a> interface so that it can be used by Java classes and by
+applications that are already using the slf4j API (or any API for which slf4j includes a
+<a href="http://www.slf4j.org/legacy.html">bridge</a>).</p>
+
+<p>It supports logback appenders so you can keep using any custom appenders that you’ve already written.</p>
+
+<p>Get started by looking at the timber <a href="Concepts">concepts</a>.</p>
+
+</div>
+
+<a class="help" href="https://github.com/scalawag/timber/edit/series/0.7/src/jekyll/index.md">
+  Help improve this page.
+</a>
+
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Formatters &middot; timber
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/timber/public/css/poole.css">
+  <link rel="stylesheet" href="/timber/public/css/syntax.css">
+  <link rel="stylesheet" href="/timber/public/css/hyde.css">
+  <link rel="stylesheet" href="/timber/public/css/custom.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <!-- <link rel="shortcut icon" href="/timberpublic/favicon.ico"> -->
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      <h1>
+        timber
+      </h1>
+      <p class="lead"></p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/timber">Home</a>
+
+      
+
+      
+      
+
+      
+        
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/Concepts">Concepts</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-api
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Loggers">Loggers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Messages">Messages</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/Levels">Levels</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/ThreadAttributes">Thread Attributes</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/BestPractices">Best Practices</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-api/AdvancedUsage">Advanced Usage</a>
+              
+            
+          
+        
+          
+        
+        <hr/>
+      
+        timber-backend
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/GettingStarted">Getting Started</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Dispatchers">Dispatchers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/ConfigurationDSL">Configuration DSL</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Conditions">Conditions</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Entries">Entries</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item active" href="/timber/timber-backend/Formatters">Formatters</a>
+              
+            
+          
+        
+          
+            
+              
+                <a class="sidebar-nav-item" href="/timber/timber-backend/Receivers">Receivers</a>
+              
+            
+          
+        
+          
+            
+          
+        
+          
+            
+          
+        
+          
+        
+        <hr/>
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber">View on GitHub</a>
+<!--      <a class="sidebar-nav-item" href="https://github.com/scalawag/timber/archive/v0.7.0-SNAPSHOT.zip">Download</a> -->
+      <span class="sidebar-nav-item">Currently v0.7.0-SNAPSHOT</span>
+    </nav>
+
+    <p>&copy; 2021</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="page">
+  <h1 class="page-title">Formatters</h1>
+  <p>Formatters take <a href="Entries">entries</a> and turn them into text that can be written to a file or stream or transferred to
+another system.  Formatters control all aspects of the formatting, including what metadata headers are included and
+how dates and times are represented.</p>
+
+<p>Most <a href="Receivers">receivers</a> that eventually turn their entries into text take a formatter as a constructor parameter.
+It can usually either be supplied explicitly or implicitly.</p>
+
+<h2 id="programmableentryformatter">ProgrammableEntryFormatter</h2>
+
+<p>Timber comes with a flexible entry formatter that you can probably use for most cases called the
+<code class="language-plaintext highlighter-rouge">ProgrammableEntryFormatter</code>.  It comes with its own mini-DSL to determine what metadata you want to appear in
+with your entries.  The default entry formatter used by timber dispatchers if you don’t specify another one is
+actually just a configuration of a <code class="language-plaintext highlighter-rouge">ProgrammableEntryFormatter</code>.  Here’s an example of creating one.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.ProgrammableEntryFormatter</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.ProgrammableEntryFormatter._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.timestamp._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.level._</span>
+
+<span class="k">object</span> <span class="nc">MyEntryFormatter</span> <span class="k">extends</span> <span class="nc">ProgrammableEntryFormatter</span><span class="o">(</span><span class="nc">Seq</span><span class="o">(</span>
+  <span class="nv">entry</span><span class="o">.</span><span class="py">timestamp</span> <span class="n">formattedWith</span> <span class="nc">HumanReadableTimestampFormatter</span><span class="o">,</span>
+  <span class="nv">entry</span><span class="o">.</span><span class="py">level</span> <span class="n">formattedWith</span> <span class="nc">NameLevelFormatter</span><span class="o">,</span>
+  <span class="nv">entry</span><span class="o">.</span><span class="py">loggingClass</span><span class="o">,</span>
+  <span class="nv">entry</span><span class="o">.</span><span class="py">threadName</span><span class="o">,</span>
+  <span class="nv">entry</span><span class="o">.</span><span class="py">sourceLocation</span><span class="o">,</span>
+  <span class="nv">entry</span><span class="o">.</span><span class="py">tags</span> <span class="n">formattedWith</span> <span class="nc">Commas</span><span class="o">,</span>
+  <span class="nv">entry</span><span class="o">.</span><span class="py">threadAttributes</span> <span class="n">map</span> <span class="nc">TopsOnly</span> <span class="n">formattedWith</span> <span class="nc">CommasAndEquals</span>
+<span class="o">))</span>
+</code></pre></div></div>
+
+<h3 id="metadata-dsl">Metadata DSL</h3>
+
+<p>The constructor for <code class="language-plaintext highlighter-rouge">ProgrammableEntryFormatter</code> allows you to specify a list of metadata providers that you want it
+to use to extract metadata from its entries.  These providers can be access through fields on the <code class="language-plaintext highlighter-rouge">entry</code> object as
+seen in the example above.</p>
+
+<p>These are the providers that are built-in to the <code class="language-plaintext highlighter-rouge">ProgrammableEntryFormatter</code>.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">threadName</code> – the name of the thread that created the entry</li>
+  <li><code class="language-plaintext highlighter-rouge">timestamp</code> – the timestamp at which the entry was created</li>
+  <li><code class="language-plaintext highlighter-rouge">level</code> – the level at which the entry was created (if available)</li>
+  <li><code class="language-plaintext highlighter-rouge">loggingClass</code> – the class from which the log method was called (if available)</li>
+  <li><code class="language-plaintext highlighter-rouge">loggingMethod</code> – the method from which the log method was called (if available)</li>
+  <li><code class="language-plaintext highlighter-rouge">sourceLocation</code> – the location in source (file name and line number) from which the log method was called (if available)</li>
+  <li><code class="language-plaintext highlighter-rouge">tags</code> – the tags associated with the entry</li>
+  <li><code class="language-plaintext highlighter-rouge">loggerAttributes</code> – the logger attributes associated with the entry</li>
+  <li><code class="language-plaintext highlighter-rouge">threadAttributes</code> – the thread attributes associated with the entry</li>
+  <li><code class="language-plaintext highlighter-rouge">loggerAttribute(</code><em><code class="language-plaintext highlighter-rouge">name</code></em><code class="language-plaintext highlighter-rouge">)</code> – the logger attribute with the specified name associated with the entry (if available)</li>
+  <li><code class="language-plaintext highlighter-rouge">threadAttribute(</code><em><code class="language-plaintext highlighter-rouge">name</code></em><code class="language-plaintext highlighter-rouge">)</code> – the thread attribute with the specified name associated with the entry (if available)</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">new</span> <span class="nc">ProgrammableEntryFormatter</span><span class="o">(</span><span class="nc">Seq</span><span class="o">(</span>
+  <span class="nv">entry</span><span class="o">.</span><span class="py">threadName</span><span class="o">,</span>
+  <span class="nv">entry</span><span class="o">.</span><span class="py">loggingClass</span>
+<span class="o">))</span>
+</code></pre></div></div>
+
+<p>You can also specify Strings to be included literally.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">new</span> <span class="nc">ProgrammableEntryFormatter</span><span class="o">(</span><span class="nc">Seq</span><span class="o">(</span>
+  <span class="s">"literal"</span><span class="o">,</span>
+  <span class="nv">entry</span><span class="o">.</span><span class="py">loggingClass</span>
+<span class="o">))</span>
+</code></pre></div></div>
+
+<p>In addition to the providers above, you can specify some modifiers to tweak them before their inclusion:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">formattedWith</code> – allows you to choose how the metadata is formatted (and must match the type of the metadata)</li>
+  <li><code class="language-plaintext highlighter-rouge">map</code> – allows you to apply an arbitrary mapping function to the metadata before inclusion</li>
+  <li><code class="language-plaintext highlighter-rouge">without</code> – allows you to remove keys from a map before inclusion (e.g., if you already included one of the
+keys specifically)</li>
+</ul>
+
+<p>If you don’t specify a formatter, the <code class="language-plaintext highlighter-rouge">toString</code> method of the object will be used. There are some built-in
+formatters for <a href="org.scalawag.timber.backend.receiver.formatter.timestamp">timestamps</a> and
+<a href="org.scalawag.timber.backend.receiver.formatter.level">levels</a> that you can use.  There are also some built-in
+formatters for any <code class="language-plaintext highlighter-rouge">Iterable</code>s that may be more appealing than the default <code class="language-plaintext highlighter-rouge">toString</code> implementation.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Commas</code> - formats Iterables as strings with commas separating the items</li>
+  <li><code class="language-plaintext highlighter-rouge">Spaces</code> - formats Iterables as strings with spaces separating the items</li>
+  <li><code class="language-plaintext highlighter-rouge">Delimiter(</code><em><code class="language-plaintext highlighter-rouge">str</code></em><code class="language-plaintext highlighter-rouge">)</code> - formats <code class="language-plaintext highlighter-rouge">Iterable</code>s as strings with the specified delimiter (<code class="language-plaintext highlighter-rouge">str</code>) separating the items</li>
+  <li><code class="language-plaintext highlighter-rouge">CommasAndEquals</code> - formats Maps as equals-separated pairs separated by commas (e.g., <code class="language-plaintext highlighter-rouge">k1=v1,k2=v2</code>)</li>
+</ul>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">entry</span><span class="o">.</span><span class="py">timestamp</span> <span class="n">formattedWith</span> <span class="nc">HumanReadableTimestampFormatter</span>
+<span class="nv">entry</span><span class="o">.</span><span class="py">timestamp</span> <span class="n">formattedWith</span> <span class="nc">SimpleDateFormatTimestampFormatter</span><span class="o">(</span><span class="s">"yyyy/MM/dd"</span><span class="o">)</span>
+<span class="nv">entry</span><span class="o">.</span><span class="py">threadName</span> <span class="n">map</span> <span class="o">{</span> <span class="n">name</span> <span class="k">=&gt;</span> <span class="nv">name</span><span class="o">.</span><span class="py">length</span> <span class="o">}</span>
+<span class="nv">entry</span><span class="o">.</span><span class="py">loggerAttributes</span> <span class="n">without</span> <span class="s">"name"</span> <span class="n">formattedWith</span> <span class="nc">CommasAndEquals</span>
+</code></pre></div></div>
+
+<p>For the metadata that may not be present (indicated with “if available” above), you can specify a fallback to use when it’s absent with <code class="language-plaintext highlighter-rouge">orElse</code>.
+You can’t use <code class="language-plaintext highlighter-rouge">orElse</code> after a metadata provider that will definitely return something.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">entry</span><span class="o">.</span><span class="py">loggingClass</span> <span class="n">orElse</span> <span class="nv">entry</span><span class="o">.</span><span class="py">loggerAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">)</span> <span class="n">orElse</span> <span class="s">"unknown"</span>
+</code></pre></div></div>
+
+<p>With certain combinations of modifiers, you may have to include parentheses if the scala compiler can’t figure out
+the operator precedence.  You can also specify the modifiers without utilizing the infix call style, if you prefer.</p>
+
+<h2 id="change-the-formatter-for-the-default-dispatcher">Change the Formatter for the Default Dispatcher</h2>
+
+<p>The entry format is tied into the <a href="Dispatcher">dispatcher</a> configuration through a <a href="Receivers">receiver</a>.  If you
+want to change the format of the default dispatcher, you’ll need to establish a new default dispatcher so that you
+have a reference to it and can change its configuration. Here’s an example very similar to the one in
+<a href="GettingStarted">Getting Started</a> except that this changes the formatter used by the default dispatcher to include
+only the timestamp as metadata with the logged message.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.scalawag.timber.api.Logger</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.api.Level.INFO</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.DefaultDispatcher</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.Dispatcher</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.Configuration</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.dispatcher.configuration.dsl._</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.ProgrammableEntryFormatter</span>
+<span class="k">import</span> <span class="nn">org.scalawag.timber.backend.receiver.formatter.ProgrammableEntryFormatter._</span>
+
+<span class="k">object</span> <span class="nc">Main</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">setupLogging</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="c1">// Implicitly specify an EntryFormatter</span>
+    <span class="k">implicit</span> <span class="k">val</span> <span class="nv">formatter</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ProgrammableEntryFormatter</span><span class="o">(</span><span class="nc">Seq</span><span class="o">(</span><span class="nv">entry</span><span class="o">.</span><span class="py">timestamp</span><span class="o">))</span>
+    <span class="k">val</span> <span class="nv">config</span> <span class="k">=</span> <span class="nc">Configuration</span> <span class="o">{</span>
+      <span class="o">(</span> <span class="n">level</span> <span class="o">&gt;=</span> <span class="nc">INFO</span> <span class="o">)</span> <span class="o">~&gt;</span> <span class="n">stderr</span>
+    <span class="o">}</span>
+    <span class="k">val</span> <span class="nv">disp</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Dispatcher</span><span class="o">(</span><span class="n">config</span><span class="o">)</span>
+    <span class="nv">DefaultDispatcher</span><span class="o">.</span><span class="py">set</span><span class="o">(</span><span class="n">disp</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="k">def</span> <span class="nf">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span><span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="nf">setupLogging</span><span class="o">()</span>
+
+    <span class="k">val</span> <span class="nv">log</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Logger</span>
+    <span class="nv">log</span><span class="o">.</span><span class="py">trace</span><span class="o">(</span><span class="s">"trace message"</span><span class="o">)</span>
+    <span class="nv">log</span><span class="o">.</span><span class="py">error</span><span class="o">(</span><span class="s">"error message"</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nv">Main</span><span class="o">.</span><span class="py">main</span><span class="o">(</span><span class="nv">Array</span><span class="o">.</span><span class="py">empty</span><span class="o">)</span>
+</code></pre></div></div>
+
+</div>
+
+<a class="help" href="https://github.com/scalawag/timber/edit/series/0.7/src/jekyll/timber-backend/06-Formatters.md">
+  Help improve this page.
+</a>
+
+    </div>
+
+  </body>
+</html>
