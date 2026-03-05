@@ -464,9 +464,9 @@ depends on the status of the logging system is probably a bad idea.
       
       
     </li><li name="org.scalawag.timber.api.BaseLogger#buildEntry" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="buildEntry(level:Option[org.scalawag.timber.api.Level],message:Option[org.scalawag.timber.api.Message],location:Option[org.scalawag.timber.api.BaseLogger.LogCallLocation],entryTags:TraversableOnce[org.scalawag.timber.api.Tag]):org.scalawag.timber.api.Entry"></a><a id="buildEntry(Option[Level],Option[Message],Option[LogCallLocation],TraversableOnce[Tag]):Entry"></a>
+      <a id="buildEntry(level:Option[org.scalawag.timber.api.Level],message:Option[org.scalawag.timber.api.Message],location:Option[org.scalawag.timber.api.BaseLogger.LogCallLocation],entryTags:Iterable[org.scalawag.timber.api.Tag]):org.scalawag.timber.api.Entry"></a><a id="buildEntry(Option[Level],Option[Message],Option[LogCallLocation],Iterable[Tag]):Entry"></a>
       <span class="permalink">
-      <a href="../../../../org/scalawag/timber/api/BaseLogger.html#buildEntry(level:Option[org.scalawag.timber.api.Level],message:Option[org.scalawag.timber.api.Message],location:Option[org.scalawag.timber.api.BaseLogger.LogCallLocation],entryTags:TraversableOnce[org.scalawag.timber.api.Tag]):org.scalawag.timber.api.Entry" title="Permalink">
+      <a href="../../../../org/scalawag/timber/api/BaseLogger.html#buildEntry(level:Option[org.scalawag.timber.api.Level],message:Option[org.scalawag.timber.api.Message],location:Option[org.scalawag.timber.api.BaseLogger.LogCallLocation],entryTags:Iterable[org.scalawag.timber.api.Tag]):org.scalawag.timber.api.Entry" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -475,7 +475,7 @@ depends on the status of the logging system is probably a bad idea.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">buildEntry</span><span class="params">(<span name="level">level: <span class="extype" name="scala.Option">Option</span>[<a href="Level.html" class="extype" name="org.scalawag.timber.api.Level">Level</a>]</span>, <span name="message">message: <span class="extype" name="scala.Option">Option</span>[<a href="Message.html" class="extype" name="org.scalawag.timber.api.Message">Message</a>]</span>, <span name="location">location: <span class="extype" name="scala.Option">Option</span>[<a href="BaseLogger$$LogCallLocation.html" class="extype" name="org.scalawag.timber.api.BaseLogger.LogCallLocation">LogCallLocation</a>]</span>, <span name="entryTags">entryTags: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<a href="Tag.html" class="extype" name="org.scalawag.timber.api.Tag">Tag</a>]</span>)</span><span class="result">: <a href="Entry.html" class="extype" name="org.scalawag.timber.api.Entry">Entry</a></span>
+        <span class="name">buildEntry</span><span class="params">(<span name="level">level: <span class="extype" name="scala.Option">Option</span>[<a href="Level.html" class="extype" name="org.scalawag.timber.api.Level">Level</a>]</span>, <span name="message">message: <span class="extype" name="scala.Option">Option</span>[<a href="Message.html" class="extype" name="org.scalawag.timber.api.Message">Message</a>]</span>, <span name="location">location: <span class="extype" name="scala.Option">Option</span>[<a href="BaseLogger$$LogCallLocation.html" class="extype" name="org.scalawag.timber.api.BaseLogger.LogCallLocation">LogCallLocation</a>]</span>, <span name="entryTags">entryTags: <span class="extype" name="scala.Iterable">Iterable</span>[<a href="Tag.html" class="extype" name="org.scalawag.timber.api.Tag">Tag</a>]</span>)</span><span class="result">: <a href="Entry.html" class="extype" name="org.scalawag.timber.api.Entry">Entry</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
@@ -653,9 +653,9 @@ perceive multiple arguments as possible Tags (and failing) rather than look for 
 tuple.
 </p></div><dl class="paramcmts block"><dt class="param">level</dt><dd class="cmt"><p>the level to use for the entry created</p></dd><dt class="param">message</dt><dd class="cmt"><p>the message to include with the entry</p></dd><dt class="param">location</dt><dd class="cmt"><p>the source location of the method call (usually automatically fulfilled by LogCallLocation.capture())</p></dd></dl></div>
     </li><li name="org.scalawag.timber.api.BaseLogger#log" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="log(tags:TraversableOnce[org.scalawag.timber.api.Tag])(message:org.scalawag.timber.api.Message)(implicitlocation:org.scalawag.timber.api.BaseLogger.LogCallLocation):Unit"></a><a id="log(TraversableOnce[Tag])(Message)(LogCallLocation):Unit"></a>
+      <a id="log(tags:Iterable[org.scalawag.timber.api.Tag])(message:org.scalawag.timber.api.Message)(implicitlocation:org.scalawag.timber.api.BaseLogger.LogCallLocation):Unit"></a><a id="log(Iterable[Tag])(Message)(LogCallLocation):Unit"></a>
       <span class="permalink">
-      <a href="../../../../org/scalawag/timber/api/BaseLogger.html#log(tags:TraversableOnce[org.scalawag.timber.api.Tag])(message:org.scalawag.timber.api.Message)(implicitlocation:org.scalawag.timber.api.BaseLogger.LogCallLocation):Unit" title="Permalink">
+      <a href="../../../../org/scalawag/timber/api/BaseLogger.html#log(tags:Iterable[org.scalawag.timber.api.Tag])(message:org.scalawag.timber.api.Message)(implicitlocation:org.scalawag.timber.api.BaseLogger.LogCallLocation):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -664,7 +664,7 @@ tuple.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">log</span><span class="params">(<span name="tags">tags: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<a href="Tag.html" class="extype" name="org.scalawag.timber.api.Tag">Tag</a>]</span>)</span><span class="params">(<span name="message">message: <a href="Message.html" class="extype" name="org.scalawag.timber.api.Message">Message</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="location">location: <a href="BaseLogger$$LogCallLocation.html" class="extype" name="org.scalawag.timber.api.BaseLogger.LogCallLocation">LogCallLocation</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">log</span><span class="params">(<span name="tags">tags: <span class="extype" name="scala.Iterable">Iterable</span>[<a href="Tag.html" class="extype" name="org.scalawag.timber.api.Tag">Tag</a>]</span>)</span><span class="params">(<span name="message">message: <a href="Message.html" class="extype" name="org.scalawag.timber.api.Message">Message</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="location">location: <a href="BaseLogger$$LogCallLocation.html" class="extype" name="org.scalawag.timber.api.BaseLogger.LogCallLocation">LogCallLocation</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       <p class="shortcomment cmt">Submits an entry with a Message and tags but no level to the logging system.</p><div class="fullcomment"><div class="comment cmt"><p>Submits an entry with a Message and tags but no level to the logging system.</p><p>The <code>message</code> argument appears in an argument list by itself because this allows us to use a thunk or a tuple
@@ -675,9 +675,9 @@ perceive multiple arguments as possible Tags (and failing) rather than look for 
 tuple.
 </p></div><dl class="paramcmts block"><dt class="param">tags</dt><dd class="cmt"><p>additional tags to include with the entry</p></dd><dt class="param">message</dt><dd class="cmt"><p>the message to include with the entry</p></dd><dt class="param">location</dt><dd class="cmt"><p>the source location of the method call (usually automatically fulfilled by LogCallLocation.capture())</p></dd></dl></div>
     </li><li name="org.scalawag.timber.api.BaseLogger#log" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="log(level:org.scalawag.timber.api.Level,tags:TraversableOnce[org.scalawag.timber.api.Tag])(message:org.scalawag.timber.api.Message)(implicitlocation:org.scalawag.timber.api.BaseLogger.LogCallLocation):Unit"></a><a id="log(Level,TraversableOnce[Tag])(Message)(LogCallLocation):Unit"></a>
+      <a id="log(level:org.scalawag.timber.api.Level,tags:Iterable[org.scalawag.timber.api.Tag])(message:org.scalawag.timber.api.Message)(implicitlocation:org.scalawag.timber.api.BaseLogger.LogCallLocation):Unit"></a><a id="log(Level,Iterable[Tag])(Message)(LogCallLocation):Unit"></a>
       <span class="permalink">
-      <a href="../../../../org/scalawag/timber/api/BaseLogger.html#log(level:org.scalawag.timber.api.Level,tags:TraversableOnce[org.scalawag.timber.api.Tag])(message:org.scalawag.timber.api.Message)(implicitlocation:org.scalawag.timber.api.BaseLogger.LogCallLocation):Unit" title="Permalink">
+      <a href="../../../../org/scalawag/timber/api/BaseLogger.html#log(level:org.scalawag.timber.api.Level,tags:Iterable[org.scalawag.timber.api.Tag])(message:org.scalawag.timber.api.Message)(implicitlocation:org.scalawag.timber.api.BaseLogger.LogCallLocation):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -686,7 +686,7 @@ tuple.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">log</span><span class="params">(<span name="level">level: <a href="Level.html" class="extype" name="org.scalawag.timber.api.Level">Level</a></span>, <span name="tags">tags: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<a href="Tag.html" class="extype" name="org.scalawag.timber.api.Tag">Tag</a>] = <span class="symbol">Iterable.empty</span></span>)</span><span class="params">(<span name="message">message: <a href="Message.html" class="extype" name="org.scalawag.timber.api.Message">Message</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="location">location: <a href="BaseLogger$$LogCallLocation.html" class="extype" name="org.scalawag.timber.api.BaseLogger.LogCallLocation">LogCallLocation</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">log</span><span class="params">(<span name="level">level: <a href="Level.html" class="extype" name="org.scalawag.timber.api.Level">Level</a></span>, <span name="tags">tags: <span class="extype" name="scala.Iterable">Iterable</span>[<a href="Tag.html" class="extype" name="org.scalawag.timber.api.Tag">Tag</a>] = <span class="symbol">Iterable.empty</span></span>)</span><span class="params">(<span name="message">message: <a href="Message.html" class="extype" name="org.scalawag.timber.api.Message">Message</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="location">location: <a href="BaseLogger$$LogCallLocation.html" class="extype" name="org.scalawag.timber.api.BaseLogger.LogCallLocation">LogCallLocation</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       <p class="shortcomment cmt">Submits an entry with a level, a message and maybe tags to the logging system.</p><div class="fullcomment"><div class="comment cmt"><p>Submits an entry with a level, a message and maybe tags to the logging system.</p><p>The <code>message</code> argument appears in an argument list by itself because this allows us to use a thunk or a tuple
