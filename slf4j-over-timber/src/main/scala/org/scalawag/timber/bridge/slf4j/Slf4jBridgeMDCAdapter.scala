@@ -16,6 +16,8 @@ package org.scalawag.timber.bridge.slf4j
 
 import org.slf4j.spi.MDCAdapter
 import org.scalawag.timber.api.ThreadAttributes
+
+import java.util
 import scala.collection.JavaConverters._
 
 private[slf4j] class Slf4jBridgeMDCAdapter extends MDCAdapter {
@@ -35,6 +37,25 @@ private[slf4j] class Slf4jBridgeMDCAdapter extends MDCAdapter {
   override def getCopyOfContextMap: java.util.Map[String, String] =
     ThreadAttributes.getTopmost.asJava
 
-  override def setContextMap(contextMap: java.util.Map[_, _]): Unit =
-    ThreadAttributes.push(contextMap.asScala.map { case (k, v) => k.toString -> v.toString }.toMap)
+  override def setContextMap(contextMap: java.util.Map[String, String]): Unit =
+    ThreadAttributes.push(contextMap.asScala.map { case (k, v) => k -> v }.toMap)
+
+  override def pushByKey(key: String, value: String): Unit =
+    ThreadAttributes.push(key, value)
+
+  override def popByKey(key: String): String =
+    ThreadAttributes.popAny(key)
+
+  override def getCopyOfDequeByKey(key: String): util.Deque[String] =
+    ThreadAttributes.get.get(key) match {
+      case Some(vv) =>
+        val ret = new util.ArrayDeque[String](vv.size)
+        ret.addAll(vv.asJava)
+        ret
+      case None =>
+        new util.ArrayDeque[String](0)
+    }
+
+  override def clearDequeByKey(key: String): Unit =
+    ThreadAttributes.clear(key)
 }

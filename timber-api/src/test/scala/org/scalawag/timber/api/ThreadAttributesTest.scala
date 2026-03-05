@@ -42,14 +42,14 @@ class ThreadAttributesTest extends AnyFunSpec with Matchers with BeforeAndAfter 
       val f1 = Future {
         ThreadAttributes.push("ip", "127.0.0.1")
         barrier.await
-        ThreadAttributes.get.get("ip").head shouldBe "127.0.0.1"
+        ThreadAttributes.get("ip").head shouldBe "127.0.0.1"
         barrier.await
       }
 
       val f2 = Future {
         ThreadAttributes.push("ip", "127.0.0.2")
         barrier.await
-        ThreadAttributes.get.get("ip").head shouldBe "127.0.0.2"
+        ThreadAttributes.get("ip").head shouldBe "127.0.0.2"
         barrier.await
       }
 
@@ -137,17 +137,17 @@ class ThreadAttributesTest extends AnyFunSpec with Matchers with BeforeAndAfter 
     }
 
     it("should fail to remove name from empty context") {
-      an[IllegalStateException] shouldBe thrownBy(ThreadAttributes.pop("a", "1"))
+      an[IllegalStateException] should be thrownBy(ThreadAttributes.pop("a", "1"))
     }
 
     it("should fail to remove nonexistent name") {
       ThreadAttributes.push("a", "1")
-      an[IllegalStateException] shouldBe thrownBy(ThreadAttributes.pop("b", "1"))
+      an[IllegalStateException] should be thrownBy(ThreadAttributes.pop("b", "1"))
     }
 
     it("should fail to remove the wrong value") {
       ThreadAttributes.push("a", "1")
-      an[IllegalStateException] shouldBe thrownBy(ThreadAttributes.pop("a", "2"))
+      an[IllegalStateException] should be thrownBy(ThreadAttributes.pop("a", "2"))
     }
 
   }
@@ -162,19 +162,19 @@ class ThreadAttributesTest extends AnyFunSpec with Matchers with BeforeAndAfter 
     }
 
     it("should fail to remove name from empty context") {
-      an[IllegalStateException] shouldBe thrownBy(ThreadAttributes.pop(Map("a" -> "1")))
+      an[IllegalStateException] should be thrownBy(ThreadAttributes.pop(Map("a" -> "1")))
     }
 
     it("should fail to remove nonexistent name") {
       ThreadAttributes.push(Map("a" -> "1"))
       ThreadAttributes.push(Map("a" -> "2", "b" -> "3"))
-      an[IllegalStateException] shouldBe thrownBy(ThreadAttributes.pop("c", "1"))
+      an[IllegalStateException] should be thrownBy(ThreadAttributes.pop("c", "1"))
     }
 
     it("should fail to remove the wrong value") {
       ThreadAttributes.push(Map("a" -> "1"))
       ThreadAttributes.push(Map("a" -> "2", "b" -> "3"))
-      an[IllegalStateException] shouldBe thrownBy(ThreadAttributes.pop("a", "1"))
+      an[IllegalStateException] should be thrownBy(ThreadAttributes.pop("a", "1"))
     }
 
   }

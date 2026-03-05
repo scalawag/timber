@@ -23,23 +23,23 @@ import java.io.FileWriter
 
 package object dsl {
 
-  val level = IntConditionFactory("level") { entry =>
+  val level: IntConditionFactory = IntConditionFactory("level") { entry =>
     entry.level.map(_.map(_.intValue))
   }
 
-  val message = StringConditionFactory("message") { entry =>
+  val message: StringConditionFactory = StringConditionFactory("message") { entry =>
     entry.message.map(_.map(msg => msg.text))
   }
 
-  val sourceFile = StringConditionFactory("sourceFile") { entry =>
+  val sourceFile: StringConditionFactory = StringConditionFactory("sourceFile") { entry =>
     entry.sourceFile.map(_.toIterable)
   }
 
-  val loggingClass = StringConditionFactory("loggingClass") { entry =>
+  val loggingClass: StringConditionFactory = StringConditionFactory("loggingClass") { entry =>
     entry.loggingClass.map(_.toIterable)
   }
 
-  def logger(attribute: String) =
+  def logger(attribute: String): StringConditionFactory =
     StringConditionFactory(s"""logger("$attribute")""") { entry =>
       for {
         attrs <- entry.loggerAttributes
@@ -51,7 +51,7 @@ package object dsl {
 
   class ThreadAttribute private[dsl] (attribute: String) {
 
-    def any =
+    def any: StringConditionFactory =
       StringConditionFactory(s"""thread("$attribute").any""") { entry =>
         entry.threadAttributes flatMap { threadAttrs =>
           threadAttrs.get(attribute) flatMap { threadAttrStack =>
@@ -60,7 +60,7 @@ package object dsl {
         }
       }
 
-    def top =
+    def top: StringConditionFactory =
       StringConditionFactory(s"""thread("$attribute").top""") { entry =>
         entry.threadAttributes flatMap { threadAttrs =>
           threadAttrs.get(attribute) flatMap { threadAttrStack =>
@@ -73,7 +73,7 @@ package object dsl {
   object thread {
     def apply(attribute: String) = new ThreadAttribute(attribute)
 
-    val name = StringConditionFactory("thread.name") { entry =>
+    val name: StringConditionFactory = StringConditionFactory("thread.name") { entry =>
       entry.threadName map { t =>
         Iterable(t)
       }
@@ -92,9 +92,12 @@ package object dsl {
   // know that it's looking for a subgraph.  This means that the caller needs to have imported the dsl package, but
   // we're expecting that they'll be doing that anyway.
 
-  implicit def receiverToSubgraph(receiver: Receiver) = Subgraph(receiver)
-  implicit def booleanToSubgraph(matches: Boolean) = Subgraph(matches)
-  implicit def conditionToSubgraph(condition: Condition) = Subgraph(condition)
+  implicit def receiverToSubgraph(receiver: Receiver): Subgraph[MutableReceiverVertex] =
+    Subgraph(receiver)
+  implicit def booleanToSubgraph(matches: Boolean): SubgraphWithOutputs[MutableConditionVertex] =
+    Subgraph(matches)
+  implicit def conditionToSubgraph(condition: Condition): SubgraphWithOutputs[MutableConditionVertex] =
+    Subgraph(condition)
 
   //-------------------------------------------------------------------------------------------------------------------
   // Fanout splits a stream of entries

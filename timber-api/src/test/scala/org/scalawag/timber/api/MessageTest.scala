@@ -48,9 +48,9 @@ class MessageTest extends AnyFunSpec with Matchers {
     }
 
     it("should convert from a gatherer function") {
-      val msg = convert { pw: PrintWriter =>
+      val msg = convert((pw: PrintWriter) =>
         pw.print("blah")
-      }
+      )
 
       msg.text shouldBe "blah"
     }
@@ -65,10 +65,10 @@ class MessageTest extends AnyFunSpec with Matchers {
 
   ignore("getLinesWithSource performance") {
     // create a message with multiple lines
-    val text = convert { pw: PrintWriter =>
+    val text = convert((pw: PrintWriter) => {
       pw.println("fake message\nanother line\r\nyet another line\rone with only carriage return")
       (new Exception("not really bad")).printStackTrace(pw)
-    } text
+    }).text
 
     // This is the method used in the code
     def getLinesWithSource(text: String) = scala.io.Source.fromString(text).getLines.toIterable

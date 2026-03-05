@@ -14,7 +14,6 @@
 
 package org.scalawag.timber.api.impl
 
-import scala.reflect.runtime.universe
 import org.scalawag.timber.api.{BaseLogger, Dispatcher}
 
 import java.net.URL
@@ -70,11 +69,9 @@ object DefaultDispatcherLoader {
         throw new RuntimeException(
           s"No default timber dispatcher (${DEFAULT_DISPATCHER}) defined: add timber.jar, timber-over-slf4j.jar or timber-over-osgi.jar (or another jar with this object) to your classpath or use Thread.setContextClassLoader."
         )
-      case Some((classLoader, Seq(first))) =>
-        val rootMirror = universe.runtimeMirror(classLoader)
-        val driverSymbol = rootMirror.staticModule(DEFAULT_DISPATCHER)
-        val driverMirror = rootMirror.reflectModule(driverSymbol)
-        driverMirror.instance.asInstanceOf[Dispatcher]
+      case Some((classLoader, Seq(_))) =>
+        val clazz = classLoader.loadClass(DEFAULT_DISPATCHER + "$")
+        clazz.getField("MODULE$").get(null).asInstanceOf[Dispatcher]
       case Some((classLoader, all)) =>
         val locations = all.map(_.toString.replaceAllLiterally(s"!/$resourceName", "")).mkString(" ")
         throw new RuntimeException(

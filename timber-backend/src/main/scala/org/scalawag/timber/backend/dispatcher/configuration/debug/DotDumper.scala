@@ -22,7 +22,7 @@ private class DotDumper(out: IndentingPrintWriter) {
 
   private def getId(vertex: ImmutableVertex) = System.identityHashCode(vertex).toString
 
-  private def dump(configuration: Configuration) {
+  private def dump(configuration: Configuration): Unit = {
     out.println("digraph Configuration {")
     out.indent {
       out.println("""ranksep="1in";""")
@@ -38,14 +38,14 @@ private class DotDumper(out: IndentingPrintWriter) {
     out.println("}")
   }
 
-  private def dumpEdge(fromId: String, to: ImmutableVertex) {
+  private def dumpEdge(fromId: String, to: ImmutableVertex): Unit = {
     val toId = getId(to)
     out.println(""""%s":s -> "%s":n""".format(fromId, toId))
   }
 
   private def escape(s: String) = s.replaceAllLiterally("\"", "\\\"").replaceAll("\n", "\\\\n")
 
-  private def dumpVertex(vertex: ImmutableVertex, props: Map[String, String], rank: Option[String] = None) {
+  private def dumpVertex(vertex: ImmutableVertex, props: Map[String, String], rank: Option[String] = None): Unit = {
     val id = getId(vertex)
 
     def format(props: Map[String, String]): String =
@@ -68,7 +68,7 @@ private class DotDumper(out: IndentingPrintWriter) {
     }
   }
 
-  private def dumpElement(vertex: ImmutableVertex, parent: Option[String] = None) {
+  private def dumpElement(vertex: ImmutableVertex, parent: Option[String] = None): Unit = {
     val id = getId(vertex)
     if (!dumped.contains(id)) {
 

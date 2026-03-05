@@ -19,9 +19,9 @@ import java.util.regex.Pattern
 import scala.util.matching.Regex
 
 object StringOrPattern {
-  implicit def fromString(s: String) = StringOrPattern(Left(s))
-  implicit def fromRegex(re: Regex) = StringOrPattern(Right(re.pattern))
-  implicit def fromPattern(p: Pattern) = StringOrPattern(Right(p))
+  implicit def fromString(s: String): StringOrPattern = StringOrPattern(Left(s))
+  implicit def fromRegex(re: Regex): StringOrPattern = StringOrPattern(Right(re.pattern))
+  implicit def fromPattern(p: Pattern): StringOrPattern = StringOrPattern(Right(p))
 }
 
 private[dsl] case class StringOrPattern(private val chars: Either[String, Pattern]) {

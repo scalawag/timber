@@ -135,7 +135,8 @@ class Dispatcher(
     * @param fn the thunk which takes the root vertex of the configuration and adds routes to receivers
     */
 
-  def configure(fn: SubgraphWithOutputs[MutableConditionVertex] => Unit) {
+  def configure(fn: SubgraphWithOutputs[MutableConditionVertex] => Unit): Unit = {
+    import org.scalawag.timber.backend.dispatcher.configuration.dsl.booleanToSubgraph
     val IN: SubgraphWithOutputs[MutableConditionVertex] = true
     fn(IN)
     setConfiguration(IN) // Call the external API so that it can be made thread-safe, however that's done

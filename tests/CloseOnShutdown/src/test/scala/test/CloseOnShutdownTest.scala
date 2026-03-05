@@ -40,7 +40,7 @@ class CloseOnShutdownTest extends AnyFunSpec with Matchers with MockFactory {
       true ~> fanout(r1, r2, r3)
     }
 
-    implicit val dispatcher = new Dispatcher(cfg)
+    implicit val dispatcher: Dispatcher = new Dispatcher(cfg)
     val logger = new BaseLogger
 
     logger.log(0)("blah")

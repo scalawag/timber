@@ -34,7 +34,7 @@ trait Condition {
   def or(that: Condition) = Condition.OrCondition(this, that)
   def &&(that: Condition) = Condition.AndCondition(this, that)
   def ||(that: Condition) = Condition.OrCondition(this, that)
-  def unary_!() = Condition.NotCondition(this)
+  def unary_! = Condition.NotCondition(this)
 }
 
 object Condition {

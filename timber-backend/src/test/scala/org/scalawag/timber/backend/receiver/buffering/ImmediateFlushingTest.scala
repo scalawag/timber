@@ -29,7 +29,7 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
   private val twoLineEntry = new Entry(message = Some("foo\nbar"))
 
   it("should not flush on receive without ImmediateFlushing") {
-    (pw.write(_: String)).expects(*).once
+    (pw.write(_: String)).expects(*).once()
 
     val receiver = new WriterBasedStackableReceiver(pw)
     receiver.receive(oneLineEntry)
@@ -37,8 +37,8 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
 
   it("should flush on receive with ImmediateFlushing") {
     inSequence {
-      (pw.write(_: String)).expects(*).once
-      (pw.flush _).expects().once
+      (pw.write(_: String)).expects(*).once()
+      (() => pw.flush()).expects().once()
     }
 
     val receiver = new WriterBasedStackableReceiver(pw).flushImmediately
@@ -47,8 +47,8 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
 
   it("should flush once on multi-line receive with ImmediateFlushing") {
     inSequence {
-      (pw.write(_: String)).expects(*).once
-      (pw.flush _).expects().once
+      (pw.write(_: String)).expects(*).once()
+      (() => pw.flush()).expects().once()
     }
 
     val receiver = ImmediateFlushing(new WriterBasedStackableReceiver(pw))
@@ -57,12 +57,12 @@ class ImmediateFlushingTest extends AnyFunSpec with MockFactory {
 
   it("should flush once per receive with ImmediateFlushing") {
     inSequence {
-      (pw.write(_: String)).expects(*).once
-      (pw.flush _).expects().once
-      (pw.write(_: String)).expects(*).once
-      (pw.flush _).expects().once
-      (pw.write(_: String)).expects(*).once
-      (pw.flush _).expects().once
+      (pw.write(_: String)).expects(*).once()
+      (() => pw.flush()).expects().once()
+      (pw.write(_: String)).expects(*).once()
+      (() => pw.flush()).expects().once()
+      (pw.write(_: String)).expects(*).once()
+      (() => pw.flush()).expects().once()
     }
 
     val receiver = ImmediateFlushing(new WriterBasedStackableReceiver(pw))

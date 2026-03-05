@@ -14,10 +14,6 @@
 
 package org.scalawag.timber.api
 
-import scala.language.experimental.macros
-
-import scala.annotation.tailrec
-import scala.reflect.macros.blackbox.Context
 import org.scalawag.timber.api.BaseLogger.LogCallLocation
 import Entry.SourceLocation
 
@@ -92,7 +88,7 @@ class BaseLogger(val attributes: Map[String, Any] = Map.empty, val tags: Set[Tag
     * @param location the source location of the method call (usually automatically fulfilled by LogCallLocation.capture())
     */
 
-  def log(level: Level, tags: TraversableOnce[Tag] = Iterable.empty)(
+  def log(level: Level, tags: Iterable[Tag] = Iterable.empty)(
       message: Message
   )(implicit location: LogCallLocation): Unit =
     dispatcher.dispatch(buildEntry(Some(level), Some(message), Some(location), tags))
@@ -111,7 +107,7 @@ class BaseLogger(val attributes: Map[String, Any] = Map.empty, val tags: Set[Tag
     * @param location the source location of the method call (usually automatically fulfilled by LogCallLocation.capture())
     */
 
-  def log(tags: TraversableOnce[Tag])(message: Message)(implicit location: LogCallLocation): Unit =
+  def log(tags: Iterable[Tag])(message: Message)(implicit location: LogCallLocation): Unit =
     dispatcher.dispatch(buildEntry(None, Some(message), Some(location), tags))
 
   /** Submits an entry with a Message and level but no tags to the logging system.
@@ -153,7 +149,7 @@ class BaseLogger(val attributes: Map[String, Any] = Map.empty, val tags: Set[Tag
       level: Option[Level],
       message: Option[Message],
       location: Option[LogCallLocation],
-      entryTags: TraversableOnce[Tag]
+      entryTags: Iterable[Tag]
   ) = {
     val tags = this.tags ++ entryTags
     if (tags.contains(ImmediateMessage))
@@ -205,38 +201,39 @@ object BaseLogger {
       * @return as much source location metadata as is available
       */
 
-    implicit def capture: LogCallLocation = macro LogCallLocation.captureImpl
+    implicit def capture(implicit
+        file: sourcecode.File,
+        line: sourcecode.Line,
+        enc: sourcecode.Enclosing
+    ): LogCallLocation = {
+      val filename = file.value.split("[/\\\\]").last
 
-    def captureImpl(c: Context): c.Expr[LogCallLocation] = {
-      import c.universe._
+      // Parse the enclosing value to extract class name and method name.
+      // sourcecode.Enclosing uses '#' to separate a class from its members,
+      // and '.' for package/object access and nested members.
+      // e.g., "pkg.ClassName#methodName.localVal" or "pkg.ObjectName.methodName.localVal"
+      val encValue = enc.value
 
-      @tailrec
-      def enclosingSymbols(sym: Symbol, path: List[Symbol] = Nil): List[Symbol] =
-        if (sym == NoSymbol) {
-          path
-        } else {
-          enclosingSymbols(sym.owner, sym :: path)
-        }
+      val (className, methodName) = encValue.indexOf('#') match {
+        case -1 =>
+          // No '#' — likely inside an object. Use uppercase heuristic.
+          val parts = encValue.split("\\.")
+          val lastClassIdx = parts.lastIndexWhere(s => s.nonEmpty && s.charAt(0).isUpper)
+          val cn = if (lastClassIdx >= 0) Some(parts.take(lastClassIdx + 1).mkString(".")) else None
+          val memberParts = if (lastClassIdx >= 0) parts.drop(lastClassIdx + 1) else Array.empty[String]
+          val mn = if (memberParts.length >= 2) Some(memberParts(0)) else None
+          (cn, mn)
+        case hashIdx =>
+          val cn = Some(encValue.substring(0, hashIdx))
+          val memberPath = encValue.substring(hashIdx + 1)
+          val memberParts = memberPath.split("[.\\s]+")
+          // If there are 2+ member segments, the first is the method name.
+          // If only 1 segment, it's a val/local (not a method).
+          val mn = if (memberParts.length >= 2) Some(memberParts(0)) else None
+          (cn, mn)
+      }
 
-      // TODO: There's more than could be done here in terms of locally-defined classes and methods.  I'm not sure it's
-      // TODO: worth it, though, given that it will make conditions more complicated.
-      val owners = enclosingSymbols(c.internal.enclosingOwner)
-
-      val classNameParts = owners.tail.takeWhile(s => s.isPackage || s.isModule || s.isClass).map(_.name.toString)
-
-      val className =
-        if (classNameParts.isEmpty)
-          None
-        else
-          Some(classNameParts.mkString("."))
-
-      val methodName = owners.find(_.isMethod).map(_.name.toString)
-
-      val source = Literal(Constant(c.enclosingPosition.source.file.name))
-      val line = Literal(Constant(c.enclosingPosition.line))
-      val loc = typeOf[LogCallLocation]
-      val sloc = typeOf[SourceLocation]
-      c.Expr(q"new $loc(new $sloc($source,$line),$className,$methodName)")
+      LogCallLocation(SourceLocation(filename, line.value), className, methodName)
     }
   }
 

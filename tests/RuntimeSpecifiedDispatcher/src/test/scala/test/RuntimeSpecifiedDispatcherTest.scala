@@ -46,7 +46,7 @@ class RuntimeSpecifiedDispatcherTest extends AnyFunSpec with Matchers {
       intercept[Exception] {
         Console.withOut(outs) {
           Console.withErr(errs) {
-            TestMain.go
+            TestMain.go()
           }
         }
       }

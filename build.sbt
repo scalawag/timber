@@ -14,17 +14,39 @@
 
 val commonSettings = Seq(
   organization := "org.scalawag.timber",
-  scalaVersion := "2.12.13",
-  crossScalaVersions := Seq("2.12.13", "2.13.5"),
+  scalaVersion := "2.12.19",
+  crossScalaVersions := Seq("2.12.19", "2.13.17", "3.3.4"),
   exportJars := true,
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:implicitConversions"),
+  scalacOptions ++= {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, n)) if n >= 13 => Seq(
+        "-unchecked",
+        "-deprecation",
+        "-feature",
+        "-language:implicitConversions",
+        "-Wconf:cat=deprecation&since<2.12&origin=scala.*:e",
+        "-Wconf:cat=deprecation&since>2.11&origin=scala.*:s",
+      )
+      case Some((2, _)) => Seq(
+        "-unchecked",
+        "-deprecation",
+        "-feature",
+        "-language:implicitConversions",
+      )
+      case Some((3, _)) => Seq(
+        "-feature",
+        "-language:implicitConversions",
+      )
+      case _ => Seq("-feature")
+    }
+  },
 //  testOptions += Tests.Argument("-oDF"),
   publishMavenStyle := true,
   homepage := Some(url("http://scalawag.org/timber")),
   startYear := Some(2012),
   libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "3.2.8",
-    "org.scalamock" %% "scalamock" % "5.1.0"
+    "org.scalatest" %% "scalatest" % "3.2.19",
+    "org.scalamock" %% "scalamock" % "7.4.0"
   ) map (_ % "test")
 )
 
@@ -33,9 +55,7 @@ val timberApi = project
   .settings(commonSettings: _*)
   .settings(
     name := "timber-api",
-    libraryDependencies ++= Seq(
-      "org.scala-lang" % "scala-reflect" % scalaVersion.value
-    )
+    libraryDependencies += "com.lihaoyi" %% "sourcecode" % "0.4.2"
   )
 
 val timberBackend = project
@@ -51,7 +71,7 @@ val slf4jOverTimber = project
   .settings(commonSettings: _*)
   .settings(
     name := "slf4j-over-timber",
-    libraryDependencies += "org.slf4j" % "slf4j-api" % "1.6.1"
+    libraryDependencies += "org.slf4j" % "slf4j-api" % "2.0.3"
   ) dependsOn (timberApi)
 
 val timberOverSlf4j = project
@@ -59,8 +79,8 @@ val timberOverSlf4j = project
   .settings(commonSettings: _*)
   .settings(
     name := "timber-over-slf4j",
-    libraryDependencies += "org.slf4j" % "slf4j-api" % "1.6.1",
-    libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % Test
+    libraryDependencies += "org.slf4j" % "slf4j-api" % "2.0.3",
+    libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.4.3" % Test
   ) dependsOn (timberApi)
 
 val logbackSupport = project
@@ -69,7 +89,7 @@ val logbackSupport = project
   .settings(
     name := "timber-logback-support",
     libraryDependencies ++= Seq(
-      "ch.qos.logback" % "logback-classic" % "1.0.7"
+      "ch.qos.logback" % "logback-classic" % "1.4.3"
     ),
   ) dependsOn (timberBackend)
 

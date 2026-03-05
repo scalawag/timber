@@ -42,7 +42,7 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
       v1.condition shouldBe AcceptAll
       v1.nexts shouldBe Set(v2)
       v2.condition shouldBe RejectAll
-      v2.nexts shouldBe 'empty
+      v2.nexts shouldBe empty
     }
 
     it("should wrap Condition when adding an edge") {
@@ -55,7 +55,7 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
       v1.condition shouldBe c
       v1.nexts shouldBe Set(v2)
       v2.condition shouldBe RejectAll
-      v2.nexts shouldBe 'empty
+      v2.nexts shouldBe empty
     }
 
     it("should wrap Receiver when adding an edge") {
@@ -167,7 +167,7 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
       import org.scalawag.timber.backend.receiver.buffering._
       import org.scalawag.timber.backend.receiver.concurrency._
 
-      implicit val formatter = mock[EntryFormatter]
+      implicit val formatter: EntryFormatter = mock[EntryFormatter]
 
       val ra: Receiver = Queueing(PeriodicFlushing(file("/tmp/a")))
       val rb: Receiver = Locking(PeriodicFlushing(file("/tmp/b"), 1.second))
@@ -176,7 +176,7 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
     }
 
     it("should console receivers to be created easily") {
-      implicit val formatter = mock[EntryFormatter]
+      implicit val formatter: EntryFormatter = mock[EntryFormatter]
 
       val ra: Receiver = stdout
       val rb: Receiver = stderr
@@ -329,7 +329,7 @@ class DslTest extends AnyFunSpec with Matchers with MockFactory {
         fail("object " + obj + " is not of the expected type (" + classTag[T].runtimeClass + ")")
     }
 
-  implicit sealed class AnyOps(l: Option[Iterable[_]]) {
+  implicit class AnyOps(l: Option[Iterable[_]]) {
     def shouldContainSameItemsAs(r: Option[Iterable[_]]): Assertion = {
       l.map(_.toList) shouldBe r.map(_.toList)
     }

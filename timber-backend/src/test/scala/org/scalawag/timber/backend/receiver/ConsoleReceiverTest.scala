@@ -37,7 +37,7 @@ class ConsoleReceiverTest extends AnyFunSpec with Matchers with MockFactory {
         override protected def stream = out
       }
 
-      (out.flush _).expects().once
+      (() => out.flush()).expects().once()
 
       r.flush()
     }
@@ -48,7 +48,7 @@ class ConsoleReceiverTest extends AnyFunSpec with Matchers with MockFactory {
         override protected def stream = out
       }
 
-      (out.flush _).expects().once
+      (() => out.flush()).expects().once()
 
       r.close()
     }

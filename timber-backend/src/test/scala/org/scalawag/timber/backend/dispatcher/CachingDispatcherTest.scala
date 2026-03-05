@@ -36,8 +36,8 @@ class CachingDispatcherTest extends AnyFunSpec with Matchers with MockFactory {
       val entryFacets = EntryFacets(entry)
 
       inSequence {
-        (cfg.findReceivers _).expects(entry).returns(Set.empty).once
-        (cfg.findReceivers _).expects(entry).returns(Set.empty).once
+        (cfg.findReceivers(_: Entry)).expects(entry).returns(Set.empty).once()
+        (cfg.findReceivers(_: Entry)).expects(entry).returns(Set.empty).once()
       }
 
       dispatcher.dispatch(entry) // Should trigger a call to findReceivers
@@ -58,10 +58,10 @@ class CachingDispatcherTest extends AnyFunSpec with Matchers with MockFactory {
       val cc2 = mock[MockableConfiguration]("constrained")
 
       inSequence {
-        (cfg.constrain _).expects(pe1, false).returns(cc1).once
-        (cc1.findReceivers _).expects(e1).returns(Set.empty).once
-        (cfg.constrain _).expects(pe2, false).returns(cc2).once
-        (cc2.findReceivers _).expects(e2).returns(Set.empty).once
+        (cfg.constrain(_: EntryFacets, _: Boolean)).expects(pe1, false).returns(cc1).once()
+        (cc1.findReceivers(_: Entry)).expects(e1).returns(Set.empty).once()
+        (cfg.constrain(_: EntryFacets, _: Boolean)).expects(pe2, false).returns(cc2).once()
+        (cc2.findReceivers(_: Entry)).expects(e2).returns(Set.empty).once()
       }
 
       dispatcher.dispatch(e1) // Should trigger a call to constrain and findReceivers
@@ -100,15 +100,15 @@ class CachingDispatcherTest extends AnyFunSpec with Matchers with MockFactory {
       val cc3 = mock[MockableConfiguration]("constrained")
 
       inSequence {
-        (cfg.constrain _).expects(k1, false).returns(cc1).once
-        (cc1.findReceivers _).expects(e1a).returns(Set.empty).once
-        (cc1.findReceivers _).expects(e1b).returns(Set.empty).once
-        (cfg.constrain _).expects(k2, false).returns(cc2).once
-        (cc2.findReceivers _).expects(e2a).returns(Set.empty).once
-        (cfg.constrain _).expects(k3, false).returns(cc3).once
-        (cc3.findReceivers _).expects(e3a).returns(Set.empty).once
-        (cc3.findReceivers _).expects(e3b).returns(Set.empty).once
-        (cc2.findReceivers _).expects(e2b).returns(Set.empty).once
+        (cfg.constrain(_: EntryFacets, _: Boolean)).expects(k1, false).returns(cc1).once()
+        (cc1.findReceivers(_: Entry)).expects(e1a).returns(Set.empty).once()
+        (cc1.findReceivers(_: Entry)).expects(e1b).returns(Set.empty).once()
+        (cfg.constrain(_: EntryFacets, _: Boolean)).expects(k2, false).returns(cc2).once()
+        (cc2.findReceivers(_: Entry)).expects(e2a).returns(Set.empty).once()
+        (cfg.constrain(_: EntryFacets, _: Boolean)).expects(k3, false).returns(cc3).once()
+        (cc3.findReceivers(_: Entry)).expects(e3a).returns(Set.empty).once()
+        (cc3.findReceivers(_: Entry)).expects(e3b).returns(Set.empty).once()
+        (cc2.findReceivers(_: Entry)).expects(e2b).returns(Set.empty).once()
       }
 
       dispatcher.dispatch(e1a) // Trigger a call to constrain and findReceivers

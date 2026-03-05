@@ -17,92 +17,145 @@ package org.scalawag.timber.bridge.slf4j
 import org.scalawag.timber.api.Tag
 import org.slf4j.Marker
 import org.slf4j.helpers.MessageFormatter
-import java.io.PrintWriter
 import org.scalawag.timber.api.Message
 
 private[slf4j] class MarkerTag(val marker: Marker) extends Tag {
-  override def toString = marker.getName
+  override val toString: String = marker.getName
 }
 
 private[slf4j] object Slf4jBridgeLoggerAdapter {
-  private def fmt(format: String, args: Array[Object]) = MessageFormatter.arrayFormat(format, args).getMessage
+  private def fmt(format: String, args: Array[Object]): String =
+    MessageFormatter.arrayFormat(format, args).getMessage
 
-  private def fmt(format: String, args: Object*) = MessageFormatter.arrayFormat(format, args.toArray).getMessage
+  private def fmt(format: String, args: Object*): String =
+    MessageFormatter.arrayFormat(format, args.toArray).getMessage
 
-  private def fmt(msg: String, throwable: Throwable): Message = Message.stringAndThrowableToMessage(msg, throwable)
+  private def fmt(msg: String, throwable: Throwable): Message =
+    Message.stringAndThrowableToMessage(msg, throwable)
 
-  implicit private def markerToTags(m: Marker): TraversableOnce[Tag] = Iterable(new MarkerTag(m))
+  implicit private def markerToTags(m: Marker): Iterable[Tag] =
+    Iterable(new MarkerTag(m))
 }
 
 private[slf4j] class Slf4jBridgeLoggerAdapter(private val logger: org.scalawag.timber.api.style.slf4j.Logger)
     extends org.slf4j.Logger {
   import Slf4jBridgeLoggerAdapter._
 
-  def getName() = logger.name
+  override def getName: String = logger.name
 
-  def isTraceEnabled() = true
-  def isTraceEnabled(marker: Marker) = true
-  def isDebugEnabled() = true
-  def isDebugEnabled(marker: Marker) = true
-  def isInfoEnabled() = true
-  def isInfoEnabled(marker: Marker) = true
-  def isWarnEnabled() = true
-  def isWarnEnabled(marker: Marker) = true
-  def isErrorEnabled() = true
-  def isErrorEnabled(marker: Marker) = true
+  override def isTraceEnabled: Boolean = true
+  override def isTraceEnabled(marker: Marker): Boolean = true
+  override def isDebugEnabled: Boolean = true
+  override def isDebugEnabled(marker: Marker): Boolean = true
+  override def isInfoEnabled: Boolean = true
+  override def isInfoEnabled(marker: Marker): Boolean = true
+  override def isWarnEnabled: Boolean = true
+  override def isWarnEnabled(marker: Marker): Boolean = true
+  override def isErrorEnabled: Boolean = true
+  override def isErrorEnabled(marker: Marker): Boolean = true
 
-  def trace(marker: Marker, msg: String, t: Throwable) = logger.trace(marker)(fmt(msg, t))
-  def trace(marker: Marker, format: String, args: Array[Object]) = logger.trace(marker)(fmt(format, args))
-  def trace(marker: Marker, format: String, arg1: Object, arg2: Object) = logger.trace(marker)(fmt(format, arg1, arg2))
-  def trace(marker: Marker, format: String, arg: Object) = logger.trace(marker)(fmt(format, arg))
-  def trace(marker: Marker, msg: String) = logger.trace(marker)(msg)
-  def trace(msg: String, t: Throwable) = logger.trace(fmt(msg, t))
-  def trace(format: String, args: Array[Object]) = logger.trace(fmt(format, args))
-  def trace(format: String, arg1: Object, arg2: Object) = logger.trace(fmt(format, arg1, arg2))
-  def trace(format: String, arg: Object) = logger.trace(fmt(format, arg))
-  def trace(msg: String) = logger.trace(msg)
+  override def trace(marker: Marker, msg: String, t: Throwable): Unit =
+    logger.trace(marker)(fmt(msg, t))
+  override def trace(marker: Marker, format: String, args: Object*): Unit =
+    logger.trace(marker)(fmt(format, args))
+  override def trace(marker: Marker, format: String, arg1: Object, arg2: Object): Unit =
+    logger.trace(marker)(fmt(format, arg1, arg2))
+  override def trace(marker: Marker, format: String, arg: Object): Unit =
+    logger.trace(marker)(fmt(format, arg))
+  override def trace(marker: Marker, msg: String): Unit =
+    logger.trace(marker)(msg)
+  override def trace(msg: String, t: Throwable): Unit =
+    logger.trace(fmt(msg, t))
+  override def trace(format: String, args: Object*): Unit =
+    logger.trace(fmt(format, args))
+  override def trace(format: String, arg1: Object, arg2: Object): Unit =
+    logger.trace(fmt(format, arg1, arg2))
+  override def trace(format: String, arg: Object): Unit =
+    logger.trace(fmt(format, arg))
+  override def trace(msg: String): Unit =
+    logger.trace(msg)
 
-  def debug(marker: Marker, msg: String, t: Throwable) = logger.debug(marker)(fmt(msg, t))
-  def debug(marker: Marker, format: String, args: Array[Object]) = logger.debug(marker)(fmt(format, args))
-  def debug(marker: Marker, format: String, arg1: Object, arg2: Object) = logger.debug(marker)(fmt(format, arg1, arg2))
-  def debug(marker: Marker, format: String, arg: Object) = logger.debug(marker)(fmt(format, arg))
-  def debug(marker: Marker, msg: String) = logger.debug(marker)(msg)
-  def debug(msg: String, t: Throwable) = logger.debug(fmt(msg, t))
-  def debug(format: String, args: Array[Object]) = logger.debug(fmt(format, args))
-  def debug(format: String, arg1: Object, arg2: Object) = logger.debug(fmt(format, arg1, arg2))
-  def debug(format: String, arg: Object) = logger.debug(fmt(format, arg))
-  def debug(msg: String) = logger.debug(msg)
+  override def debug(marker: Marker, msg: String, t: Throwable): Unit =
+    logger.debug(marker)(fmt(msg, t))
+  override def debug(marker: Marker, format: String, args: Object*): Unit =
+    logger.debug(marker)(fmt(format, args))
+  override def debug(marker: Marker, format: String, arg1: Object, arg2: Object): Unit =
+    logger.debug(marker)(fmt(format, arg1, arg2))
+  override def debug(marker: Marker, format: String, arg: Object): Unit =
+    logger.debug(marker)(fmt(format, arg))
+  override def debug(marker: Marker, msg: String): Unit =
+    logger.debug(marker)(msg)
+  override def debug(msg: String, t: Throwable): Unit =
+    logger.debug(fmt(msg, t))
+  override def debug(format: String, args: Object*): Unit =
+    logger.debug(fmt(format, args))
+  override def debug(format: String, arg1: Object, arg2: Object): Unit =
+    logger.debug(fmt(format, arg1, arg2))
+  override def debug(format: String, arg: Object): Unit =
+    logger.debug(fmt(format, arg))
+  override def debug(msg: String): Unit =
+    logger.debug(msg)
 
-  def info(marker: Marker, msg: String, t: Throwable) = logger.info(marker)(fmt(msg, t))
-  def info(marker: Marker, format: String, args: Array[Object]) = logger.info(marker)(fmt(format, args))
-  def info(marker: Marker, format: String, arg1: Object, arg2: Object) = logger.info(marker)(fmt(format, arg1, arg2))
-  def info(marker: Marker, format: String, arg: Object) = logger.info(marker)(fmt(format, arg))
-  def info(marker: Marker, msg: String) = logger.info(marker)(msg)
-  def info(msg: String, t: Throwable) = logger.info(fmt(msg, t))
-  def info(format: String, args: Array[Object]) = logger.info(fmt(format, args))
-  def info(format: String, arg1: Object, arg2: Object) = logger.info(fmt(format, arg1, arg2))
-  def info(format: String, arg: Object) = logger.info(fmt(format, arg))
-  def info(msg: String) = logger.info(msg)
+  override def info(marker: Marker, msg: String, t: Throwable): Unit =
+    logger.info(marker)(fmt(msg, t))
+  override def info(marker: Marker, format: String, args: Object*): Unit =
+    logger.info(marker)(fmt(format, args))
+  override def info(marker: Marker, format: String, arg1: Object, arg2: Object): Unit =
+    logger.info(marker)(fmt(format, arg1, arg2))
+  override def info(marker: Marker, format: String, arg: Object): Unit =
+    logger.info(marker)(fmt(format, arg))
+  override def info(marker: Marker, msg: String): Unit =
+    logger.info(marker)(msg)
+  override def info(msg: String, t: Throwable): Unit =
+    logger.info(fmt(msg, t))
+  override def info(format: String, args: Object*): Unit =
+    logger.info(fmt(format, args))
+  override def info(format: String, arg1: Object, arg2: Object): Unit =
+    logger.info(fmt(format, arg1, arg2))
+  override def info(format: String, arg: Object): Unit =
+    logger.info(fmt(format, arg))
+  override def info(msg: String): Unit =
+    logger.info(msg)
 
-  def warn(marker: Marker, msg: String, t: Throwable) = logger.warn(marker)(fmt(msg, t))
-  def warn(marker: Marker, format: String, args: Array[Object]) = logger.warn(marker)(fmt(format, args))
-  def warn(marker: Marker, format: String, arg1: Object, arg2: Object) = logger.warn(marker)(fmt(format, arg1, arg2))
-  def warn(marker: Marker, format: String, arg: Object) = logger.warn(marker)(fmt(format, arg))
-  def warn(marker: Marker, msg: String) = logger.warn(marker)(msg)
-  def warn(msg: String, t: Throwable) = logger.warn(fmt(msg, t))
-  def warn(format: String, args: Array[Object]) = logger.warn(fmt(format, args))
-  def warn(format: String, arg1: Object, arg2: Object) = logger.warn(fmt(format, arg1, arg2))
-  def warn(format: String, arg: Object) = logger.warn(fmt(format, arg))
-  def warn(msg: String) = logger.warn(msg)
+  override def warn(marker: Marker, msg: String, t: Throwable): Unit =
+    logger.warn(marker)(fmt(msg, t))
+  override def warn(marker: Marker, format: String, args: Object*): Unit =
+    logger.warn(marker)(fmt(format, args))
+  override def warn(marker: Marker, format: String, arg1: Object, arg2: Object): Unit =
+    logger.warn(marker)(fmt(format, arg1, arg2))
+  override def warn(marker: Marker, format: String, arg: Object): Unit =
+    logger.warn(marker)(fmt(format, arg))
+  override def warn(marker: Marker, msg: String): Unit =
+    logger.warn(marker)(msg)
+  override def warn(msg: String, t: Throwable): Unit =
+    logger.warn(fmt(msg, t))
+  override def warn(format: String, args: Object*): Unit =
+    logger.warn(fmt(format, args))
+  override def warn(format: String, arg1: Object, arg2: Object): Unit =
+    logger.warn(fmt(format, arg1, arg2))
+  override def warn(format: String, arg: Object): Unit =
+    logger.warn(fmt(format, arg))
+  override def warn(msg: String): Unit =
+    logger.warn(msg)
 
-  def error(marker: Marker, msg: String, t: Throwable) = logger.error(marker)(fmt(msg, t))
-  def error(marker: Marker, format: String, args: Array[Object]) = logger.error(marker)(fmt(format, args))
-  def error(marker: Marker, format: String, arg1: Object, arg2: Object) = logger.error(marker)(fmt(format, arg1, arg2))
-  def error(marker: Marker, format: String, arg: Object) = logger.error(marker)(fmt(format, arg))
-  def error(marker: Marker, msg: String) = logger.error(marker)(msg)
-  def error(msg: String, t: Throwable) = logger.error(fmt(msg, t))
-  def error(format: String, args: Array[Object]) = logger.error(fmt(format, args))
-  def error(format: String, arg1: Object, arg2: Object) = logger.error(fmt(format, arg1, arg2))
-  def error(format: String, arg: Object) = logger.error(fmt(format, arg))
-  def error(msg: String) = logger.error(msg)
+  override def error(marker: Marker, msg: String, t: Throwable): Unit =
+    logger.error(marker)(fmt(msg, t))
+  override def error(marker: Marker, format: String, args: Object*): Unit =
+    logger.error(marker)(fmt(format, args))
+  override def error(marker: Marker, format: String, arg1: Object, arg2: Object): Unit =
+    logger.error(marker)(fmt(format, arg1, arg2))
+  override def error(marker: Marker, format: String, arg: Object): Unit =
+    logger.error(marker)(fmt(format, arg))
+  override def error(marker: Marker, msg: String): Unit =
+    logger.error(marker)(msg)
+  override def error(msg: String, t: Throwable): Unit =
+    logger.error(fmt(msg, t))
+  override def error(format: String, args: Object*): Unit =
+    logger.error(fmt(format, args))
+  override def error(format: String, arg1: Object, arg2: Object): Unit =
+    logger.error(fmt(format, arg1, arg2))
+  override def error(format: String, arg: Object): Unit =
+    logger.error(fmt(format, arg))
+  override def error(msg: String): Unit =
+    logger.error(msg)
 }

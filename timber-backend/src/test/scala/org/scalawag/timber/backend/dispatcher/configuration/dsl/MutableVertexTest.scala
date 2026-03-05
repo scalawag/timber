@@ -46,7 +46,7 @@ class MutableVertexTest extends AnyFunSpec with Matchers with MockFactory {
 
       an[IllegalArgumentException] shouldBe thrownBy(v1 addNext v1)
 
-      v1.nexts shouldBe 'empty
+      v1.nexts shouldBe empty
     }
 
     it("should not affect outputs when an indirect cycle is detected") {
@@ -58,7 +58,7 @@ class MutableVertexTest extends AnyFunSpec with Matchers with MockFactory {
       an[IllegalArgumentException] shouldBe thrownBy(v2 addNext v1)
 
       v1.nexts shouldBe Set(v2)
-      v2.nexts shouldBe 'empty
+      v2.nexts shouldBe empty
     }
   }
 
@@ -101,7 +101,7 @@ class MutableVertexTest extends AnyFunSpec with Matchers with MockFactory {
 
       val h = g.root.asInstanceOf[MutableConditionVertex]
       h.condition shouldBe AcceptAll
-      h.nexts shouldBe 'empty
+      h.nexts shouldBe empty
 
       g.leaves shouldBe Seq(h)
     }
@@ -112,7 +112,7 @@ class MutableVertexTest extends AnyFunSpec with Matchers with MockFactory {
 
       val h = g.root.asInstanceOf[MutableConditionVertex]
       h.condition shouldBe c
-      h.nexts shouldBe 'empty
+      h.nexts shouldBe empty
 
       g.leaves shouldBe Seq(h)
     }

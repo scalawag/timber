@@ -40,7 +40,7 @@ object Logging {
   /* This tells the slf4j bridge to use this dispatcher instead of the default one.  It can be changed at any time.
    */
 
-  def configurate {
+  def configurate: Unit = {
     Slf4jBridgeDispatcher.set(Dispatcher)
   }
 

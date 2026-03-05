@@ -36,5 +36,5 @@ object Dispatcher {
     * use the timber backend, it may sometimes be desirable to use an alternate dispatcher.
     */
 
-  implicit def defaultDispatcher = DefaultDispatcherLoader.dispatcher
+  implicit def defaultDispatcher: Dispatcher = DefaultDispatcherLoader.dispatcher
 }

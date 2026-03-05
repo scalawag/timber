@@ -127,9 +127,34 @@ object ThreadAttributes {
     this.contextThreadLocal.set(newContext)
   }
 
+  /** Pops a value from the stack for the named thread attribute, regardless of its value.
+    * This is less safe that the version that requires the old value be set to an expected value.
+    *
+    * @param name  the name of the attribute for which to pop a value
+    */
+
+  def popAny(key: String): String = {
+    val context = this.contextThreadLocal.get()
+    val (ret, newContext) =
+      context.get(key) match {
+        case Some(h :: Nil) => (h, context - key)
+        case Some(h :: t)   => (h, context.updated(key, t))
+        case _              => (null, context)
+      }
+    this.contextThreadLocal.set(newContext)
+    ret
+  }
+
   /** Removes all thread attributes.  This includes all stacked values.
     */
   def clear: Unit = this.contextThreadLocal.remove()
+
+  /** Removes the values for a specified key.  This includes all stacked values.
+    */
+  def clear(key: String): Unit = {
+    val context = this.contextThreadLocal.get()
+    this.contextThreadLocal.set(context - key)
+  }
 
   /** Executes a thunk, during which the specified thread attribute will be in place.  After the thunk has completed,
     * the thread attribute is returned to its original value (before the call to `during`).  The return value of

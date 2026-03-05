@@ -150,7 +150,7 @@ class StringConditionFactoryTest extends AnyFunSpec with Matchers with MockFacto
       condition: Condition,
       extraction: Option[Iterable[String]],
       expected: Option[Boolean]
-  ) {
+  ): Unit = {
     val result = expected match {
       case None        => "abstain"
       case Some(true)  => "accept"

@@ -48,7 +48,7 @@ object LogbackSupport {
 class LogbackContext extends ContextBase {
   private[logback] var lifeCycles = Set[LifeCycle]()
 
-  def add(lifeCycle: LifeCycle) {
+  def add(lifeCycle: LifeCycle): Unit = {
     lifeCycles += lifeCycle
   }
 }
@@ -61,10 +61,10 @@ class LogbackStatusManager extends BasicStatusManager {
     Status.ERROR -> slf4j.Level.ERROR
   )
 
-  override def add(status: Status) {
+  override def add(status: Status): Unit = {
     super.add(status)
 
-    InternalLogger.log(levelMap(status.getLevel)) { pw: PrintWriter =>
+    InternalLogger.log(levelMap(status.getLevel)) { (pw: PrintWriter) =>
       pw.print(status.getMessage)
       Option(status.getThrowable).foreach(_.printStackTrace(pw))
     }

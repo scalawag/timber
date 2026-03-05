@@ -18,7 +18,7 @@ import org.scalawag.timber.api.{BaseLogger, Entry}
 import org.scalawag.timber.backend.dispatcher.Dispatcher
 import org.scalawag.timber.backend.receiver.Receiver
 import org.scalawag.timber.backend.dispatcher.configuration.dsl._
-import org.scalawag.timber.backend.receiver.formatter.DefaultEntryFormatter
+import org.scalawag.timber.backend.receiver.formatter.{DefaultEntryFormatter, EntryFormatter}
 import org.scalawag.timber.slf4j.receiver.logback
 import ch.qos.logback.core.FileAppender
 import org.scalatest.funspec.AnyFunSpec
@@ -26,8 +26,8 @@ import org.scalatest.funspec.AnyFunSpec
 class AppenderAdapterTestSuite extends AnyFunSpec {
   import LogbackSupport._
 
-  implicit private val dispatcher = new Dispatcher
-  implicit val formatter = DefaultEntryFormatter
+  implicit private val dispatcher: Dispatcher = new Dispatcher
+  implicit val formatter: EntryFormatter = DefaultEntryFormatter
 
   it("test file") {
     dispatcher.configure { IN =>

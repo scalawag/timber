@@ -111,7 +111,7 @@ class IntConditionFactoryTest extends AnyFunSpec with Matchers with MockFactory 
       condition: Condition,
       extraction: Option[Iterable[Int]],
       expected: Option[Boolean]
-  ) {
+  ): Unit = {
     val result = expected match {
       case None        => "abstain"
       case Some(true)  => "accept"

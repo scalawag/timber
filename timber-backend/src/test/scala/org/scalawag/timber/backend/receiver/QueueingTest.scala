@@ -34,7 +34,7 @@ class QueueingTest extends AnyFunSpec with Matchers with OneInstancePerTest with
   private class TestReceiver extends Receiver {
     var calls = 0
 
-    def receive(entry: Entry) {
+    def receive(entry: Entry): Unit = {
       Thread.sleep(delay)
       calls += 1
     }

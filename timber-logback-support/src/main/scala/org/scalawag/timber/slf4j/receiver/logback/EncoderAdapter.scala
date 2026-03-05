@@ -18,20 +18,11 @@ import ch.qos.logback.core.encoder.EncoderBase
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.receiver.ConsoleReceiver
 import org.scalawag.timber.backend.receiver.formatter.EntryFormatter
-import java.io.{OutputStreamWriter, Writer, OutputStream}
+
+import java.io.{ByteArrayOutputStream, OutputStream, OutputStreamWriter, Writer}
 
 class EncoderAdapter(private val formatter: EntryFormatter, charset: Option[String] = None) extends EncoderBase[Entry] {
-  private var writer: Writer = null
-
-  override def init(os: OutputStream) {
-    super.init(os)
-    writer = charset match {
-      case Some(cs) => new OutputStreamWriter(os, cs)
-      case None     => new OutputStreamWriter(os)
-    }
-  }
-
-  def doEncode(entry: Entry) = writer.write(formatter.format(entry))
-
-  def close = writer.flush
+  def encode(entry: Entry) = charset.fold(formatter.format(entry).getBytes())(formatter.format(entry).getBytes(_))
+  override def headerBytes(): Array[Byte] = Array.empty
+  override def footerBytes(): Array[Byte] = Array.empty
 }

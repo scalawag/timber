@@ -29,7 +29,7 @@ object ProgrammableEntryFormatter {
   }
 
   object MetadataProvider {
-    implicit def fromString(s: String) = new LiteralMetadata(s)
+    implicit def fromString(s: String): MetadataProvider = new LiteralMetadata(s)
   }
 
   trait MetadataProvider {
@@ -86,8 +86,8 @@ object ProgrammableEntryFormatter {
 
   class MapExtractingMetadataProvider[A, B] private[formatter] (extractor: Entry => Map[A, B])
       extends ExtractingMetadataProvider[Map[A, B]](extractor) {
-    def without(key: A) = this map { m: Map[A, B] => m - key }
-    def without(keys: Set[A]) = this map { m: Map[A, B] => m -- keys }
+    def without(key: A) = this map { (m: Map[A, B]) => m - key }
+    def without(keys: Set[A]) = this map { (m: Map[A, B]) => m -- keys }
     def map[C, D](fn: Map[A, B] => Map[C, D]) = new MapExtractingMetadataProvider(extractor andThen fn)
   }
 

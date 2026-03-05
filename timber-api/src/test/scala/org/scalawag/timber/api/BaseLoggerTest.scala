@@ -20,17 +20,17 @@ import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 
 class BaseLoggerTest extends AnyFunSpec with Matchers with MockFactory {
-  implicit val dispatcher = mock[Dispatcher]
+  implicit val dispatcher: Dispatcher = mock[Dispatcher]
 
   describe("lazy message evaluation") {
     trait Fixture {
       var evaluated = false
       val logger = new BaseLogger()
-      val message = { pw: PrintWriter =>
+      val message = (pw: PrintWriter) => {
         evaluated = true
       }
 
-      (dispatcher.dispatch _).expects(*).once
+      (dispatcher.dispatch(_: Entry)).expects(*).once()
     }
 
     it("should not evaluate Message until it's necessary") {
@@ -55,17 +55,17 @@ class BaseLoggerTest extends AnyFunSpec with Matchers with MockFactory {
     it("should allow multiple tags with a message gatherer block") {
       val logger = new BaseLogger
 
-      (dispatcher.dispatch _).expects(*).once
+      (dispatcher.dispatch(_: Entry)).expects(*).once()
 
-      logger.log(0, Set(ImmediateMessage)) { pw: PrintWriter =>
+      logger.log(0, Set(ImmediateMessage))((pw: PrintWriter) =>
         pw.println("blah")
-      }
+      )
     }
 
     it("should allow a string and an exception (implicit tuple conversion)") {
       val logger = new Logger
 
-      (dispatcher.dispatch _).expects(*).once
+      (dispatcher.dispatch(_: Entry)).expects(*).once()
 
       val ex = new Exception("boom")
 

@@ -36,7 +36,7 @@ private[debug] class IndentingPrintWriter(
     }
   }
 
-  def indent(change: Int)(fn: => Unit) {
+  def indent(change: Int)(fn: => Unit): Unit = {
     changeIndent(+change)
     fn
     changeIndent(-change)
@@ -44,127 +44,127 @@ private[debug] class IndentingPrintWriter(
 
   def indent(fn: => Unit): Unit = indent(1)(fn)
 
-  def changeIndent(change: Int) {
+  def changeIndent(change: Int): Unit = {
     this.currentLevel = Iterable(0, this.currentLevel + change).max
     this.currentPrefix = " " * (indentWidth * this.currentLevel)
   }
 
-  override def println() {
+  override def println(): Unit = {
     super.println()
     this.needsPrefix = true
   }
 
-  override def write(c: Int) {
+  override def write(c: Int): Unit = {
     beforeOutput
     super.write(c)
   }
 
-  override def write(buf: Array[Char], off: Int, len: Int) {
+  override def write(buf: Array[Char], off: Int, len: Int): Unit = {
     beforeOutput
     super.write(buf, off, len)
   }
 
-  override def write(buf: Array[Char]) {
+  override def write(buf: Array[Char]): Unit = {
     beforeOutput
     super.write(buf)
   }
 
-  override def write(s: String, off: Int, len: Int) {
+  override def write(s: String, off: Int, len: Int): Unit = {
     beforeOutput
     super.write(s, off, len)
   }
 
-  override def write(s: String) {
+  override def write(s: String): Unit = {
     beforeOutput
     super.write(s)
   }
 
-  override def print(b: Boolean) {
+  override def print(b: Boolean): Unit = {
     beforeOutput
     super.print(b)
   }
 
-  override def print(c: Char) {
+  override def print(c: Char): Unit = {
     beforeOutput
     super.print(c)
   }
 
-  override def print(i: Int) {
+  override def print(i: Int): Unit = {
     beforeOutput
     super.print(i)
   }
 
-  override def print(l: Long) {
+  override def print(l: Long): Unit = {
     beforeOutput
     super.print(l)
   }
 
-  override def print(f: Float) {
+  override def print(f: Float): Unit = {
     beforeOutput
     super.print(f)
   }
 
-  override def print(d: Double) {
+  override def print(d: Double): Unit = {
     beforeOutput
     super.print(d)
   }
 
-  override def print(s: Array[Char]) {
+  override def print(s: Array[Char]): Unit = {
     beforeOutput
     super.print(s)
   }
 
-  override def print(s: String) {
+  override def print(s: String): Unit = {
     beforeOutput
     super.print(s)
   }
 
-  override def print(obj: Any) {
+  override def print(obj: Any): Unit = {
     beforeOutput
     super.print(obj)
   }
 
-  override def println(x: Boolean) {
+  override def println(x: Boolean): Unit = {
     beforeOutput
     super.println(x)
   }
 
-  override def println(x: Char) {
+  override def println(x: Char): Unit = {
     beforeOutput
     super.println(x)
   }
 
-  override def println(x: Int) {
+  override def println(x: Int): Unit = {
     beforeOutput
     super.println(x)
   }
 
-  override def println(x: Long) {
+  override def println(x: Long): Unit = {
     beforeOutput
     super.println(x)
   }
 
-  override def println(x: Float) {
+  override def println(x: Float): Unit = {
     beforeOutput
     super.println(x)
   }
 
-  override def println(x: Double) {
+  override def println(x: Double): Unit = {
     beforeOutput
     super.println(x)
   }
 
-  override def println(x: Array[Char]) {
+  override def println(x: Array[Char]): Unit = {
     beforeOutput
     super.println(x)
   }
 
-  override def println(x: String) {
+  override def println(x: String): Unit = {
     beforeOutput
     super.println(x)
   }
 
-  override def println(x: Any) {
+  override def println(x: Any): Unit = {
     beforeOutput
     super.println(x)
   }

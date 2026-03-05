@@ -344,9 +344,9 @@ class ProgrammableEntryFormatterTest extends AnyFunSpec with Matchers {
     it("should map a Map") {
       val f = new ProgrammableEntryFormatter(
         Seq(
-          entry.loggerAttributes map { m: Map[String, Any] =>
+          entry.loggerAttributes map ((m: Map[String, Any]) =>
             m.mapValues(n => s"$n$n").toMap
-          } formattedWith CommasAndEquals
+          ) formattedWith CommasAndEquals
         )
       )
 

@@ -15,7 +15,7 @@
 package library
 
 object LoggingLibrary {
-  def go {
+  def go: Unit = {
     val jul = new org.scalawag.timber.api.style.jul.Logger("JUL")
     jul.finest("jul.finest")
     jul.finer("jul.finer")

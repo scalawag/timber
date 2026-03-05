@@ -40,8 +40,8 @@ object ScalawagPublishing extends AutoPlugin {
       licenses += "Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"),
       scmInfo := Some(
         ScmInfo(
-          url("https://github.com/scalawag/${name.value}"),
-          "scm:git:git://github.com/scalawag/${name.value}.git"
+          url(s"https://github.com/scalawag/${name.value}"),
+          s"scm:git:git://github.com/scalawag/${name.value}.git"
         )
       ),
       developers := List(

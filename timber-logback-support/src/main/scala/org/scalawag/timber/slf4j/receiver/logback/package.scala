@@ -16,8 +16,9 @@ package org.scalawag.timber.slf4j.receiver
 
 import org.scalawag.timber.api.Entry
 import org.scalawag.timber.backend.receiver.formatter.EntryFormatter
-import ch.qos.logback.core.{FileAppender, Context}
+import ch.qos.logback.core.{Context, FileAppender}
 import ch.qos.logback.core.rolling._
+import ch.qos.logback.core.util.FileSize
 
 package object logback {
 
@@ -94,7 +95,7 @@ package object logback {
     policy
   }
 
-  def sizeBasedTriggeringPolicy(maxFileSize: Option[String] = None)(implicit context: LogbackContext) = {
+  def sizeBasedTriggeringPolicy(maxFileSize: Option[FileSize] = None)(implicit context: LogbackContext) = {
     val policy = new SizeBasedTriggeringPolicy[Entry]
     policy.setContext(context)
     maxFileSize.foreach(policy.setMaxFileSize)

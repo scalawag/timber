@@ -27,7 +27,7 @@ class SimpleLoggingTest extends AnyFunSpec with Matchers with MockFactory {
   it("should succeed in the basic logging flow") {
     val r = mock[Receiver]
 
-    implicit val lm = new Dispatcher {
+    implicit val lm: Dispatcher = new Dispatcher {
       configure { IN =>
         IN ~> (logger("name") startsWith "com.example.logclient") ~> (level >= 2) ~> r
         IN ~> (level >= 3) ~> r
@@ -37,11 +37,11 @@ class SimpleLoggingTest extends AnyFunSpec with Matchers with MockFactory {
     val il = new BaseLogger("name" -> "com.example.logclient.FakeClass")
     val el = new BaseLogger("name" -> "org.apache.hadoop.Something")
 
-    (r.receive _).expects(where(matches(2, il))).once()
-    (r.receive _).expects(where(matches(3, il))).once()
-    (r.receive _).expects(where(matches(4, il))).once()
-    (r.receive _).expects(where(matches(3, el))).once()
-    (r.receive _).expects(where(matches(4, el))).once()
+    (r.receive(_: Entry)).expects(where(matches(2, il))).once()
+    (r.receive(_: Entry)).expects(where(matches(3, il))).once()
+    (r.receive(_: Entry)).expects(where(matches(4, il))).once()
+    (r.receive(_: Entry)).expects(where(matches(3, el))).once()
+    (r.receive(_: Entry)).expects(where(matches(4, el))).once()
 
     Iterable(il, el).foreach { l =>
       (0 to 4) foreach { level =>
@@ -51,7 +51,6 @@ class SimpleLoggingTest extends AnyFunSpec with Matchers with MockFactory {
 
   }
 
-  def matches(level: Level, logger: BaseLogger) = { e: Entry =>
+  def matches(level: Level, logger: BaseLogger) = (e: Entry) =>
     Some(level) == e.level && logger.attributes == e.loggerAttributes
-  }
 }

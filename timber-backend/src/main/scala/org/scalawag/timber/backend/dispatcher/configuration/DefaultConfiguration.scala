@@ -20,6 +20,7 @@ import org.scalawag.timber.backend.receiver.concurrency.Locking
 import org.scalawag.timber.backend.receiver.formatter.DefaultEntryFormatter
 
 package object configuration {
+  import dsl.receiverToSubgraph
 
   /** Defines the default dispatcher configuration used when no other configuration is specified.  It's not really
     * intended to be used normally.  It writes to stderr and flushes entries immediately.  It does all this so that

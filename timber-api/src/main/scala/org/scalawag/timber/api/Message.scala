@@ -38,7 +38,7 @@ class Message(fn: => String) {
     *
     * You will probably never need to call this method yourself.  Timber will call it when it needs the message lines.
     */
-  lazy val lines: Traversable[String] = Source.fromString(text).getLines.toIterable
+  lazy val lines: Iterable[String] = Source.fromString(text).getLines.toSeq
 }
 
 /** Contains some useful implicit conversions to Message.  These are all that make using the timber API bearable.
@@ -58,7 +58,7 @@ object Message {
     * argument to appear to support two arguments.
     */
   implicit def stringAndThrowableToMessage(st: (String, Throwable)): Message =
-    messageGathererToMessage { pw: PrintWriter =>
+    messageGathererToMessage { (pw: PrintWriter) =>
       pw.println(st._1)
       st._2.printStackTrace(pw)
     }

@@ -30,18 +30,18 @@ class WriterBasedReceiverTest extends AnyFunSpec with Matchers with MockFactory 
   private val entry = new Entry()
 
   def createWriterCalled = createWriterFn.expects().returns(writer)
-  def formatterFormatCalled = (formatter.format _).expects(*).onCall { e: Entry => "" }
+  def formatterFormatCalled = (formatter.format(_: Entry)).expects(*).onCall((e: Entry) => "")
   def writerWriteCalled = (writer.write(_: String)).expects("")
-  def writerFlushCalled = (writer.flush _).expects()
-  def writerCloseCalled = (writer.close _).expects()
+  def writerFlushCalled = (() => writer.flush()).expects()
+  def writerCloseCalled = (() => writer.close()).expects()
 
   it("should create the writer when receive() is called") {
     val wber = new WriterBasedReceiver(createWriterFn())(formatter)
 
     inSequence {
-      createWriterCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.once
+      createWriterCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.once()
     }
 
     wber.receive(entry)
@@ -51,11 +51,11 @@ class WriterBasedReceiverTest extends AnyFunSpec with Matchers with MockFactory 
     val wber = new WriterBasedReceiver(createWriterFn())(formatter)
 
     inSequence {
-      createWriterCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.once
+      createWriterCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.once()
     }
 
     wber.receive(entry)
@@ -72,11 +72,11 @@ class WriterBasedReceiverTest extends AnyFunSpec with Matchers with MockFactory 
     val wber = new WriterBasedReceiver(createWriterFn())(formatter)
 
     inSequence {
-      createWriterCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.once
+      createWriterCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.once()
 
-      writerFlushCalled.once
+      writerFlushCalled.once()
     }
 
     wber.receive(entry)
@@ -93,11 +93,11 @@ class WriterBasedReceiverTest extends AnyFunSpec with Matchers with MockFactory 
     val wber = new WriterBasedReceiver(createWriterFn())(formatter)
 
     inSequence {
-      createWriterCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.once
+      createWriterCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.once()
 
-      writerCloseCalled.once
+      writerCloseCalled.once()
     }
 
     wber.receive(entry)
@@ -108,11 +108,11 @@ class WriterBasedReceiverTest extends AnyFunSpec with Matchers with MockFactory 
     val wber = new WriterBasedReceiver(createWriterFn())(formatter)
 
     inSequence {
-      createWriterCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.once
+      createWriterCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.once()
 
-      writerCloseCalled.once
+      writerCloseCalled.once()
     }
 
     wber.receive(entry)
@@ -124,15 +124,15 @@ class WriterBasedReceiverTest extends AnyFunSpec with Matchers with MockFactory 
     val wber = new WriterBasedReceiver(createWriterFn())(formatter)
 
     inSequence {
-      createWriterCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.once
+      createWriterCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.once()
 
-      writerCloseCalled.once
+      writerCloseCalled.once()
 
-      createWriterCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.once
+      createWriterCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.once()
     }
 
     wber.receive(entry)
@@ -144,9 +144,9 @@ class WriterBasedReceiverTest extends AnyFunSpec with Matchers with MockFactory 
     val wber = new WriterBasedReceiver(createWriterFn())(formatter)
 
     inSequence {
-      createWriterCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.throws(new Exception("gah")).once
+      createWriterCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.throws(new Exception("gah")).once()
     }
 
     val ex = intercept[Exception] { wber.receive(entry) }
@@ -158,11 +158,11 @@ class WriterBasedReceiverTest extends AnyFunSpec with Matchers with MockFactory 
     val wber = new WriterBasedReceiver(createWriterFn())(formatter)
 
     inSequence {
-      createWriterCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.once
+      createWriterCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.once()
 
-      writerFlushCalled.throws(new Exception("gah")).once
+      writerFlushCalled.throws(new Exception("gah")).once()
     }
 
     wber.receive(entry)
@@ -175,11 +175,11 @@ class WriterBasedReceiverTest extends AnyFunSpec with Matchers with MockFactory 
     val wber = new WriterBasedReceiver(createWriterFn())(formatter)
 
     inSequence {
-      createWriterCalled.once
-      formatterFormatCalled.once
-      writerWriteCalled.once
+      createWriterCalled.once()
+      formatterFormatCalled.once()
+      writerWriteCalled.once()
 
-      writerCloseCalled.throws(new Exception("gah")).once
+      writerCloseCalled.throws(new Exception("gah")).once()
     }
 
     wber.receive(entry)

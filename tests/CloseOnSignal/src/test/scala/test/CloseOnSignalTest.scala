@@ -28,7 +28,7 @@ import org.scalawag.timber.backend.receiver.{Receiver, WriterBasedReceiver}
 import sun.misc.Signal
 
 class CloseOnSignalTest extends AnyFunSpec with Matchers with MockFactory with Eventually {
-  override implicit def patienceConfig = PatienceConfig(Span(15, Seconds), Span(1, Second))
+  override implicit def patienceConfig: PatienceConfig = PatienceConfig(Span(15, Seconds), Span(1, Second))
 
   it("should close specified Receivers on SIGHUP") {
     import org.scalawag.timber.backend.dispatcher.configuration.dsl._
@@ -50,27 +50,27 @@ class CloseOnSignalTest extends AnyFunSpec with Matchers with MockFactory with E
       true ~> fanout(r1, r2, r3, r4)
     }
 
-    implicit val dispatcher = new Dispatcher(cfg)
+    implicit val dispatcher: Dispatcher = new Dispatcher(cfg)
     val logger = new BaseLogger
     logger.log(0)("blah")
     logger.log(1)("blah")
 
     // All output should be buffered for now...
 
-    sw1.toString shouldBe 'empty
-    sw2.toString shouldBe 'empty
-    sw3.toString shouldBe 'empty
-    sw4.toString shouldBe 'empty
+    sw1.toString shouldBe empty
+    sw2.toString shouldBe empty
+    sw3.toString shouldBe empty
+    sw4.toString shouldBe empty
 
     Signal.raise(new Signal("HUP"))
 
     // All the receivers registered to close on the signal should have been flushed now.
 
     eventually {
-      sw1.toString shouldBe 'empty
-      sw2.toString should not be 'empty
-      sw3.toString should not be 'empty
-      sw4.toString should not be 'empty
+      sw1.toString shouldBe empty
+      sw2.toString should not be empty
+      sw3.toString should not be empty
+      sw4.toString should not be empty
     }
   }
 
