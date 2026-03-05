@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+ThisBuild / versionScheme := Some("early-semver")
+
 val commonSettings = Seq(
   organization := "org.scalawag.timber",
   scalaVersion := "2.12.19",
@@ -40,10 +42,7 @@ val commonSettings = Seq(
       case _ => Seq("-feature")
     }
   },
-//  testOptions += Tests.Argument("-oDF"),
   publishMavenStyle := true,
-  homepage := Some(url("http://scalawag.org/timber")),
-  startYear := Some(2012),
   libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "3.2.19",
     "org.scalamock" %% "scalamock" % "7.4.0"
@@ -162,8 +161,7 @@ val timber = project
   .enablePlugins(JekyllPlugin)
   .settings(
     update / aggregate := false,
-    publishArtifact := false,
-    publishTo := Some(Resolver.file("Not actually used but required by publish-signed", file("/tmp/bogusrepo"))),
+    publish / skip := true,
     SiteScaladocPlugin.scaladocSettings(TimberApi, timberApi / Compile / packageDoc / mappings, "docs/timber-api"),
     SiteScaladocPlugin
       .scaladocSettings(TimberBackend, timberBackend / Compile / packageDoc / mappings, "docs/timber-backend"),
