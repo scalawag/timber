@@ -39,7 +39,7 @@ jobs:
       - name: sbt test publishSigned
         run: sbt +test +publishSigned
       - name: sbt sonaRelease
-        if: startsWith(github.ref, 'refs/tags/release-')
+        if: startsWith(github.ref, 'refs/tags/release/')
         run: sbt sonaRelease
   documentation:
     runs-on: ubuntu-latest
